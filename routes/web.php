@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\GraduateRegistrationController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -17,6 +20,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'users' => App\Models\User::all()
         ]);
     })->name('modUsers');
+
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    Route::get('/regEgresados', function () {
+        return Inertia::render('registroEgresado');
+    })->name('regEgresados');
+
+    Route::post('/graduate', [GraduateRegistrationController::class, 'store'])->name('graduate.store');
 });
 
 require __DIR__.'/settings.php';
