@@ -86,7 +86,7 @@ export default function Welcome() {
                                         </span>
                                     </span>
                                     <span>
-                                        Watch video tutorials at
+                                        Watch video tutorials att
                                         <a
                                             href="https://laracasts.com"
                                             target="_blank"

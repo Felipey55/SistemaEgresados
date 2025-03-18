@@ -18,6 +18,11 @@ const mainNavItems: NavItem[] = [
         href: '/modUsers',
         icon: LayoutGrid,
     },
+    {
+        title: 'Registro Egresado',
+        href: '/regEgresados',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
