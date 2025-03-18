@@ -72,7 +72,7 @@ export default function Dashboard() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <form className="flex flex-col gap-4 max-w-5xl mx-auto" onSubmit={submit}>
+            <form className="flex flex-col gap-4 max-w-5xl mx-auto min-h-[calc(100vh-12rem)] justify-center" onSubmit={submit}>
                 <div className="grid grid-cols-2 gap-8">
                     <div className="space-y-4">
                         <div className="grid gap-2">
@@ -83,7 +83,7 @@ export default function Dashboard() {
                                 value={data.identificacion_tipo}
                                 onChange={(e) => setData('identificacion_tipo', e.target.value as 'C.C.' | 'C.E.')}
                                 disabled={processing}
-                                className="border rounded p-2"
+                                className="bg-gray-800 text-white border-gray-600 rounded p-2 hover:bg-gray-700 focus:border-indigo-500 focus:ring-indigo-500"
                             >
                                 <option value="C.C.">C.C.</option>
                                 <option value="C.E.">C.E.</option>

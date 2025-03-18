@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\GraduateRegistrationController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\RolModController;
 use App\Models\User;
 
 Route::get('/', function () {
@@ -19,10 +20,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('mod-users', [
             'users' => App\Models\User::all()
         ]);
-    })->name('modUsers');
+    })->name('modUsers'); 
 
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/user-mod/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::put('/user-mod/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/user-mod/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
     Route::get('/regEgresados', function () {
         return Inertia::render('registroEgresado');
