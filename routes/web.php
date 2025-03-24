@@ -5,6 +5,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\GraduateRegistrationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\RolModController;
+use App\Http\Controllers\NoticiaController;
 use App\Models\User;
 
 Route::get('/', function () {
@@ -31,6 +32,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('regEgresados');
 
     Route::post('/graduate', [GraduateRegistrationController::class, 'store'])->name('graduate.store');
+
+    // Noticias routes
+    Route::resource('noticias', NoticiaController::class);
 });
 
 require __DIR__.'/settings.php';
