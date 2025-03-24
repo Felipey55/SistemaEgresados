@@ -10,8 +10,8 @@ import { Label } from '@/components/ui/label';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
+        title: 'Registro de Egresados',
+        href: '/regEgresados',
     },
 ];
 
@@ -71,7 +71,7 @@ export default function Dashboard() {
     };
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Registro Egresado" />
             <form className="flex flex-col gap-4 max-w-5xl mx-auto min-h-[calc(100vh-12rem)] justify-center" onSubmit={submit}>
                 <div className="grid grid-cols-2 gap-8">
                     <div className="space-y-4">
@@ -153,6 +153,7 @@ export default function Dashboard() {
                                 value={data.fecha_nacimiento}
                                 onChange={(e) => setData('fecha_nacimiento', e.target.value)}
                                 disabled={processing}
+                                className="appearance-none bg-transparent text-white [&::-webkit-calendar-picker-indicator]:invert"
                             />
                             <InputError message={errors.fecha_nacimiento} />
                         </div>
