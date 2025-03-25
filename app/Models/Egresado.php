@@ -30,8 +30,8 @@ class Egresado extends Model
         'fecha_nacimiento' => 'date'
     ];
 
-    public function egresado(): HasOne
+    public function user(): BelongsTo
     {
-        return $this->hasOne(Egresado::class);
+        return $this->belongsTo(User::class);
     }
 }
