@@ -27,9 +27,12 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
+            ->withSession(['_token' => 'test-token'])
+            ->withCookie('XSRF-TOKEN', 'test-token')
             ->patch('/settings/profile', [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
+                '_token' => 'test-token'
             ]);
 
         $response
@@ -49,9 +52,12 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
+            ->withSession(['_token' => 'test-token'])
+            ->withCookie('XSRF-TOKEN', 'test-token')
             ->patch('/settings/profile', [
                 'name' => 'Test User',
                 'email' => $user->email,
+                '_token' => 'test-token'
             ]);
 
         $response
@@ -67,8 +73,11 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
+            ->withSession(['_token' => 'test-token'])
+            ->withCookie('XSRF-TOKEN', 'test-token')
             ->delete('/settings/profile', [
                 'password' => 'password',
+                '_token' => 'test-token'
             ]);
 
         $response
@@ -85,9 +94,12 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
+            ->withSession(['_token' => 'test-token'])
+            ->withCookie('XSRF-TOKEN', 'test-token')
             ->from('/settings/profile')
             ->delete('/settings/profile', [
                 'password' => 'wrong-password',
+                '_token' => 'test-token'
             ]);
 
         $response

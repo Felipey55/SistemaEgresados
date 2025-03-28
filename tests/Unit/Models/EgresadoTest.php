@@ -44,7 +44,7 @@ class EgresadoTest extends TestCase
             'fecha_nacimiento' => '1990-01-01'
         ]);
 
-        $this->assertIsObject($egresado->fecha_nacimiento);
+        $this->assertInstanceOf(\Carbon\Carbon::class, $egresado->fecha_nacimiento);
         $this->assertEquals('1990-01-01', $egresado->fecha_nacimiento->toDateString());
     }
 }
