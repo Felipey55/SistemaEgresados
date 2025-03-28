@@ -73,6 +73,7 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Registro Egresado" />
             <form className="flex flex-col gap-4 max-w-5xl mx-auto min-h-[calc(100vh-12rem)] justify-center" onSubmit={submit}>
+            <h1 className="text-2xl font-semibold">Registro como egresado</h1>
                 <div className="grid grid-cols-2 gap-8">
                     <div className="space-y-4">
                         <div className="grid gap-2">

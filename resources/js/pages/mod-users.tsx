@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { router } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Modify Users', href: '/modUsers' },
+    { title: 'Modificar Roles y usuarios', href: '/modUsers' },
 ];
 
 interface User {
@@ -62,16 +62,17 @@ export default function ModUsers({ users }: { users: User[] }) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Modify Users" />
+            <Head title="Modificar Roles y usuarios" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            <h1 className="text-2xl font-semibold">Usuarios registrados en el sistema</h1>
                 <div className="rounded-xl border p-4">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Name</TableHead>
+                                <TableHead>Nombre</TableHead>
                                 <TableHead>Email</TableHead>
-                                <TableHead>Role ID</TableHead>
-                                <TableHead>Actions</TableHead>
+                                <TableHead>Rol</TableHead>
+                                <TableHead>Acciones</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -81,8 +82,8 @@ export default function ModUsers({ users }: { users: User[] }) {
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.role_id}</TableCell>
                                     <TableCell className="space-x-2">
-                                        <Button variant="secondary" onClick={() => handleViewClick(user)}>Edit</Button>
-                                        <Button variant="destructive" onClick={() => handleUserDelete(user.id)}>Delete</Button>
+                                        <Button variant="secondary" onClick={() => handleViewClick(user)}>Editar</Button>
+                                        <Button variant="destructive" onClick={() => handleUserDelete(user.id)}>Eliminar</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -122,9 +123,9 @@ export default function ModUsers({ users }: { users: User[] }) {
                                         onChange={(e) => setEditedUser({ ...editedUser, role_id: parseInt(e.target.value) })}
                                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-800 text-white hover:bg-gray-700 focus:border-indigo-500 focus:ring-indigo-500"
                                     >
-                                        <option value={1}>Role 1</option>
-                                        <option value={2}>Role 2</option>
-                                        <option value={3}>Role 3</option>
+                                        <option value={1}>Administrador</option>
+                                        <option value={2}>Coordinador</option>
+                                        <option value={3}>Egresado</option>
                                     </select>
                                 </div>
                             </div>
