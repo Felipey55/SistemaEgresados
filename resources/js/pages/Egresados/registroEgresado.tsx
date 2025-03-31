@@ -60,9 +60,7 @@ export default function Dashboard() {
             onSuccess: () => {
                 showNotification('Registro exitoso', true);
                 reset('fotografia');
-                setTimeout(() => {
-                    window.location.href = route('dashboard');
-                }, 2000);
+                window.location.href = route('historial-laboral');
             },
             onError: () => {
                 showNotification('Error al registrarse como egresado. Verifique los datos.', false);

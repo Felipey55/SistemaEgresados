@@ -46,6 +46,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return to_route('dashboard');
+        // Redirigir a la vista de historial laboral
+        return to_route('historial-laboral');
     }
 }
