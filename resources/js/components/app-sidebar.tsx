@@ -19,7 +19,7 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Registro como Egresado',
+        title: 'Informacion egresado',
         href: '/Egresados/perfil',
         icon: LayoutGrid,
     },

@@ -34,4 +34,14 @@ class Egresado extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function formacionAcademica()
+    {
+        return $this->hasMany(FormacionAcademica::class);
+    }
+
+    public function experienciaLaboral()
+    {
+        return $this->hasMany(ExperienciaLaboral::class);
+    }
 }
