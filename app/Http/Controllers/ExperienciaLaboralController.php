@@ -9,13 +9,36 @@ use Illuminate\Validation\ValidationException;
 
 class ExperienciaLaboralController extends Controller
 {
-    public function index(Request $request)
+    public function obtenerDatos(Request $request, $id)
     {
-        $experiencias = ExperienciaLaboral::where('egresado_id', $request->user()->egresado->id)
-            ->orderBy('fecha_inicio', 'desc')
-            ->get();
+        try {
+            $egresado = $request->user()->egresado;
+            if (!$egresado) {
+                return response()->json(['error' => 'Egresado no encontrado'], 404);
+            }
 
-        return response()->json($experiencias);
+            $experienciaLaboral = ExperienciaLaboral::where('egresado_id', $egresado->id)
+                ->where('id', $id)
+                ->first();
+
+            if (!$experienciaLaboral) {
+                return response()->json(['error' => 'Experiencia laboral no encontrada'], 404);
+            }
+
+            return response()->json([
+                'tipo_empleo' => $experienciaLaboral->tipo_empleo,
+                'nombre_empresa' => $experienciaLaboral->nombre_empresa,
+                'fecha_inicio' => $experienciaLaboral->fecha_inicio->format('Y-m-d'),
+                'fecha_fin' => $experienciaLaboral->fecha_fin ? $experienciaLaboral->fecha_fin->format('Y-m-d') : null,
+                'servicios' => $experienciaLaboral->servicios,
+                'correo_empresa' => $experienciaLaboral->correo_empresa,
+                'url_empresa' => $experienciaLaboral->url_empresa,
+                'modalidad_trabajo' => $experienciaLaboral->modalidad_trabajo,
+                'descripcion' => $experienciaLaboral->descripcion
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al obtener los datos'], 500);
+        }
     }
 
     public function store(Request $request)
@@ -49,6 +72,7 @@ class ExperienciaLaboralController extends Controller
         return response()->json($experienciaLaboral);
     }
 
+
     public function update(Request $request, ExperienciaLaboral $experienciaLaboral)
     {
         $this->authorize('update', $experienciaLaboral);
@@ -70,7 +94,8 @@ class ExperienciaLaboralController extends Controller
         }
 
         $experienciaLaboral->update($request->all());
-        return response()->json($experienciaLaboral);
+
+        return response()->json(['message' => 'Experiencia laboral actualizada exitosamente']);
     }
 
     public function destroy(ExperienciaLaboral $experienciaLaboral)

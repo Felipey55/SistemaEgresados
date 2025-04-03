@@ -24,6 +24,7 @@ type DatosEgresado = {
 };
 
 type FormacionAcademica = {
+    id: number;
     titulo: string;
     institucion: string;
     tipo: string;
@@ -48,32 +49,38 @@ export default function PerfilEgresado() {
     const [experienciaLaboral, setExperienciaLaboral] = useState<ExperienciaLaboral[]>([]);
     const [loading, setLoading] = useState(true);
     const [isRegistered, setIsRegistered] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const fetchDatosEgresado = async () => {
+        const verificarRegistro = async () => {
             try {
-                const response = await axios.get(route('api.egresado.perfil'));
-                if (response.data.egresado) {
-                    setDatosEgresado(response.data.egresado);
-                    setFormacionAcademica(response.data.formacionAcademica);
-                    setExperienciaLaboral(response.data.experienciaLaboral);
+                const response = await axios.get(route('api.egresado.verificar-registro'));
+                const { egresadoRegistrado, datosEgresado: datos } = response.data;
+
+                if (egresadoRegistrado) {
                     setIsRegistered(true);
+                    if (datos) {
+                        setDatosEgresado(datos);
+                        setFormacionAcademica(datos.formacionAcademica || []);
+                        setExperienciaLaboral(datos.experienciaLaboral || []);
+                    }
+                } else {
+                    setIsRegistered(false);
                 }
             } catch (error) {
-                if (axios.isAxiosError(error) && error.response?.status === 404) {
-                    setIsRegistered(false);
-                } else {
-                    console.error('Error al cargar los datos del egresado:', error);
-                }
+                console.error('Error al verificar registro:', error);
+                console.error('Error al verificar el registro. Por favor, intente nuevamente más tarde.');
+                setIsRegistered(false);
             } finally {
                 setLoading(false);
+                setIsLoading(false);
             }
         };
 
-        fetchDatosEgresado();
+        verificarRegistro();
     }, []);
 
-    if (loading) {
+    if (loading || isLoading) {
         return (
             <AppLayout breadcrumbs={breadcrumbs}>
                 <div className="flex justify-center items-center min-h-screen">
@@ -109,8 +116,11 @@ export default function PerfilEgresado() {
                     <>
                         {/* Información Personal */}
                         <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
-                            <div className="px-4 py-5 sm:px-6">
+                            <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
                                 <h3 className="text-lg leading-6 font-medium text-gray-900">Información Personal</h3>
+                                <Link href={route('regEgresados.edit')} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                                    Editar
+                                </Link>
                             </div>
                             <div className="border-t border-gray-200">
                                 <dl>
@@ -142,8 +152,13 @@ export default function PerfilEgresado() {
 
                         {/* Formación Académica */}
                         <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
-                            <div className="px-4 py-5 sm:px-6">
+                            <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
                                 <h3 className="text-lg leading-6 font-medium text-gray-900">Formación Académica</h3>
+                                {formacionAcademica.length > 0 && (
+                                    <Link href={route('formacion-academica.edit', { id: formacionAcademica[0].id })} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                                        Editar
+                                    </Link>
+                                )}
                             </div>
                             <div className="border-t border-gray-200">
                                 {formacionAcademica.map((formacion, index) => (
@@ -164,7 +179,7 @@ export default function PerfilEgresado() {
                                             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                                 <dt className="text-sm font-medium text-gray-500">Fecha de realización</dt>
                                                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {new Date(formacion.fecha_realizacion).toLocaleDateString()}
+                                                    {formacion.fecha_realizacion ? formacion.fecha_realizacion : 'No especificada'}
                                                 </dd>
                                             </div>
                                         </dl>
@@ -175,8 +190,13 @@ export default function PerfilEgresado() {
 
                         {/* Experiencia Laboral */}
                         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-                            <div className="px-4 py-5 sm:px-6">
+                            <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
                                 <h3 className="text-lg leading-6 font-medium text-gray-900">Experiencia Laboral</h3>
+                                {experienciaLaboral.length > 0 && (
+                                    <Link href={route('experiencia-laboral.edit', { id: experienciaLaboral[0].id })} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                                        Editar
+                                    </Link>
+                                )}
                             </div>
                             <div className="border-t border-gray-200">
                                 {experienciaLaboral.map((experiencia, index) => (
