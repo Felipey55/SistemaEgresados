@@ -76,12 +76,12 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        const experienciaId = (experiencia as any).id;
+        const experienciaId = (experiencia as ExperienciaForm & { id: number }).id;
         if (!experienciaId) {
             showNotification('Error: ID de experiencia no encontrado', false);
             return;
         }
-        put(route('experiencia.update', experienciaId), {
+        put(route('experiencia.update', { id: experienciaId }), {
             onSuccess: () => {
                 showNotification('Experiencia laboral actualizada exitosamente', true);
                 setTimeout(() => {

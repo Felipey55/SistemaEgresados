@@ -101,7 +101,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('regEgresados.edit');
 
     Route::put('/egresado/update', [\App\Http\Controllers\EgresadoController::class, 'update'])->name('egresado.update');
-    Route::put('/experiencia/update', [\App\Http\Controllers\ExperienciaLaboralController::class, 'update'])->name('experiencia.update');
+    Route::put('/experiencia/update/{experienciaLaboral}', [\App\Http\Controllers\ExperienciaLaboralController::class, 'update'])->name('experiencia.update');
     Route::put('/formacion/update', [\App\Http\Controllers\FormacionAcademicaController::class, 'update'])->name('formacion.update');
 
     Route::get('/api/experiencia/{id}', [\App\Http\Controllers\ExperienciaLaboralController::class, 'show'])->name('api.experiencia.show');
@@ -114,5 +114,5 @@ Route::get('/api/experiencia/datos/{id}', [\App\Http\Controllers\ExperienciaLabo
     Route::resource('noticias', NoticiaController::class);
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require _DIR_.'/settings.php';
+require _DIR_.'/auth.php';
