@@ -9,26 +9,36 @@ import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Inicio',
         href: '/dashboard',
         icon: LayoutGrid,
     },
     {
-        title: 'Users',
+        title: 'Control de usuarios',
         href: '/modUsers',
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Informacion egresado',
+        href: '/Egresados/perfil',
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Noticias',
+        href: '/noticias',
         icon: LayoutGrid,
     },
 ];
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
+        title: 'Repositorio del proyecto',
+        href: 'https://github.com/Felipey55/SistemaEgresados.git',
         icon: Folder,
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits',
+        title: 'Documentación',
+        href: 'https://docs.google.com/document/d/1G5nbTvlxxrLU_3a4KkrTG3-ixVgQGKjQjqYAGb4Sojs/edit?usp=drive_link',
         icon: BookOpen,
     },
 ];

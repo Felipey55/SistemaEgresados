@@ -4,6 +4,9 @@ namespace Tests\Feature\Auth;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Providers\RouteServiceProvider;
+use App\Models\User;
+use App\Models\Egresado;
 
 class RegistrationTest extends TestCase
 {
@@ -18,14 +21,25 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register()
     {
-        $response = $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
-        ]);
+        $response = $this->withSession(['_token' => 'test-token'])
+            ->withCookie('XSRF-TOKEN', 'test-token')
+            ->post('/register', [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'password' => 'password',
+                'password_confirmation' => 'password',
+                'role_id' => 2,
+                '_token' => 'test-token'
+            ]);
 
+        $response->assertSessionHasNoErrors();
         $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+
+        $user = User::where('email', 'test@example.com')->first();
+        $this->assertNotNull($user);
+        $this->assertEquals('Test User', $user->name);
+        $this->assertEquals('test@example.com', $user->email);
+        $this->assertEquals(3, $user->role_id);
+
     }
 }

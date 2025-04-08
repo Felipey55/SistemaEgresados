@@ -18,6 +18,11 @@ return [
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
+    'verification' => [
+        'expire' => 60,
+        'throttle' => 60,
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
