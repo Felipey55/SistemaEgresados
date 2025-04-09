@@ -16,7 +16,8 @@ class Noticia extends Model
         'titulo',
         'contenido',
         'fecha_publicacion',
-        'autor_id'
+        'autor_id',
+        'imagen_path'
     ];
 
     protected $casts = [
