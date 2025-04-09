@@ -23,7 +23,11 @@ type FormacionForm = {
     fecha_realizacion: string;
 };
 
-export default function EditarFormacion() {
+type Props = {
+    id: number;
+};
+
+export default function EditarFormacion({ id }: Props) {
     const { data, setData, put, processing, errors } = useForm<FormacionForm>({
         titulo: '',
         institucion: '',
@@ -34,7 +38,7 @@ export default function EditarFormacion() {
     useEffect(() => {
         const cargarDatos = async () => {
             try {
-                const response = await axios.get(route('api.formacion.datos'));
+                const response = await axios.get(route('api.formacion.datos', { id }));
                 const datos = response.data;
                 setData({
                     titulo: datos.titulo,
@@ -72,7 +76,7 @@ export default function EditarFormacion() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        put(route('formacion.update'), {
+        put(route('formacion.update', { id }), {
             onSuccess: () => {
                 showNotification('Información actualizada correctamente', true);
                 setTimeout(() => {

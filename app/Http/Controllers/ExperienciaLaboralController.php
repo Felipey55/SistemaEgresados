@@ -95,7 +95,7 @@ class ExperienciaLaboralController extends Controller
 
         $experienciaLaboral->update($request->all());
 
-        return response()->json(['message' => 'Experiencia laboral actualizada exitosamente']);
+        return redirect()->route('egresado.perfil')->with('success', 'Experiencia laboral actualizada exitosamente');
     }
 
     public function destroy(ExperienciaLaboral $experienciaLaboral)

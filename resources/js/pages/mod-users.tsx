@@ -64,7 +64,7 @@ export default function ModUsers({ users }: { users: User[] }) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Modificar Roles y usuarios" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-            <h1 className="text-2xl font-semibold">Usuarios registrados en el sistema</h1>
+                <h1 className="text-2xl font-semibold">Usuarios registrados en el sistema</h1>
                 <div className="rounded-xl border p-4">
                     <Table>
                         <TableHeader>
@@ -80,7 +80,11 @@ export default function ModUsers({ users }: { users: User[] }) {
                                 <TableRow key={user.id}>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
-                                    <TableCell>{user.role_id}</TableCell>
+                                    <TableCell>
+                                        {user.role_id === 1 ? 'Administrador' :
+                                            user.role_id === 2 ? 'Coordinador' :
+                                                user.role_id === 3 ? 'Egresado' : 'Rol Desconocido'}
+                                    </TableCell>
                                     <TableCell className="space-x-2">
                                         <Button variant="secondary" onClick={() => handleViewClick(user)}>Editar</Button>
                                         <Button variant="destructive" onClick={() => handleUserDelete(user.id)}>Eliminar</Button>
@@ -96,32 +100,32 @@ export default function ModUsers({ users }: { users: User[] }) {
                         <DialogHeader>
                             <DialogTitle>Edit User</DialogTitle>
                         </DialogHeader>
-                        <div id="edit-user-description" className="py-4">
-                            <div className="space-y-4">
+                        <div id="edit-user-description" className="py-6 px-4 w-full max-w-2xl mx-auto">
+                            <div className="space-y-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Name</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
                                     <input
                                         type="text"
                                         value={editedUser.name}
                                         onChange={(e) => setEditedUser({ ...editedUser, name: e.target.value })}
-                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                        className="mt-1 block w-full rounded-md border border-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Email</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                                     <input
                                         type="email"
                                         value={editedUser.email}
                                         onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
-                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                        className="mt-1 block w-full rounded-md border border-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Role ID</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Role ID</label>
                                     <select
                                         value={editedUser.role_id}
                                         onChange={(e) => setEditedUser({ ...editedUser, role_id: parseInt(e.target.value) })}
-                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-800 text-white hover:bg-gray-700 focus:border-indigo-500 focus:ring-indigo-500"
+                                        className="mt-1 block w-full rounded-md border border-white shadow-sm bg-gray-800 text-white hover:bg-gray-700 focus:border-indigo-500 focus:ring-indigo-500 p-2"
                                     >
                                         <option value={1}>Administrador</option>
                                         <option value={2}>Coordinador</option>

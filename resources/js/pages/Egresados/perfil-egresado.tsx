@@ -154,15 +154,22 @@ export default function PerfilEgresado() {
                         <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
                             <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
                                 <h3 className="text-lg leading-6 font-medium text-gray-900">Formación Académica</h3>
-                                {formacionAcademica.length > 0 && (
-                                    <Link href={route('formacion-academica.edit', { id: formacionAcademica[0].id })} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-                                        Editar
+                                <div className="flex gap-2">
+                                    <Link href={route('formacion-academica')} className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                                        Agregar Nueva
                                     </Link>
-                                )}
+
+                                </div>
                             </div>
                             <div className="border-t border-gray-200">
+                                <div className={`grid ${formacionAcademica.length > 1 ? 'grid-cols-2 gap-4' : 'grid-cols-1'} p-4`}>
                                 {formacionAcademica.map((formacion, index) => (
-                                    <div key={index} className="border-b border-gray-200 last:border-b-0">
+                                    <div key={formacion.id} className="border rounded-lg overflow-hidden">
+                                        <div className="flex justify-end p-2">
+                                            <Link href={route('formacion-academica.edit', { id: formacion.id })} className="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors">
+                                                Editar
+                                            </Link>
+                                        </div>
                                         <dl>
                                             <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                                 <dt className="text-sm font-medium text-gray-500">Título</dt>
@@ -187,54 +194,64 @@ export default function PerfilEgresado() {
                                 ))}
                             </div>
                         </div>
+                    </div>
 
-                        {/* Experiencia Laboral */}
-                        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-                            <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
-                                <h3 className="text-lg leading-6 font-medium text-gray-900">Experiencia Laboral</h3>
-                                {experienciaLaboral.length > 0 && (
-                                    <Link href={route('experiencia-laboral.edit', { id: experienciaLaboral[0].id })} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                {/* Experiencia Laboral */}
+                <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+                    <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900">Experiencia Laboral</h3>
+                        <div className="flex gap-2">
+                            <Link href={route('historial-laboral')} className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                                Agregar Nueva
+                            </Link>
+
+                        </div>
+                    </div>
+                    <div className="border-t border-gray-200">
+                        <div className={`grid ${experienciaLaboral.length > 1 ? 'grid-cols-2 gap-4' : 'grid-cols-1'} p-4`}>
+                        {experienciaLaboral.map((experiencia, index) => (
+                            <div key={index} className="border rounded-lg overflow-hidden">
+                                <div className="flex justify-end p-2">
+                                    <Link href={route('experiencia-laboral.edit', { id: experiencia.id })} className="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors">
                                         Editar
                                     </Link>
-                                )}
-                            </div>
-                            <div className="border-t border-gray-200">
-                                {experienciaLaboral.map((experiencia, index) => (
-                                    <div key={index} className="border-b border-gray-200 last:border-b-0">
-                                        <dl>
-                                            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-500">Empresa</dt>
-                                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{experiencia.nombre_empresa}</dd>
-                                            </div>
-                                            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-500">Tipo de empleo</dt>
-                                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{experiencia.tipo_empleo}</dd>
-                                            </div>
-                                            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-500">Período</dt>
-                                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {new Date(experiencia.fecha_inicio).toLocaleDateString()} -
-                                                    {experiencia.fecha_fin ? new Date(experiencia.fecha_fin).toLocaleDateString() : 'Actual'}
-                                                </dd>
-                                            </div>
-                                            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-500">Modalidad</dt>
-                                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{experiencia.modalidad_trabajo}</dd>
-                                            </div>
-                                            {experiencia.descripcion && (
-                                                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                    <dt className="text-sm font-medium text-gray-500">Descripción</dt>
-                                                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{experiencia.descripcion}</dd>
-                                                </div>
-                                            )}
-                                        </dl>
+                                </div>
+                                <dl>
+                                    <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500">Empresa</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{experiencia.nombre_empresa}</dd>
                                     </div>
-                                ))}
+                                    <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500">Tipo de empleo</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{experiencia.tipo_empleo}</dd>
+                                    </div>
+                                    <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500">Período</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                            {new Date(experiencia.fecha_inicio).toLocaleDateString()} -
+                                            {experiencia.fecha_fin ? new Date(experiencia.fecha_fin).toLocaleDateString() : 'Actual'}
+                                        </dd>
+                                    </div>
+                                    <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500">Modalidad</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{experiencia.modalidad_trabajo}</dd>
+                                    </div>
+                                    {experiencia.descripcion && (
+                                        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Descripción</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{experiencia.descripcion}</dd>
+                                        </div>
+                                    )}
+                                </dl>
                             </div>
-                        </div>
-                    </>
-                )}
+                        ))}
+                    </div>
+                </div>
             </div>
-        </AppLayout>
+        </>
+    )
+}
+            </div >
+        </AppLayout >
     );
 }

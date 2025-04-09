@@ -19,16 +19,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/historial-laboral', function () {
         $user = \Illuminate\Support\Facades\Auth::user();
         $egresado = \App\Models\Egresado::where('user_id', $user->id)->first();
-        
+
         if (!$egresado) {
             return redirect()->route('register');
-        }
-
-        $tieneFormacionAcademica = \App\Models\FormacionAcademica::where('egresado_id', $egresado->id)->exists();
-        $tieneExperienciaLaboral = \App\Models\ExperienciaLaboral::where('egresado_id', $egresado->id)->exists();
-
-        if ($tieneFormacionAcademica && $tieneExperienciaLaboral) {
-            return redirect()->route('egresado.perfil');
         }
 
         return Inertia::render('Egresados/historial-laboral');
@@ -43,7 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('mod-users', [
             'users' => App\Models\User::all()
         ]);
-    })->name('modUsers'); 
+    })->name('modUsers');
 
     Route::get('/user-mod/{user}', [UserController::class, 'show'])->name('users.show');
     Route::put('/user-mod/{user}', [UserController::class, 'update'])->name('users.update');
@@ -58,16 +51,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/Egresados/formacion-academica', function () {
         $user = \Illuminate\Support\Facades\Auth::user();
         $egresado = \App\Models\Egresado::where('user_id', $user->id)->first();
-        
+
         if (!$egresado) {
             return redirect()->route('register');
-        }
-
-        $tieneFormacionAcademica = \App\Models\FormacionAcademica::where('egresado_id', $egresado->id)->exists();
-        $tieneExperienciaLaboral = \App\Models\ExperienciaLaboral::where('egresado_id', $egresado->id)->exists();
-
-        if ($tieneFormacionAcademica && $tieneExperienciaLaboral) {
-            return redirect()->route('egresado.perfil');
         }
 
         return Inertia::render('Egresados/formacion-academica');
@@ -82,11 +68,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('formacion-academica.edit');
 
     Route::get('/experiencia-laboral/{id}/edit', function ($id) {
-    $experiencia = ExperienciaLaboral::findOrFail($id);
-    return Inertia::render('Egresados/experiencia-laboral-edit', [
-        'experiencia' => $experiencia
-    ]);
-})->name('experiencia-laboral.edit');
+        $experiencia = ExperienciaLaboral::findOrFail($id);
+        return Inertia::render('Egresados/experiencia-laboral-edit', [
+            'experiencia' => $experiencia
+        ]);
+    })->name('experiencia-laboral.edit');
 
 
 
@@ -96,17 +82,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/datos', [\App\Http\Controllers\EgresadoController::class, 'obtenerDatos'])->name('api.egresado.datos');
     });
 
-        Route::get('/Egresados/editar', function () {
+    Route::get('/Egresados/editar', function () {
         return Inertia::render('Egresados/editar-egresado');
     })->name('regEgresados.edit');
 
     Route::put('/egresado/update', [\App\Http\Controllers\EgresadoController::class, 'update'])->name('egresado.update');
-    Route::put('/experiencia/update', [\App\Http\Controllers\ExperienciaLaboralController::class, 'update'])->name('experiencia.update');
-    Route::put('/formacion/update', [\App\Http\Controllers\FormacionAcademicaController::class, 'update'])->name('formacion.update');
+    Route::put('/experiencia/update/{experienciaLaboral}', [\App\Http\Controllers\ExperienciaLaboralController::class, 'update'])->name('experiencia.update');
+    Route::put('/formacion/update/{id}', [\App\Http\Controllers\FormacionAcademicaController::class, 'update'])->name('formacion.update');
 
     Route::get('/api/experiencia/{id}', [\App\Http\Controllers\ExperienciaLaboralController::class, 'show'])->name('api.experiencia.show');
-Route::get('/api/experiencia/datos/{id}', [\App\Http\Controllers\ExperienciaLaboralController::class, 'obtenerDatos'])->name('api.experiencia.datos');
-    Route::get('/api/formacion/datos', [\App\Http\Controllers\FormacionAcademicaController::class, 'datos'])->name('api.formacion.datos');
+    Route::get('/api/experiencia/datos/{id}', [\App\Http\Controllers\ExperienciaLaboralController::class, 'obtenerDatos'])->name('api.experiencia.datos');
+    Route::get('/api/formacion/datos/{id?}', [\App\Http\Controllers\FormacionAcademicaController::class, 'datos'])->name('api.formacion.datos');
 
     Route::post('/formacion', [FormacionAcademicaController::class, 'store'])->name('formacion.store');
 
@@ -114,5 +100,5 @@ Route::get('/api/experiencia/datos/{id}', [\App\Http\Controllers\ExperienciaLabo
     Route::resource('noticias', NoticiaController::class);
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';
