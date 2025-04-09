@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, router } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 import InputError from '@/components/input-error';
@@ -21,17 +21,21 @@ type NoticiaForm = {
     titulo: string;
     contenido: string;
     fecha_publicacion: string;
+    imagen: File | null;
 };
 
 interface Props {
-    noticia: NoticiaForm;
+    noticia: NoticiaForm & {
+        imagen_path: string | null;
+    };
 }
 
 export default function Edit({ noticia }: Props) {
-    const { data, setData, put, processing, errors } = useForm<NoticiaForm>({
+    const { data, setData, processing, errors } = useForm<NoticiaForm>({
         titulo: noticia.titulo,
         contenido: noticia.contenido,
         fecha_publicacion: noticia.fecha_publicacion,
+        imagen: null,
     });
 
     const showNotification = (message: string, isSuccess: boolean) => {
@@ -56,7 +60,15 @@ export default function Edit({ noticia }: Props) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        put(route('noticias.update', noticia.id), {
+        const formData = new FormData();
+        formData.append('_method', 'PUT');
+        formData.append('titulo', data.titulo);
+        formData.append('contenido', data.contenido);
+        formData.append('fecha_publicacion', data.fecha_publicacion);
+        if (data.imagen) {
+            formData.append('imagen', data.imagen);
+        }
+        router.post(route('noticias.update', noticia.id), formData, {
             onSuccess: () => {
                 showNotification('Noticia actualizada exitosamente', true);
                 setTimeout(() => {
@@ -115,12 +127,47 @@ export default function Edit({ noticia }: Props) {
                         />
                         <InputError message={errors.fecha_publicacion} />
                     </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="imagen">Imagen</Label>
+                        <Input
+                            id="imagen"
+                            type="file"
+                            accept=".jpg,.jpeg,.png,.gif"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0] || null;
+                                setData('imagen', file);
+                            }}
+                            disabled={processing}
+                        />
+                        <p className="text-sm text-gray-400">Formatos permitidos: JPG, JPEG, PNG, GIF</p>
+                        {(data.imagen || noticia.imagen_path) && (
+                            <div className="mt-2 flex justify-center">
+                                <img
+                                    src={data.imagen ? URL.createObjectURL(data.imagen) : `/${noticia.imagen_path}`}
+                                    alt="Vista previa"
+                                    className="max-w-xs h-48 object-contain rounded-lg shadow-md"
+                                />
+                            </div>
+                        )}
+                        <InputError message={errors.imagen} />
+                    </div>
                 </div>
 
-                <Button type="submit" className="mt-6 w-full max-w-md mx-auto" disabled={processing}>
-                    {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                    Actualizar Noticia
-                </Button>
+                <div className="flex justify-center gap-4 mt-6">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => window.location.href = route('noticias.index')}
+                        disabled={processing}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button type="submit" disabled={processing}>
+                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                        Actualizar Noticia
+                    </Button>
+                </div>
             </form>
         </AppLayout>
     );

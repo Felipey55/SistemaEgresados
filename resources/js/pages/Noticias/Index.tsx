@@ -17,6 +17,7 @@ interface Noticia {
     titulo: string;
     contenido: string;
     fecha_publicacion: string;
+    imagen_path: string | null;
     autor: {
         name: string;
     };
@@ -89,6 +90,15 @@ export default function Index({ noticias }: Props) {
                                 </div>
                             </div>
                             <p className="text-muted-foreground mb-4">{noticia.contenido}</p>
+                            {noticia.imagen_path && (
+                                <div className="mb-4 flex justify-center">
+                                    <img
+                                        src={`/${noticia.imagen_path}`}
+                                        alt={noticia.titulo}
+                                        className="max-w-xs h-48 object-contain rounded-lg shadow-md"
+                                    />
+                                </div>
+                            )}
                             <div className="flex justify-between text-sm text-muted-foreground">
                                 <span>Por: {noticia.autor.name}</span>
                                 <span>Fecha: {new Date(noticia.fecha_publicacion).toLocaleDateString()}</span>
