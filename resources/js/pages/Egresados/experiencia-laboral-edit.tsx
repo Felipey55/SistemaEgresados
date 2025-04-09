@@ -85,7 +85,7 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
             onSuccess: () => {
                 showNotification('Experiencia laboral actualizada exitosamente', true);
                 setTimeout(() => {
-                    window.location.href = route('historial-laboral');
+                    window.location.href = route('egresado.perfil');
                 }, 2000);
             },
             onError: (errors) => {
