@@ -28,6 +28,11 @@ const mainNavItems: NavItem[] = [
         href: '/noticias',
         icon: LayoutGrid,
     },
+    {
+        title: 'Perfiles Egresados',
+        href: '/PerfilesEgresados',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

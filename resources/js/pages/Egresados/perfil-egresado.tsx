@@ -43,10 +43,17 @@ type ExperienciaLaboral = {
     descripcion: string | null;
 };
 
+type Habilidad = {
+    id: number;
+    nombre: string;
+    tipo: string;
+};
+
 export default function PerfilEgresado() {
     const [datosEgresado, setDatosEgresado] = useState<DatosEgresado | null>(null);
     const [formacionAcademica, setFormacionAcademica] = useState<FormacionAcademica[]>([]);
     const [experienciaLaboral, setExperienciaLaboral] = useState<ExperienciaLaboral[]>([]);
+    const [habilidades, setHabilidades] = useState<Habilidad[]>([]);
     const [loading, setLoading] = useState(true);
     const [isRegistered, setIsRegistered] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -63,6 +70,15 @@ export default function PerfilEgresado() {
                         setDatosEgresado(datos);
                         setFormacionAcademica(datos.formacionAcademica || []);
                         setExperienciaLaboral(datos.experienciaLaboral || []);
+                        
+                        // Obtener habilidades del egresado
+                        try {
+                            const habilidadesResponse = await axios.get(route('habilidades.obtener'));
+                            setHabilidades(habilidadesResponse.data.habilidades || []);
+                        } catch (habilidadesError) {
+                            console.error('Error al obtener habilidades:', habilidadesError);
+                            setHabilidades([]);
+                        }
                     }
                 } else {
                     setIsRegistered(false);
@@ -114,39 +130,97 @@ export default function PerfilEgresado() {
                     </div>
                 ) : (
                     <>
-                        {/* Información Personal */}
-                        <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
-                            <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
-                                <h3 className="text-lg leading-6 font-medium text-gray-900">Información Personal</h3>
-                                <Link href={route('regEgresados.edit')} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-                                    Editar
-                                </Link>
+                        {/* Grid para Información Personal y Habilidades */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            {/* Información Personal */}
+                            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+                                <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
+                                    <h3 className="text-lg leading-6 font-medium text-gray-900">Información Personal</h3>
+                                    <div className="flex space-x-2">
+                                        {habilidades.length === 0 && (
+                                            <Link href={route('habilidades.index')} className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                                                Agrega tus Habilidades
+                                            </Link>
+                                        )}
+                                        <Link href={route('regEgresados.edit')} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                                            Editar
+                                        </Link>
+                                    </div>
+                                </div>
+                                <div className="border-t border-gray-200">
+                                    <dl>
+                                        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Nombre completo</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{datosEgresado?.user.name}</dd>
+                                        </div>
+                                        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Identificación</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                                {datosEgresado?.identificacion_tipo} - {datosEgresado?.identificacion_numero}
+                                            </dd>
+                                        </div>
+                                        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Correo electrónico</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{datosEgresado?.user.email}</dd>
+                                        </div>
+                                        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Celular</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{datosEgresado?.celular}</dd>
+                                        </div>
+                                        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                            <dt className="text-sm font-medium text-gray-500">Dirección</dt>
+                                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{datosEgresado?.direccion}</dd>
+                                        </div>
+                                    </dl>
+                                </div>
                             </div>
-                            <div className="border-t border-gray-200">
-                                <dl>
-                                    <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt className="text-sm font-medium text-gray-500">Nombre completo</dt>
-                                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{datosEgresado?.user.name}</dd>
-                                    </div>
-                                    <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt className="text-sm font-medium text-gray-500">Identificación</dt>
-                                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                            {datosEgresado?.identificacion_tipo} - {datosEgresado?.identificacion_numero}
-                                        </dd>
-                                    </div>
-                                    <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt className="text-sm font-medium text-gray-500">Correo electrónico</dt>
-                                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{datosEgresado?.user.email}</dd>
-                                    </div>
-                                    <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt className="text-sm font-medium text-gray-500">Celular</dt>
-                                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{datosEgresado?.celular}</dd>
-                                    </div>
-                                    <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt className="text-sm font-medium text-gray-500">Dirección</dt>
-                                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{datosEgresado?.direccion}</dd>
-                                    </div>
-                                </dl>
+
+                            {/* Habilidades */}
+                            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+                                <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
+                                    <h3 className="text-lg leading-6 font-medium text-gray-900">Habilidades</h3>
+                                    {habilidades.length > 0 && (
+                                        <div className="flex gap-2">
+                                            <Link href={route('habilidades.editar')} className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                                                Editar Habilidades
+                                            </Link>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="border-t border-gray-200">
+                                    {habilidades.length === 0 ? (
+                                        <div className="p-6 text-center">
+                                            <p className="text-gray-500">No has agregado habilidades aún.</p>
+                                        </div>
+                                    ) : (
+                                        <div className="p-6">
+                                            <div className="mb-6">
+                                                <h4 className="text-md font-medium text-gray-700 mb-3">Habilidades Técnicas</h4>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {habilidades
+                                                        .filter(habilidad => habilidad.tipo === 'tecnica')
+                                                        .map(habilidad => (
+                                                            <span key={habilidad.id} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                                                                {habilidad.nombre}
+                                                            </span>
+                                                        ))}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 className="text-md font-medium text-gray-700 mb-3">Habilidades Blandas</h4>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {habilidades
+                                                        .filter(habilidad => habilidad.tipo === 'blanda')
+                                                        .map(habilidad => (
+                                                            <span key={habilidad.id} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                                                                {habilidad.nombre}
+                                                            </span>
+                                                        ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
@@ -195,9 +269,9 @@ export default function PerfilEgresado() {
                             </div>
                         </div>
                     </div>
-
-                {/* Experiencia Laboral */}
-                <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+                        
+                        {/* Experiencia Laboral */}
+                        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                     <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
                         <h3 className="text-lg leading-6 font-medium text-gray-900">Experiencia Laboral</h3>
                         <div className="flex gap-2">
