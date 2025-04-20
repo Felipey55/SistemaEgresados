@@ -8,6 +8,8 @@ use App\Http\Controllers\ExperienciaLaboralController;
 use App\Http\Controllers\RolModController;
 use App\Http\Controllers\NoticiaController;
 use App\Http\Controllers\FormacionAcademicaController;
+use App\Http\Controllers\HabilidadController;
+use App\Http\Controllers\PerfilEgresadosController;
 use App\Models\User;
 use App\Models\ExperienciaLaboral;
 
@@ -16,6 +18,18 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Rutas de Habilidades
+    Route::get('/habilidades', [HabilidadController::class, 'index'])->name('habilidades.index');
+    Route::post('/habilidades/agregar', [HabilidadController::class, 'agregarHabilidades'])->name('habilidades.agregar');
+    Route::get('/habilidades/obtener', [HabilidadController::class, 'obtenerHabilidades'])->name('habilidades.obtener');
+    Route::get('/habilidades/editar', [HabilidadController::class, 'editar'])->name('habilidades.editar');
+    Route::post('/habilidades/eliminar', [HabilidadController::class, 'eliminar'])->name('habilidades.eliminar');
+    Route::post('/habilidades/actualizar', [HabilidadController::class, 'actualizar'])->name('habilidades.actualizar');
+    
+    // Rutas para perfiles de egresados
+    Route::get('/PerfilesEgresados', [\App\Http\Controllers\PerfilEgresadosController::class, 'index'])->name('perfiles.egresados');
+    Route::get('/Egresados/detalle/{id}', [\App\Http\Controllers\PerfilEgresadosController::class, 'detalle'])->name('egresado.detalle');
+
     Route::get('/historial-laboral', function () {
         $user = \Illuminate\Support\Facades\Auth::user();
         $egresado = \App\Models\Egresado::where('user_id', $user->id)->first();
@@ -80,6 +94,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/verificar-registro', [\App\Http\Controllers\EgresadoController::class, 'verificarRegistroCompleto'])->name('api.egresado.verificar-registro');
         Route::get('/perfil', [\App\Http\Controllers\EgresadoController::class, 'obtenerPerfil'])->name('api.egresado.perfil');
         Route::get('/datos', [\App\Http\Controllers\EgresadoController::class, 'obtenerDatos'])->name('api.egresado.datos');
+        Route::get('/detalle/{id}', [\App\Http\Controllers\EgresadoController::class, 'detalle'])->name('api.egresado.detalle');
     });
 
     Route::get('/Egresados/editar', function () {
