@@ -19,18 +19,22 @@ const breadcrumbs: BreadcrumbItem[] = [
 type EditForm = {
     identificacion_tipo: 'C.C.' | 'C.E.';
     identificacion_numero: string;
+    fotografia: File | null;
     celular: string;
     direccion: string;
     fecha_nacimiento: string;
+    genero: string;
 };
 
 export default function EditarEgresado() {
     const { data, setData, put, processing, errors } = useForm<EditForm>({
         identificacion_tipo: 'C.C.',
         identificacion_numero: '',
+        fotografia: null,
         celular: '',
         direccion: '',
         fecha_nacimiento: '',
+        genero: '',
     });
 
     useEffect(() => {
@@ -43,9 +47,11 @@ export default function EditarEgresado() {
                 setData({
                     identificacion_tipo: datos.identificacion_tipo,
                     identificacion_numero: datos.identificacion_numero,
+                    fotografia: null,
                     celular: datos.celular,
                     direccion: datos.direccion,
                     fecha_nacimiento: fecha,
+                    genero: datos.genero || '',
                 });
             } catch (error) {
                 console.error('Error al cargar datos:', error);
@@ -126,6 +132,30 @@ export default function EditarEgresado() {
                             />
                             <InputError message={errors.identificacion_numero} />
                         </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="fotografia">Fotografía</Label>
+                            <Input
+                                id="fotografia"
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files ? e.target.files[0] : null;
+                                    setData('fotografia', file);
+                                }}
+                                disabled={processing}
+                            />
+                            {data.fotografia && (
+                                <div className="mt-2 flex justify-center">
+                                    <img
+                                        src={URL.createObjectURL(data.fotografia)}
+                                        alt="Vista previa"
+                                        className="w-32 h-32 rounded-full object-cover border-2 border-gray-600"
+                                    />
+                                </div>
+                            )}
+                            <InputError message={errors.fotografia} />
+                        </div>
                     </div>
 
                     <div className="space-y-4">
@@ -167,6 +197,25 @@ export default function EditarEgresado() {
                                 className="appearance-none bg-transparent text-white [&::-webkit-calendar-picker-indicator]:invert"
                             />
                             <InputError message={errors.fecha_nacimiento} />
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="genero">Género</Label>
+                            <select
+                                id="genero"
+                                required
+                                value={data.genero}
+                                onChange={(e) => setData('genero', e.target.value)}
+                                disabled={processing}
+                                className="bg-gray-800 text-white border-gray-600 rounded p-2 hover:bg-gray-700 focus:border-indigo-500 focus:ring-indigo-500"
+                            >
+                                <option value="">Seleccione un género</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Femenino">Femenino</option>
+                                <option value="No Binario">No Binario</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                            <InputError message={errors.genero} />
                         </div>
                     </div>
                 </div>
