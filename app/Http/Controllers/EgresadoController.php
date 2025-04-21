@@ -46,6 +46,7 @@ class EgresadoController extends Controller
                     'celular' => $egresado->celular,
                     'direccion' => $egresado->direccion,
                     'fecha_nacimiento' => $egresado->fecha_nacimiento,
+                    'genero' => $egresado->genero,
                     'user' => [
                         'name' => $egresado->user->name,
                         'email' => $egresado->user->email,
@@ -87,7 +88,8 @@ class EgresadoController extends Controller
                 'identificacion_numero' => $egresado->identificacion_numero,
                 'celular' => $egresado->celular,
                 'direccion' => $egresado->direccion,
-                'fecha_nacimiento' => $egresado->fecha_nacimiento
+                'fecha_nacimiento' => $egresado->fecha_nacimiento,
+                'genero' => $egresado->genero
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al obtener los datos'], 500);
@@ -105,7 +107,8 @@ class EgresadoController extends Controller
                 'identificacion_numero' => $request->identificacion_numero,
                 'celular' => $request->celular,
                 'direccion' => $request->direccion,
-                'fecha_nacimiento' => $request->fecha_nacimiento
+                'fecha_nacimiento' => $request->fecha_nacimiento,
+                'genero' => $request->genero
             ]);
 
             return redirect('/Egresados/perfil')
@@ -134,6 +137,7 @@ class EgresadoController extends Controller
                 'celular' => $egresado->celular,
                 'direccion' => $egresado->direccion,
                 'fecha_nacimiento' => $egresado->fecha_nacimiento,
+                'genero' => $egresado->genero,
                 'foto_url' => $egresado->fotografia ? 'data:image/jpeg;base64,' . $egresado->fotografia : null,
                 'user' => [
                     'name' => $egresado->user->name,

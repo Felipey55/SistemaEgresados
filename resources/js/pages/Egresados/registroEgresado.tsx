@@ -22,6 +22,7 @@ type RegisterForm = {
     celular: string;
     direccion: string;
     fecha_nacimiento: string;
+    genero: string;
 };
 
 export default function Dashboard() {
@@ -32,6 +33,7 @@ export default function Dashboard() {
         celular: '',
         direccion: '',
         fecha_nacimiento: '',
+        genero: '',
     });
 
     const showNotification = (message: string, isSuccess: boolean) => {
@@ -109,9 +111,22 @@ export default function Dashboard() {
                             <Input
                                 id="fotografia"
                                 type="file"
-                                onChange={(e) => setData('fotografia', e.target.files ? e.target.files[0] : null)}
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files ? e.target.files[0] : null;
+                                    setData('fotografia', file);
+                                }}
                                 disabled={processing}
                             />
+                            {data.fotografia && (
+                                <div className="mt-2 flex justify-center">
+                                    <img
+                                        src={URL.createObjectURL(data.fotografia)}
+                                        alt="Vista previa"
+                                        className="w-32 h-32 rounded-full object-cover border-2 border-gray-600"
+                                    />
+                                </div>
+                            )}
                             <InputError message={errors.fotografia} />
                         </div>
                     </div>
@@ -155,6 +170,25 @@ export default function Dashboard() {
                                 className="appearance-none bg-transparent text-white [&::-webkit-calendar-picker-indicator]:invert"
                             />
                             <InputError message={errors.fecha_nacimiento} />
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="genero">Género</Label>
+                            <select
+                                id="genero"
+                                required
+                                value={data.genero}
+                                onChange={(e) => setData('genero', e.target.value)}
+                                disabled={processing}
+                                className="bg-gray-800 text-white border-gray-600 rounded p-2 hover:bg-gray-700 focus:border-indigo-500 focus:ring-indigo-500"
+                            >
+                                <option value="">Seleccione un género</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Femenino">Femenino</option>
+                                <option value="No Binario">No Binario</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                            <InputError message={errors.genero} />
                         </div>
                     </div>
                 </div>

@@ -24,7 +24,8 @@ class Egresado extends Model
         'fotografia',
         'celular',
         'direccion',
-        'fecha_nacimiento'
+        'fecha_nacimiento',
+        'genero'
     ];
 
     protected $casts = [
