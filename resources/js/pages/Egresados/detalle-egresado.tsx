@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Briefcase, Calendar, Building2, Mail, MapPin, User, Phone, Home, Calendar as CalendarIcon, Code2, Heart, Globe } from 'lucide-react';
 
 type Props = {
     egresado: {
@@ -108,91 +108,126 @@ export default function DetalleEgresado({ egresado }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Perfil de ${egresado?.nombre || 'Egresado'}`} />
-            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-gray-100">
                 <div className="mb-6">
-                    <Button 
-                        variant="outline" 
+                    <Button
+                        variant="outline"
                         onClick={() => window.history.back()}
-                        className="flex items-center gap-2 border-gray-600 text-white hover:bg-gray-800"
+                        className="flex items-center gap-2 bg-white text-gray-700 hover:bg-gray-50 border-gray-300"
                     >
                         <ArrowLeft size={16} />
                         Volver a la lista
                     </Button>
                 </div>
 
-                <div className="bg-black shadow overflow-hidden sm:rounded-lg border border-gray-800 mb-6">
-                    <div className="px-4 py-5 sm:px-6 flex justify-between items-start">
-                        <div>
-                            <h1 className="text-2xl font-bold text-white">{egresado?.nombre}</h1>
-                            <p className="text-gray-400">{egresado?.identificacion}</p>
+                <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
+                    <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8">
+                        <div className="flex items-center gap-6">
+                            <div className="w-32 h-32 rounded-full bg-white p-1 shadow-xl">
+                                <img
+                                    src="/img/default-avatar.png"
+                                    alt="Foto de perfil"
+                                    className="w-full h-full rounded-full object-cover"
+                                />
+                            </div>
+                            <div>
+                                <h1 className="text-3xl font-bold mb-2">{egresado?.nombre}</h1>
+                                <p className="text-lg opacity-90">{egresado?.identificacion}</p>
+                                <p className="text-sm opacity-75">{egresado?.email}</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="border-t border-gray-800">
-                        <dl>
-                            <div className="bg-gray-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-400">Nombre completo</dt>
-                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{egresado?.nombre}</dd>
+                    <div className="p-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                <User className="h-5 w-5 text-blue-500" />
+                                <div>
+                                    <p className="text-sm text-gray-500">Nombre completo</p>
+                                    <p className="text-base font-medium text-gray-900">{egresado?.nombre}</p>
+                                </div>
                             </div>
-                            <div className="bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-400">Identificación</dt>
-                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">
-                                    {egresado?.identificacion}
-                                </dd>
+
+                            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                <Badge className="h-5 w-5 text-blue-500" />
+                                <div>
+                                    <p className="text-sm text-gray-500">Identificación</p>
+                                    <p className="text-base font-medium text-gray-900">{egresado?.identificacion}</p>
+                                </div>
                             </div>
-                            <div className="bg-gray-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-400">Correo electrónico</dt>
-                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{egresado?.email}</dd>
+
+                            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                <Mail className="h-5 w-5 text-blue-500" />
+                                <div>
+                                    <p className="text-sm text-gray-500">Correo electrónico</p>
+                                    <p className="text-base font-medium text-gray-900">{egresado?.email}</p>
+                                </div>
                             </div>
-                            <div className="bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-400">Celular</dt>
-                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{egresado?.celular}</dd>
+
+                            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                <Phone className="h-5 w-5 text-blue-500" />
+                                <div>
+                                    <p className="text-sm text-gray-500">Celular</p>
+                                    <p className="text-base font-medium text-gray-900">{egresado?.celular}</p>
+                                </div>
                             </div>
-                            <div className="bg-gray-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-400">Dirección</dt>
-                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{egresado?.direccion}</dd>
+
+                            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                <Home className="h-5 w-5 text-blue-500" />
+                                <div>
+                                    <p className="text-sm text-gray-500">Dirección</p>
+                                    <p className="text-base font-medium text-gray-900">{egresado?.direccion}</p>
+                                </div>
                             </div>
-                            <div className="bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-400">Fecha de nacimiento</dt>
-                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">
-                                    {egresado?.fecha_nacimiento || 'No especificada'}
-                                </dd>
+
+                            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                <CalendarIcon className="h-5 w-5 text-blue-500" />
+                                <div>
+                                    <p className="text-sm text-gray-500">Fecha de nacimiento</p>
+                                    <p className="text-base font-medium text-gray-900">{egresado?.fecha_nacimiento || 'No especificada'}</p>
+                                </div>
                             </div>
-                        </dl>
+                        </div>
                     </div>
                 </div>
 
                 {/* Habilidades */}
-                <div className="bg-black shadow overflow-hidden sm:rounded-lg border border-gray-800 mb-6">
-                    <div className="px-4 py-5 sm:px-6">
-                        <h3 className="text-lg leading-6 font-medium text-white">Habilidades</h3>
+                <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
+                    <div className="p-6">
+                        <h3 className="text-xl font-semibold text-gray-900 mb-4">Habilidades</h3>
                     </div>
-                    <div className="border-t border-gray-800">
+                    <div className="px-6 pb-6">
                         {(!egresado?.habilidades?.tecnicas || egresado?.habilidades?.tecnicas?.length === 0) && (!egresado?.habilidades?.blandas || egresado?.habilidades?.blandas?.length === 0) ? (
                             <div className="p-6 text-center">
-                                <p className="text-gray-400">No se han registrado habilidades.</p>
+                                <p className="text-gray-500">No se han registrado habilidades.</p>
                             </div>
                         ) : (
-                            <div className="p-6">
+                            <div className="space-y-6">
                                 {egresado?.habilidades?.tecnicas?.length > 0 && (
                                     <div className="mb-6">
-                                        <h4 className="text-md font-medium text-gray-300 mb-3">Habilidades Técnicas</h4>
+                                        <h4 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
+                                            <Code2 className="h-5 w-5 text-emerald-600" />
+                                            Habilidades Técnicas
+                                        </h4>
                                         <div className="flex flex-wrap gap-2">
                                             {egresado?.habilidades?.tecnicas?.map((habilidad, index) => (
-                                                <Badge key={index} className="bg-green-600 text-white border-green-700">
+                                                <Badge key={index} className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
                                                     {habilidad}
                                                 </Badge>
                                             ))}
                                         </div>
                                     </div>
                                 )}
-                                
+
                                 {egresado?.habilidades?.blandas?.length > 0 && (
                                     <div>
-                                        <h4 className="text-md font-medium text-gray-300 mb-3">Habilidades Blandas</h4>
+                                        <h4 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
+                                            <Heart className="h-5 w-5 text-red-600" />
+                                            Habilidades Blandas
+                                        </h4>
                                         <div className="flex flex-wrap gap-2">
                                             {egresado?.habilidades?.blandas?.map((habilidad, index) => (
-                                                <Badge key={index} className="bg-blue-600 text-white border-blue-700">
+                                                <Badge key={index} className="px-3 py-1 bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-colors">
                                                     {habilidad}
                                                 </Badge>
                                             ))}
@@ -205,109 +240,109 @@ export default function DetalleEgresado({ egresado }: Props) {
                 </div>
 
                 {/* Formación Académica */}
-                <div className="bg-black shadow overflow-hidden sm:rounded-lg border border-gray-800 mb-6">
-                    <div className="px-4 py-5 sm:px-6">
-                        <h3 className="text-lg leading-6 font-medium text-white">Formación Académica</h3>
+                <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
+                    <div className="p-6 border-b border-gray-100">
+                        <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                            <Building2 className="h-5 w-5 text-blue-600" />
+                            Formación Académica
+                        </h3>
                     </div>
-                    <div className="border-t border-gray-800">
+                    <div className="p-6">
                         {egresado?.formacionAcademica?.length === 0 ? (
-                            <div className="p-6 text-center">
-                                <p className="text-gray-400">No se ha registrado formación académica.</p>
+                            <div className="text-center">
+                                <p className="text-gray-500">No se ha registrado formación académica.</p>
                             </div>
                         ) : (
-                            <div className={`grid ${egresado?.formacionAcademica?.length > 1 ? 'grid-cols-1 md:grid-cols-2 gap-4' : 'grid-cols-1'} p-4`}>
+                            <div className="grid gap-6">
                                 {egresado?.formacionAcademica?.map((formacion) => (
-                                    <div key={formacion.id} className="border border-gray-700 rounded-lg overflow-hidden bg-gray-800">
-                                        <dl>
-                                            <div className="bg-gray-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-400">Título</dt>
-                                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{formacion.titulo}</dd>
+                                    <div key={formacion.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                                        <div className="flex flex-col gap-3">
+                                            <h4 className="text-lg font-semibold text-gray-900">{formacion.titulo}</h4>
+                                            <p className="text-gray-600 flex items-center gap-2">
+                                                <Building2 className="h-4 w-4 text-gray-400" />
+                                                {formacion.institucion}
+                                            </p>
+                                            <div className="flex items-center gap-3">
+                                                <Badge className="bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors">
+                                                    {formacion.tipo}
+                                                </Badge>
+                                                <span className="text-gray-500 flex items-center gap-1">
+                                                    <Calendar className="h-4 w-4" />
+                                                    {formacion.fecha_realizacion || 'No especificada'}
+                                                </span>
                                             </div>
-                                            <div className="bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-400">Institución</dt>
-                                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{formacion.institucion}</dd>
-                                            </div>
-                                            <div className="bg-gray-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-400">Tipo</dt>
-                                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{formacion.tipo}</dd>
-                                            </div>
-                                            <div className="bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-400">Fecha de realización</dt>
-                                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">
-                                                    {formacion.fecha_realizacion ? formacion.fecha_realizacion : 'No especificada'}
-                                                </dd>
-                                            </div>
-                                        </dl>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
                         )}
                     </div>
                 </div>
-                
+
                 {/* Experiencia Laboral */}
-                <div className="bg-black shadow overflow-hidden sm:rounded-lg border border-gray-800">
-                    <div className="px-4 py-5 sm:px-6">
-                        <h3 className="text-lg leading-6 font-medium text-white">Experiencia Laboral</h3>
+                <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
+                    <div className="p-6 border-b border-gray-100">
+                        <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                            <Briefcase className="h-5 w-5 text-blue-600" />
+                            Experiencia Laboral
+                        </h3>
                     </div>
-                    <div className="border-t border-gray-800">
+                    <div className="p-6">
                         {egresado?.experienciaLaboral?.length === 0 ? (
-                            <div className="p-6 text-center">
-                                <p className="text-gray-400">No se ha registrado experiencia laboral.</p>
+                            <div className="text-center">
+                                <p className="text-gray-500">No se ha registrado experiencia laboral.</p>
                             </div>
                         ) : (
-                            <div className={`grid ${egresado?.experienciaLaboral?.length > 1 ? 'grid-cols-1 md:grid-cols-2 gap-4' : 'grid-cols-1'} p-4`}>
+                            <div className="grid gap-6">
                                 {egresado?.experienciaLaboral?.map((experiencia) => (
-                                    <div key={experiencia.id} className="border border-gray-700 rounded-lg overflow-hidden bg-gray-800">
-                                        <dl>
-                                            <div className="bg-gray-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-400">Empresa</dt>
-                                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{experiencia.nombre_empresa}</dd>
+                                    <div key={experiencia.id} className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors">
+                                        <div className="flex flex-col gap-4">
+                                            <div className="flex items-start justify-between">
+                                                <div>
+                                                    <h4 className="text-lg font-semibold text-gray-900">{experiencia.nombre_empresa}</h4>
+                                                    <p className="text-gray-600 mt-1">{experiencia.tipo_empleo}</p>
+                                                </div>
+                                                <Badge className="bg-blue-50 text-blue-700 border border-blue-200">
+                                                    {experiencia.modalidad_trabajo}
+                                                </Badge>
                                             </div>
-                                            <div className="bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-400">Tipo de empleo</dt>
-                                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{experiencia.tipo_empleo}</dd>
-                                            </div>
-                                            <div className="bg-gray-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-400">Período</dt>
-                                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">
+
+                                            <div className="flex items-center gap-2 text-gray-500">
+                                                <Calendar className="h-4 w-4" />
+                                                <span>
                                                     {new Date(experiencia.fecha_inicio).toLocaleDateString()} -
                                                     {experiencia.fecha_fin ? new Date(experiencia.fecha_fin).toLocaleDateString() : 'Actual'}
-                                                </dd>
+                                                </span>
                                             </div>
-                                            <div className="bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt className="text-sm font-medium text-gray-400">Modalidad</dt>
-                                                <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{experiencia.modalidad_trabajo}</dd>
-                                            </div>
+
                                             {experiencia.descripcion && (
-                                                <div className="bg-gray-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                    <dt className="text-sm font-medium text-gray-400">Descripción</dt>
-                                                    <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{experiencia.descripcion}</dd>
-                                                </div>
+                                                <p className="text-gray-600 bg-white rounded-lg p-4 border border-gray-100">
+                                                    {experiencia.descripcion}
+                                                </p>
                                             )}
+
                                             {experiencia.servicios && (
-                                                <div className="bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                    <dt className="text-sm font-medium text-gray-400">Servicios</dt>
-                                                    <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{experiencia.servicios}</dd>
+                                                <div className="text-gray-600 bg-white rounded-lg p-4 border border-gray-100">
+                                                    <h5 className="font-medium mb-2">Servicios</h5>
+                                                    <p>{experiencia.servicios}</p>
                                                 </div>
                                             )}
-                                            {experiencia.correo_empresa && (
-                                                <div className="bg-gray-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                    <dt className="text-sm font-medium text-gray-400">Correo de la empresa</dt>
-                                                    <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">{experiencia.correo_empresa}</dd>
-                                                </div>
-                                            )}
-                                            {experiencia.url_empresa && (
-                                                <div className="bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                    <dt className="text-sm font-medium text-gray-400">Sitio web</dt>
-                                                    <dd className="mt-1 text-sm text-white sm:mt-0 sm:col-span-2">
-                                                        <a href={experiencia.url_empresa} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
-                                                            {experiencia.url_empresa}
-                                                        </a>
-                                                    </dd>
-                                                </div>
-                                            )}
-                                        </dl>
+
+                                            <div className="flex flex-wrap gap-4 mt-2">
+                                                {experiencia.correo_empresa && (
+                                                    <a href={`mailto:${experiencia.correo_empresa}`} className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
+                                                        <Mail className="h-4 w-4" />
+                                                        {experiencia.correo_empresa}
+                                                    </a>
+                                                )}
+                                                {experiencia.url_empresa && (
+                                                    <a href={experiencia.url_empresa} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
+                                                        <Globe className="h-4 w-4" />
+                                                        Sitio web
+                                                    </a>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
                                 ))}
                             </div>

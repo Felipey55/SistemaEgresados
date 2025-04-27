@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
+import { LoaderCircle, Users } from 'lucide-react';
 import { FormEventHandler, useEffect } from 'react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -42,7 +42,6 @@ export default function EditarEgresado() {
             try {
                 const response = await axios.get(route('api.egresado.datos'));
                 const datos = response.data;
-                // Format the date to YYYY-MM-DD before setting it in the form
                 const fecha = datos.fecha_nacimiento ? new Date(datos.fecha_nacimiento).toISOString().split('T')[0] : '';
                 setData({
                     identificacion_tipo: datos.identificacion_tipo,
@@ -99,142 +98,155 @@ export default function EditarEgresado() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Editar Información Personal" />
-            <form className="flex flex-col gap-4 max-w-5xl mx-auto min-h-[calc(100vh-12rem)] justify-center" onSubmit={submit}>
-                <h1 className="text-2xl font-semibold">Editar Información Personal</h1>
-                <div className="grid grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                        <div className="grid gap-2">
-                            <Label htmlFor="identificacion_tipo">Tipo de Identificación</Label>
-                            <select
-                                id="identificacion_tipo"
-                                required
-                                value={data.identificacion_tipo}
-                                onChange={(e) => setData('identificacion_tipo', e.target.value as 'C.C.' | 'C.E.')}
-                                disabled={processing}
-                                className="bg-gray-800 text-white border-gray-600 rounded p-2 hover:bg-gray-700 focus:border-indigo-500 focus:ring-indigo-500"
-                            >
-                                <option value="C.C.">C.C.</option>
-                                <option value="C.E.">C.E.</option>
-                            </select>
-                            <InputError message={errors.identificacion_tipo} />
+            <div className="max-w-5xl mx-auto p-6">
+                <form className="bg-white rounded-lg shadow-lg p-6" onSubmit={submit}>
+                    <h1 className="text-2xl font-semibold mb-6">Editar Información Personal</h1>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="identificacion_tipo">Tipo de Identificación</Label>
+                                <select
+                                    id="identificacion_tipo"
+                                    required
+                                    value={data.identificacion_tipo}
+                                    onChange={(e) => setData('identificacion_tipo', e.target.value as 'C.C.' | 'C.E.')}
+                                    disabled={processing}
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                >
+                                    <option value="C.C.">C.C.</option>
+                                    <option value="C.E.">C.E.</option>
+                                </select>
+                                <InputError message={errors.identificacion_tipo} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="identificacion_numero">Número de Identificación</Label>
+                                <Input
+                                    id="identificacion_numero"
+                                    type="text"
+                                    required
+                                    value={data.identificacion_numero}
+                                    onChange={(e) => setData('identificacion_numero', e.target.value)}
+                                    disabled={processing}
+                                    placeholder="Número de identificación"
+                                    className="rounded-lg"
+                                />
+                                <InputError message={errors.identificacion_numero} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="fotografia">Fotografía</Label>
+                                <Input
+                                    id="fotografia"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                        const file = e.target.files ? e.target.files[0] : null;
+                                        setData('fotografia', file);
+                                    }}
+                                    disabled={processing}
+                                    className="rounded-lg"
+                                />
+                                {data.fotografia && (
+                                    <div className="mt-2 flex justify-center">
+                                        <img
+                                            src={URL.createObjectURL(data.fotografia)}
+                                            alt="Vista previa"
+                                            className="w-32 h-32 rounded-full object-cover border-2 border-gray-300"
+                                        />
+                                    </div>
+                                )}
+                                <InputError message={errors.fotografia} />
+                            </div>
                         </div>
 
-                        <div className="grid gap-2">
-                            <Label htmlFor="identificacion_numero">Número de Identificación</Label>
-                            <Input
-                                id="identificacion_numero"
-                                type="text"
-                                required
-                                value={data.identificacion_numero}
-                                onChange={(e) => setData('identificacion_numero', e.target.value)}
-                                disabled={processing}
-                                placeholder="Número de identificación"
-                            />
-                            <InputError message={errors.identificacion_numero} />
-                        </div>
+                        <div className="space-y-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="celular">Celular</Label>
+                                <Input
+                                    id="celular"
+                                    type="text"
+                                    value={data.celular}
+                                    onChange={(e) => setData('celular', e.target.value)}
+                                    disabled={processing}
+                                    placeholder="Número de celular"
+                                    className="rounded-lg"
+                                />
+                                <InputError message={errors.celular} />
+                            </div>
 
-                        <div className="grid gap-2">
-                            <Label htmlFor="fotografia">Fotografía</Label>
-                            <Input
-                                id="fotografia"
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => {
-                                    const file = e.target.files ? e.target.files[0] : null;
-                                    setData('fotografia', file);
-                                }}
-                                disabled={processing}
-                            />
-                            {data.fotografia && (
-                                <div className="mt-2 flex justify-center">
-                                    <img
-                                        src={URL.createObjectURL(data.fotografia)}
-                                        alt="Vista previa"
-                                        className="w-32 h-32 rounded-full object-cover border-2 border-gray-600"
-                                    />
-                                </div>
-                            )}
-                            <InputError message={errors.fotografia} />
+                            <div className="grid gap-2">
+                                <Label htmlFor="direccion">Dirección</Label>
+                                <Input
+                                    id="direccion"
+                                    type="text"
+                                    value={data.direccion}
+                                    onChange={(e) => setData('direccion', e.target.value)}
+                                    disabled={processing}
+                                    placeholder="Dirección"
+                                    className="rounded-lg"
+                                />
+                                <InputError message={errors.direccion} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="fecha_nacimiento">Fecha de Nacimiento</Label>
+                                <Input
+                                    id="fecha_nacimiento"
+                                    type="date"
+                                    required
+                                    value={data.fecha_nacimiento}
+                                    onChange={(e) => setData('fecha_nacimiento', e.target.value)}
+                                    disabled={processing}
+                                    className="rounded-lg"
+                                />
+                                <InputError message={errors.fecha_nacimiento} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="genero" className="flex items-center gap-2">
+                                    <Users className="h-4 w-4 text-blue-500" />
+                                    Género
+                                </Label>
+                                <select
+                                    id="genero"
+                                    value={data.genero}
+                                    onChange={(e) => setData('genero', e.target.value)}
+                                    disabled={processing}
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                >
+                                    <option value="">Seleccione un género</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="No Binario">No Binario</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                                <InputError message={errors.genero} />
+                            </div>
                         </div>
                     </div>
 
-                    <div className="space-y-4">
-                        <div className="grid gap-2">
-                            <Label htmlFor="celular">Celular</Label>
-                            <Input
-                                id="celular"
-                                type="text"
-                                value={data.celular}
-                                onChange={(e) => setData('celular', e.target.value)}
-                                disabled={processing}
-                                placeholder="Número de celular"
-                            />
-                            <InputError message={errors.celular} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label htmlFor="direccion">Dirección</Label>
-                            <Input
-                                id="direccion"
-                                type="text"
-                                value={data.direccion}
-                                onChange={(e) => setData('direccion', e.target.value)}
-                                disabled={processing}
-                                placeholder="Dirección"
-                            />
-                            <InputError message={errors.direccion} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label htmlFor="fecha_nacimiento">Fecha de Nacimiento</Label>
-                            <Input
-                                id="fecha_nacimiento"
-                                type="date"
-                                required
-                                value={data.fecha_nacimiento}
-                                onChange={(e) => setData('fecha_nacimiento', e.target.value)}
-                                disabled={processing}
-                                className="appearance-none bg-transparent text-white [&::-webkit-calendar-picker-indicator]:invert"
-                            />
-                            <InputError message={errors.fecha_nacimiento} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label htmlFor="genero">Género</Label>
-                            <select
-                                id="genero"
-                                required
-                                value={data.genero}
-                                onChange={(e) => setData('genero', e.target.value)}
-                                disabled={processing}
-                                className="bg-gray-800 text-white border-gray-600 rounded p-2 hover:bg-gray-700 focus:border-indigo-500 focus:ring-indigo-500"
-                            >
-                                <option value="">Seleccione un género</option>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Femenino">Femenino</option>
-                                <option value="No Binario">No Binario</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                            <InputError message={errors.genero} />
-                        </div>
+                    <div className="flex justify-end space-x-4 mt-6">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => window.history.back()}
+                            className="px-6 py-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+                            disabled={processing}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button
+                            type="submit"
+                            className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            disabled={processing}
+                        >
+                            {processing && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
+                            Guardar Cambios
+                        </Button>
                     </div>
-                </div>
-
-                <div className="flex justify-between w-full mt-6">
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => window.history.back()}
-                        className="w-[150px]"
-                    >
-                        Cancelar
-                    </Button>
-                    <Button type="submit" className="w-[150px]" disabled={processing}>
-                        {processing && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
-                        Guardar
-                    </Button>
-                </div>
-            </form>
+                </form>
+            </div>
         </AppLayout>
     );
 }
