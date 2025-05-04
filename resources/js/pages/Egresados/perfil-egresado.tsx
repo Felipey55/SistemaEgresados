@@ -3,6 +3,15 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+import SimpleMapComponent from './SimpleMapComponent';
+
+interface Location {
+    latitude: number;
+    longitude: number;
+}
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -71,7 +80,7 @@ export default function PerfilEgresado() {
                         setDatosEgresado(datos);
                         setFormacionAcademica(datos.formacionAcademica || []);
                         setExperienciaLaboral(datos.experienciaLaboral || []);
-                        
+
                         // Obtener habilidades del egresado
                         try {
                             const habilidadesResponse = await axios.get(route('habilidades.obtener'));
@@ -156,6 +165,12 @@ export default function PerfilEgresado() {
                         >
                             Habilidades
                         </button>
+                        <button
+                            onClick={() => setActiveTab('ubicacion')}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'ubicacion' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                        >
+                            Ubicación
+                        </button>
                     </nav>
                 </div>
 
@@ -176,8 +191,8 @@ export default function PerfilEgresado() {
                     <div className="bg-white shadow-lg rounded-lg p-8 text-center">
                         <h3 className="text-xl font-semibold text-gray-900 mb-4">No estás registrado como egresado</h3>
                         <p className="text-gray-600 mb-6">Para ver tu información, primero debes registrarte como egresado.</p>
-                        <Link 
-                            href={route('regEgresados')} 
+                        <Link
+                            href={route('regEgresados')}
                             className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-lg font-medium"
                         >
                             Registrarse como Egresado
@@ -185,13 +200,23 @@ export default function PerfilEgresado() {
                     </div>
                 ) : (
                     <div className="space-y-6">
+                        {activeTab === 'ubicacion' && (
+                            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                                <div className="p-6">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h3 className="text-xl font-semibold text-gray-900">Mi Ubicación</h3>
+                                    </div>
+                                    <SimpleMapComponent />
+                                </div>
+                            </div>
+                        )}
                         {activeTab === 'informacion' && (
                             <div className="bg-white shadow-lg rounded-lg overflow-hidden">
                                 <div className="p-6">
                                     <div className="flex justify-between items-center mb-6">
                                         <h3 className="text-xl font-semibold text-gray-900">Información Personal</h3>
-                                        <Link 
-                                            href={route('regEgresados.edit')} 
+                                        <Link
+                                            href={route('regEgresados.edit')}
                                             className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                                         >
                                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,8 +269,8 @@ export default function PerfilEgresado() {
                                 <div className="p-6">
                                     <div className="flex justify-between items-center mb-6">
                                         <h3 className="text-xl font-semibold text-gray-900">Formación Académica</h3>
-                                        <Link 
-                                            href={route('formacion-academica')} 
+                                        <Link
+                                            href={route('formacion-academica')}
                                             className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
                                         >
                                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -254,7 +279,7 @@ export default function PerfilEgresado() {
                                             Agregar Nueva
                                         </Link>
                                     </div>
-                                    
+
                                     {formacionAcademica.length === 0 ? (
                                         <div className="text-center py-8">
                                             <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -273,8 +298,8 @@ export default function PerfilEgresado() {
                                                             <h4 className="text-lg font-medium text-gray-900">{formacion.titulo}</h4>
                                                             <p className="text-gray-600">{formacion.institucion}</p>
                                                         </div>
-                                                        <Link 
-                                                            href={route('formacion-academica.edit', { id: formacion.id })} 
+                                                        <Link
+                                                            href={route('formacion-academica.edit', { id: formacion.id })}
                                                             className="text-blue-600 hover:text-blue-800"
                                                         >
                                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -305,8 +330,8 @@ export default function PerfilEgresado() {
                                 <div className="p-6">
                                     <div className="flex justify-between items-center mb-6">
                                         <h3 className="text-xl font-semibold text-gray-900">Experiencia Laboral</h3>
-                                        <Link 
-                                            href={route('historial-laboral')} 
+                                        <Link
+                                            href={route('historial-laboral')}
                                             className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
                                         >
                                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -345,12 +370,12 @@ export default function PerfilEgresado() {
                                                                     <h4 className="text-lg font-medium text-gray-900">{experiencia.nombre_empresa}</h4>
                                                                     <p className="text-gray-600">{experiencia.tipo_empleo}</p>
                                                                     <p className="text-sm text-gray-500 mt-1">
-                                                                        {new Date(experiencia.fecha_inicio).toLocaleDateString()} - 
+                                                                        {new Date(experiencia.fecha_inicio).toLocaleDateString()} -
                                                                         {experiencia.fecha_fin ? new Date(experiencia.fecha_fin).toLocaleDateString() : 'Actual'}
                                                                     </p>
                                                                 </div>
-                                                                <Link 
-                                                                    href={route('experiencia-laboral.edit', { id: experiencia.id })} 
+                                                                <Link
+                                                                    href={route('experiencia-laboral.edit', { id: experiencia.id })}
                                                                     className="text-blue-600 hover:text-blue-800"
                                                                 >
                                                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -386,8 +411,8 @@ export default function PerfilEgresado() {
                                     <div className="flex justify-between items-center mb-6">
                                         <h3 className="text-xl font-semibold text-gray-900">Habilidades</h3>
                                         {habilidades.length > 0 && (
-                                            <Link 
-                                                href={route('habilidades.editar')} 
+                                            <Link
+                                                href={route('habilidades.editar')}
                                                 className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
                                             >
                                                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -406,8 +431,8 @@ export default function PerfilEgresado() {
                                             <h3 className="mt-2 text-sm font-medium text-gray-900">No has agregado habilidades</h3>
                                             <p className="mt-1 text-sm text-gray-500">Comienza agregando tus habilidades técnicas y blandas.</p>
                                             <div className="mt-6">
-                                                <Link 
-                                                    href={route('habilidades.index')} 
+                                                <Link
+                                                    href={route('habilidades.index')}
                                                     className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
                                                 >
                                                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -430,8 +455,8 @@ export default function PerfilEgresado() {
                                                     {habilidades
                                                         .filter(habilidad => habilidad.tipo === 'tecnica')
                                                         .map(habilidad => (
-                                                            <span 
-                                                                key={habilidad.id} 
+                                                            <span
+                                                                key={habilidad.id}
                                                                 className="px-4 py-2 bg-white text-blue-800 rounded-full text-sm font-medium shadow-sm border border-blue-200 hover:shadow-md transition-shadow"
                                                             >
                                                                 {habilidad.nombre}
@@ -450,8 +475,8 @@ export default function PerfilEgresado() {
                                                     {habilidades
                                                         .filter(habilidad => habilidad.tipo === 'blanda')
                                                         .map(habilidad => (
-                                                            <span 
-                                                                key={habilidad.id} 
+                                                            <span
+                                                                key={habilidad.id}
                                                                 className="px-4 py-2 bg-white text-green-800 rounded-full text-sm font-medium shadow-sm border border-green-200 hover:shadow-md transition-shadow"
                                                             >
                                                                 {habilidad.nombre}

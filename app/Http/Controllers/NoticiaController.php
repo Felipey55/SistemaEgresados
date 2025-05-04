@@ -114,4 +114,22 @@ class NoticiaController extends Controller
         return redirect()->route('noticias.index')
             ->with('success', 'Noticia eliminada exitosamente.');
     }
+
+    public function verNoticias(Request $request)
+    {
+        $query = Noticia::with('autor');
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('titulo', 'like', "%{$search}%")
+                ->orWhere('contenido', 'like', "%{$search}%");
+        }
+
+        $noticias = $query->orderBy('fecha_publicacion', 'desc')
+            ->paginate(10);
+
+        return Inertia::render('Noticias/VerNoticias', [
+            'noticias' => $noticias
+        ]);
+    }
 }
