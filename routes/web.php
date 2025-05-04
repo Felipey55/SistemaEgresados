@@ -10,6 +10,7 @@ use App\Http\Controllers\NoticiaController;
 use App\Http\Controllers\FormacionAcademicaController;
 use App\Http\Controllers\HabilidadController;
 use App\Http\Controllers\PerfilEgresadosController;
+use App\Http\Controllers\UbicacionController;
 use App\Models\User;
 use App\Models\ExperienciaLaboral;
 
@@ -95,6 +96,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/perfil', [\App\Http\Controllers\EgresadoController::class, 'obtenerPerfil'])->name('api.egresado.perfil');
         Route::get('/datos', [\App\Http\Controllers\EgresadoController::class, 'obtenerDatos'])->name('api.egresado.datos');
         Route::get('/detalle/{id}', [\App\Http\Controllers\EgresadoController::class, 'detalle'])->name('api.egresado.detalle');
+    });
+
+    // Ruta para ver noticias
+    Route::get('/VerNoticias', [NoticiaController::class, 'verNoticias'])->name('noticias.ver');
+
+    Route::post('/api/guardar-ubicacion', [UbicacionController::class, 'store'])->name('api.ubicacion.store');
+    Route::get('/api/verificar-ubicacion', [UbicacionController::class, 'verificarUbicacion'])->name('api.ubicacion.verificar');
+    Route::put('/api/actualizar-ubicacion', [UbicacionController::class, 'update'])->name('api.ubicacion.actualizar');
+
+    // Rutas para ubicaciones de egresados
+    Route::prefix('ubicaciones')->group(function () {
+        Route::get('/', [\App\Http\Controllers\UbicacionController::class, 'index'])->name('ubicaciones.index');
+        Route::post('/', [\App\Http\Controllers\UbicacionController::class, 'store'])->name('ubicaciones.store');
+        Route::get('/{ubicacion}', [\App\Http\Controllers\UbicacionController::class, 'show'])->name('ubicaciones.show');
+        Route::put('/{ubicacion}', [\App\Http\Controllers\UbicacionController::class, 'update'])->name('ubicaciones.update');
+        Route::delete('/{ubicacion}', [\App\Http\Controllers\UbicacionController::class, 'destroy'])->name('ubicaciones.destroy');
     });
 
     Route::get('/Egresados/editar', function () {
