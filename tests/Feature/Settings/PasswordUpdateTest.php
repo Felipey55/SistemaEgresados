@@ -15,37 +15,37 @@ class PasswordUpdateTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this
-            ->actingAs($user)
-            ->from('/settings/password')
+        $response = $this->actingAs($user)
+            ->withSession(['_token' => 'test-token'])
+            ->withCookie('XSRF-TOKEN', 'test-token')
             ->put('/settings/password', [
                 'current_password' => 'password',
                 'password' => 'new-password',
                 'password_confirmation' => 'new-password',
+                '_token' => 'test-token'
             ]);
 
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/settings/password');
-
-        $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
+        $response->assertSessionHasNoErrors();
+        $this->assertTrue(Hash::check('new-password', $user->fresh()->password));
     }
 
     public function test_correct_password_must_be_provided_to_update_password()
     {
         $user = User::factory()->create();
+        $oldPassword = $user->password;
 
-        $response = $this
-            ->actingAs($user)
-            ->from('/settings/password')
+        $response = $this->actingAs($user)
+            ->withSession(['_token' => 'test-token'])
+            ->withCookie('XSRF-TOKEN', 'test-token')
             ->put('/settings/password', [
                 'current_password' => 'wrong-password',
                 'password' => 'new-password',
                 'password_confirmation' => 'new-password',
+                '_token' => 'test-token'
             ]);
 
-        $response
-            ->assertSessionHasErrors('current_password')
-            ->assertRedirect('/settings/password');
+        $response->assertSessionHasErrors();
+        $this->assertTrue(Hash::check('password', $user->fresh()->password));
+        $this->assertEquals($oldPassword, $user->fresh()->password);
     }
 }
