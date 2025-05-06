@@ -31,5 +31,8 @@ export default function Dashboard() {
                 </div>
             </div>
         </AppLayout>
+
+        //aqui los informes
+        
     );
 }
