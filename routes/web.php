@@ -11,6 +11,7 @@ use App\Http\Controllers\FormacionAcademicaController;
 use App\Http\Controllers\HabilidadController;
 use App\Http\Controllers\PerfilEgresadosController;
 use App\Http\Controllers\UbicacionController;
+use App\Http\Controllers\AdminReportController;
 use App\Models\User;
 use App\Models\ExperienciaLaboral;
 
@@ -26,7 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/habilidades/editar', [HabilidadController::class, 'editar'])->name('habilidades.editar');
     Route::post('/habilidades/eliminar', [HabilidadController::class, 'eliminar'])->name('habilidades.eliminar');
     Route::post('/habilidades/actualizar', [HabilidadController::class, 'actualizar'])->name('habilidades.actualizar');
-    
+
     // Rutas para perfiles de egresados
     Route::get('/PerfilesEgresados', [\App\Http\Controllers\PerfilEgresadosController::class, 'index'])->name('perfiles.egresados');
     Route::get('/Egresados/detalle/{id}', [\App\Http\Controllers\PerfilEgresadosController::class, 'detalle'])->name('egresado.detalle');
@@ -44,7 +45,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/experiencia', [ExperienciaLaboralController::class, 'store'])->name('experiencia.store');
     Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
+        $reportes = app(AdminReportController::class)->index();
+        return Inertia::render('dashboard', $reportes);
     })->name('dashboard');
 
     Route::get('/modUsers', function () {
