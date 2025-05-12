@@ -20,6 +20,7 @@ type NoticiaForm = {
     titulo: string;
     contenido: string;
     fecha_publicacion: string;
+    imagen: File | null;
 };
 
 export default function Create() {
@@ -27,6 +28,7 @@ export default function Create() {
         titulo: '',
         contenido: '',
         fecha_publicacion: '',
+        imagen: null,
     });
 
     const showNotification = (message: string, isSuccess: boolean) => {
@@ -51,7 +53,15 @@ export default function Create() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('titulo', data.titulo);
+        formData.append('contenido', data.contenido);
+        formData.append('fecha_publicacion', data.fecha_publicacion);
+        if (data.imagen) {
+            formData.append('imagen', data.imagen);
+        }
         post(route('noticias.store'), {
+            ...formData,
             onSuccess: () => {
                 showNotification('Noticia creada exitosamente', true);
                 reset();
@@ -96,6 +106,31 @@ export default function Create() {
                             rows={6}
                         />
                         <InputError message={errors.contenido} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="imagen">Imagen</Label>
+                        <Input
+                            id="imagen"
+                            type="file"
+                            accept=".jpg,.jpeg,.png,.gif"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0] || null;
+                                setData('imagen', file);
+                            }}
+                            disabled={processing}
+                        />
+                        <p className="text-sm text-gray-400">Formatos permitidos: JPG, JPEG, PNG, GIF</p>
+                        {data.imagen && (
+                            <div className="mt-2 flex justify-center">
+                                <img
+                                    src={URL.createObjectURL(data.imagen)}
+                                    alt="Vista previa"
+                                    className="max-w-xs h-48 object-contain rounded-lg shadow-md"
+                                />
+                            </div>
+                        )}
+                        <InputError message={errors.imagen} />
                     </div>
 
                     <div className="grid gap-2">

@@ -9,7 +9,7 @@ use Inertia\Inertia;
 
 class FormacionAcademicaController extends Controller
 {
-    public function datos(Request $request)
+    public function datos(Request $request, $id = null)
     {
         try {
             $egresado = $request->user()->egresado;
@@ -17,12 +17,16 @@ class FormacionAcademicaController extends Controller
                 return response()->json(['error' => 'Egresado no encontrado'], 404);
             }
 
-            $formacionAcademica = FormacionAcademica::where('egresado_id', $egresado->id)
-                ->latest()
-                ->first();
+            $query = FormacionAcademica::where('egresado_id', $egresado->id);
+            
+            if ($id) {
+                $formacionAcademica = $query->where('id', $id)->first();
+            } else {
+                $formacionAcademica = $query->latest()->first();
+            }
 
             if (!$formacionAcademica) {
-                return response()->json(['error' => 'Formación académica no encontrada'], 404);
+                return response()->json(['message' => 'No se encontró información de formación académica'], 404);
             }
 
             return response()->json([
@@ -59,7 +63,7 @@ class FormacionAcademicaController extends Controller
         return redirect()->back()->with('success', 'Formación académica registrada exitosamente');
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         try {
             $egresado = $request->user()->egresado;
@@ -68,11 +72,11 @@ class FormacionAcademicaController extends Controller
             }
 
             $formacionAcademica = FormacionAcademica::where('egresado_id', $egresado->id)
-                ->latest()
+                ->where('id', $id)
                 ->first();
 
             if (!$formacionAcademica) {
-                return response()->json(['error' => 'Formación académica no encontrada'], 404);
+                return response()->json(['message' => 'No se encontró información de formación académica'], 404);
             }
 
             $validator = Validator::make($request->all(), [

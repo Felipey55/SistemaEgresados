@@ -1,13 +1,15 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
-import InputError from '@/components/input-error';
+import { useState } from 'react';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Card } from '@/components/ui/card';
+import { Briefcase, Calendar, Building2, Globe, Mail, MapPin } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import InputError from '@/components/input-error';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,20 +18,20 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type ExperienciaForm = {
-    tipo_empleo: 'Tiempo Completo' | 'Medio Tiempo' | 'Freelance' | 'Otro';
+type ExperienciaLaboral = {
+    tipo_empleo: string;
     nombre_empresa: string;
     fecha_inicio: string;
     fecha_fin: string;
     servicios: string;
     correo_empresa: string;
     url_empresa: string;
-    modalidad_trabajo: 'Presencial' | 'Remoto' | 'Híbrido';
+    modalidad_trabajo: string;
     descripcion: string;
 };
 
 export default function HistorialLaboral() {
-    const { data, setData, post, processing, errors, reset } = useForm<ExperienciaForm>({
+    const { data, setData, post, processing, errors, reset } = useForm<ExperienciaLaboral>({
         tipo_empleo: 'Tiempo Completo',
         nombre_empresa: '',
         fecha_inicio: '',
@@ -41,38 +43,33 @@ export default function HistorialLaboral() {
         descripcion: ''
     });
 
+    const [experiencias, setExperiencias] = useState<ExperienciaLaboral[]>([]);
+
     const showNotification = (message: string, isSuccess: boolean) => {
         const notification = document.createElement('div');
         notification.textContent = message;
-        notification.style.position = 'fixed';
-        notification.style.top = '20px';
-        notification.style.right = '20px';
-        notification.style.padding = '10px 20px';
-        notification.style.borderRadius = '5px';
-        notification.style.backgroundColor = isSuccess ? 'green' : 'red';
-        notification.style.color = 'white';
-        notification.style.fontSize = '16px';
-        notification.style.zIndex = '1000';
-
+        notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-all duration-300 ${isSuccess ? 'bg-green-600' : 'bg-red-600'} text-white`;
         document.body.appendChild(notification);
-
         setTimeout(() => {
-            notification.remove();
-        }, 3000);
+            notification.classList.add('opacity-0');
+            setTimeout(() => notification.remove(), 300);
+        }, 2700);
     };
 
-    const submit: FormEventHandler = (e) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(route('experiencia.store'), {
             onSuccess: () => {
                 showNotification('Experiencia laboral registrada exitosamente', true);
                 reset();
+                // Actualizar la lista de experiencias y redirigir
+                setExperiencias([...experiencias, data]);
                 setTimeout(() => {
                     window.location.href = route('formacion-academica');
                 }, 2000);
             },
             onError: () => {
-                showNotification('Error al registrar la experiencia laboral. Verifique los datos.', false);
+                showNotification('Error al registrar la experiencia laboral', false);
             },
         });
     };
@@ -80,147 +77,209 @@ export default function HistorialLaboral() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Historial Laboral" />
-            <form className="flex flex-col gap-4 max-w-7xl mx-9 min-h-[calc(100vh-12rem)] justify-center" onSubmit={submit}>
-                <h1 className="text-2xl font-semibold">Registro de Experiencia Laboral</h1>
-                <div className="grid grid-cols-2 gap-10">
-                    <div className="space-y-4">
-                        <div className="grid gap-2">
-                            <Label htmlFor="tipo_empleo">Tipo de Empleo</Label>
-                            <select
-                                id="tipo_empleo"
-                                required
-                                value={data.tipo_empleo}
-                                onChange={(e) => setData('tipo_empleo', e.target.value as ExperienciaForm['tipo_empleo'])}
-                                disabled={processing}
-                                className="bg-gray-800 text-white border-gray-600 rounded p-2 hover:bg-gray-700 focus:border-indigo-500 focus:ring-indigo-500"
-                            >
-                                <option value="Tiempo Completo">Tiempo Completo</option>
-                                <option value="Medio Tiempo">Medio Tiempo</option>
-                                <option value="Freelance">Freelance</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                            <InputError message={errors.tipo_empleo} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label htmlFor="nombre_empresa">Nombre de la Empresa</Label>
-                            <Input
-                                id="nombre_empresa"
-                                type="text"
-                                required
-                                value={data.nombre_empresa}
-                                onChange={(e) => setData('nombre_empresa', e.target.value)}
-                                disabled={processing}
-                                placeholder="Nombre de la empresa"
-                            />
-                            <InputError message={errors.nombre_empresa} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label htmlFor="fecha_inicio">Fecha de Inicio</Label>
-                            <Input
-                                id="fecha_inicio"
-                                type="date"
-                                required
-                                value={data.fecha_inicio}
-                                onChange={(e) => setData('fecha_inicio', e.target.value)}
-                                disabled={processing}
-                                className="appearance-none bg-transparent text-white [&::-webkit-calendar-picker-indicator]:invert"
-                            />
-                            <InputError message={errors.fecha_inicio} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label htmlFor="fecha_fin">Fecha de Finalización</Label>
-                            <Input
-                                id="fecha_fin"
-                                type="date"
-                                value={data.fecha_fin}
-                                onChange={(e) => setData('fecha_fin', e.target.value)}
-                                disabled={processing}
-                                className="appearance-none bg-transparent text-white [&::-webkit-calendar-picker-indicator]:invert"
-                            />
-                            <InputError message={errors.fecha_fin} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label htmlFor="modalidad_trabajo">Modalidad de Trabajo</Label>
-                            <select
-                                id="modalidad_trabajo"
-                                required
-                                value={data.modalidad_trabajo}
-                                onChange={(e) => setData('modalidad_trabajo', e.target.value as ExperienciaForm['modalidad_trabajo'])}
-                                disabled={processing}
-                                className="bg-gray-800 text-white border-gray-600 rounded p-2 hover:bg-gray-700 focus:border-indigo-500 focus:ring-indigo-500"
-                            >
-                                <option value="Presencial">Presencial</option>
-                                <option value="Remoto">Remoto</option>
-                                <option value="Híbrido">Híbrido</option>
-                            </select>
-                            <InputError message={errors.modalidad_trabajo} />
-                        </div>
+            <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700">
+                        <h1 className="text-2xl font-bold text-white mb-2">Historial Laboral</h1>
+                        <p className="text-blue-100">Registra tu experiencia profesional</p>
                     </div>
 
-                    <div className="space-y-4">
-                        <div className="grid gap-2">
-                            <Label htmlFor="servicios">Servicios/Cargo</Label>
-                            <Input
+                    <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <Label htmlFor="tipo_empleo" className="flex items-center gap-2 text-gray-700">
+                                    <Briefcase className="h-4 w-4 text-blue-500" />
+                                    Tipo de Empleo
+                                </Label>
+                                <select
+                                    id="tipo_empleo"
+                                    value={data.tipo_empleo}
+                                    onChange={(e) => setData('tipo_empleo', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    required
+                                >
+                                    <option value="">Seleccione un tipo</option>
+                                    <option value="Tiempo Completo">Tiempo Completo</option>
+                                    <option value="Medio Tiempo">Medio Tiempo</option>
+                                    <option value="Freelance">Freelance</option>
+                                    <option value="Contrato">Contrato</option>
+                                    <option value="Prácticas">Prácticas</option>
+                                </select>
+                                <InputError message={errors.tipo_empleo} />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="nombre_empresa" className="flex items-center gap-2 text-gray-700">
+                                    <Building2 className="h-4 w-4 text-blue-500" />
+                                    Nombre de la Empresa
+                                </Label>
+                                <Input
+                                    id="nombre_empresa"
+                                    type="text"
+                                    value={data.nombre_empresa}
+                                    onChange={(e) => setData('nombre_empresa', e.target.value)}
+                                    className="rounded-lg"
+                                    required
+                                />
+                                <InputError message={errors.nombre_empresa} />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="fecha_inicio" className="flex items-center gap-2 text-gray-700">
+                                    <Calendar className="h-4 w-4 text-blue-500" />
+                                    Fecha de Inicio
+                                </Label>
+                                <Input
+                                    id="fecha_inicio"
+                                    type="date"
+                                    value={data.fecha_inicio}
+                                    onChange={(e) => setData('fecha_inicio', e.target.value)}
+                                    className="rounded-lg"
+                                    required
+                                />
+                                <InputError message={errors.fecha_inicio} />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="fecha_fin" className="flex items-center gap-2 text-gray-700">
+                                    <Calendar className="h-4 w-4 text-blue-500" />
+                                    Fecha de Finalización
+                                </Label>
+                                <Input
+                                    id="fecha_fin"
+                                    type="date"
+                                    value={data.fecha_fin}
+                                    onChange={(e) => setData('fecha_fin', e.target.value)}
+                                    className="rounded-lg"
+                                />
+                                <InputError message={errors.fecha_fin} />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="modalidad_trabajo" className="flex items-center gap-2 text-gray-700">
+                                    <MapPin className="h-4 w-4 text-blue-500" />
+                                    Modalidad de Trabajo
+                                </Label>
+                                <select
+                                    id="modalidad_trabajo"
+                                    value={data.modalidad_trabajo}
+                                    onChange={(e) => setData('modalidad_trabajo', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    required
+                                >
+                                    <option value="">Seleccione una modalidad</option>
+                                    <option value="Presencial">Presencial</option>
+                                    <option value="Remoto">Remoto</option>
+                                    <option value="Híbrido">Híbrido</option>
+                                </select>
+                                <InputError message={errors.modalidad_trabajo} />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="correo_empresa" className="flex items-center gap-2 text-gray-700">
+                                    <Mail className="h-4 w-4 text-blue-500" />
+                                    Correo de la Empresa
+                                </Label>
+                                <Input
+                                    id="correo_empresa"
+                                    type="email"
+                                    value={data.correo_empresa}
+                                    onChange={(e) => setData('correo_empresa', e.target.value)}
+                                    className="rounded-lg"
+                                    placeholder="correo@empresa.com"
+                                />
+                                <InputError message={errors.correo_empresa} />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="url_empresa" className="flex items-center gap-2 text-gray-700">
+                                    <Globe className="h-4 w-4 text-blue-500" />
+                                    Sitio Web de la Empresa
+                                </Label>
+                                <Input
+                                    id="url_empresa"
+                                    type="url"
+                                    value={data.url_empresa}
+                                    onChange={(e) => setData('url_empresa', e.target.value)}
+                                    className="rounded-lg"
+                                    placeholder="https://"
+                                />
+                                <InputError message={errors.url_empresa} />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="servicios" className="flex items-center gap-2 text-gray-700">
+                                Servicios/Productos de la Empresa
+                            </Label>
+                            <Textarea
                                 id="servicios"
-                                type="text"
                                 value={data.servicios}
                                 onChange={(e) => setData('servicios', e.target.value)}
-                                disabled={processing}
-                                placeholder="Servicios o cargo desempeñado"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                rows={3}
                             />
                             <InputError message={errors.servicios} />
                         </div>
 
-                        <div className="grid gap-2">
-                            <Label htmlFor="correo_empresa">Correo de la Empresa</Label>
-                            <Input
-                                id="correo_empresa"
-                                type="email"
-                                value={data.correo_empresa}
-                                onChange={(e) => setData('correo_empresa', e.target.value)}
-                                disabled={processing}
-                                placeholder="correo@empresa.com"
-                            />
-                            <InputError message={errors.correo_empresa} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label htmlFor="url_empresa">URL de la Empresa</Label>
-                            <Input
-                                id="url_empresa"
-                                type="url"
-                                value={data.url_empresa}
-                                onChange={(e) => setData('url_empresa', e.target.value)}
-                                disabled={processing}
-                                placeholder="https://www.empresa.com"
-                            />
-                            <InputError message={errors.url_empresa} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label htmlFor="descripcion">Descripción</Label>
+                        <div className="space-y-2">
+                            <Label htmlFor="descripcion" className="flex items-center gap-2 text-gray-700">
+                                Descripción de Actividades
+                            </Label>
                             <Textarea
                                 id="descripcion"
                                 value={data.descripcion}
                                 onChange={(e) => setData('descripcion', e.target.value)}
-                                disabled={processing}
-                                placeholder="Describe tus responsabilidades y logros"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                 rows={4}
+                                required
                             />
                             <InputError message={errors.descripcion} />
                         </div>
-                    </div>
+
+                        <div className="flex justify-end space-x-4">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => reset()}
+                                className="px-6 py-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+                                disabled={processing}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
+                                type="submit"
+                                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                disabled={processing}
+                            >
+                                {processing ? 'Guardando...' : 'Guardar Experiencia'}
+                            </Button>
+                        </div>
+                    </form>
                 </div>
 
-                <Button type="submit" className="mt-6 w-full max-w-md mx-auto" disabled={processing}>
-                    {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                    Registrar Experiencia Laboral
-                </Button>
-            </form>
+                {/* Lista de experiencias */}
+                <div className="mt-8 space-y-6">
+                    {experiencias.map((exp, index) => (
+                        <Card key={index} className="p-6 hover:shadow-lg transition-shadow duration-300">
+                            <div className="flex items-start justify-between">
+                                <div>
+                                    <h3 className="text-xl font-semibold text-gray-900">{exp.nombre_empresa}</h3>
+                                    <Badge className="mt-2 bg-blue-100 text-blue-800">{exp.tipo_empleo}</Badge>
+                                </div>
+                                <Badge className="bg-gray-100 text-gray-800">{exp.modalidad_trabajo}</Badge>
+                            </div>
+                            <div className="mt-4 text-sm text-gray-600">
+                                <p className="flex items-center gap-2">
+                                    <Calendar className="h-4 w-4" />
+                                    {exp.fecha_inicio} - {exp.fecha_fin || 'Actual'}
+                                </p>
+                                <p className="mt-2">{exp.descripcion}</p>
+                            </div>
+                        </Card>
+                    ))}
+                </div>
+            </div>
         </AppLayout>
     );
 }

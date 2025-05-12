@@ -11,8 +11,8 @@ import { Search, Calendar, Tag, ArrowRight, Plus, Pencil, Trash2 } from 'lucide-
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Noticias',
-        href: '/noticias',
+        title: 'Ver Noticias',
+        href: '/VerNoticias',
     },
 ];
 
@@ -77,21 +77,6 @@ export default function Index({ noticias }: Props) {
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                 <div className="bg-white shadow-lg overflow-hidden sm:rounded-xl border border-gray-200">
                     <div className="px-6 py-8 sm:px-8">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                            <div>
-                                <h1 className="text-3xl font-bold text-gray-900">Noticias y Eventos</h1>
-                                <p className="mt-2 text-gray-600">Mantente informado sobre las últimas novedades y acontecimientos</p>
-                            </div>
-                            
-                            <Link href={route('noticias.create')}>
-                                <Button
-                                    className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white hover:from-blue-700 hover:to-indigo-800 transition-all shadow-md"
-                                >
-                                    <Plus className="h-5 w-5 mr-2" />
-                                    Nueva Noticia
-                                </Button>
-                            </Link>
-                        </div>
 
                         <div className="mt-8 space-y-4 md:space-y-0 md:flex md:gap-4 items-start">
                             <div className="flex-1 relative">
@@ -148,24 +133,6 @@ export default function Index({ noticias }: Props) {
                                                         <Calendar className="h-4 w-4" />
                                                         {new Date(noticia.fecha_publicacion).toLocaleDateString()}
                                                     </span>
-                                                </div>
-                                                <div className="flex gap-2">
-                                                    <Link href={route('noticias.edit', noticia.id)}>
-                                                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                                            <Pencil className="h-4 w-4" />
-                                                        </Button>
-                                                    </Link>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
-                                                        onClick={() => {
-                                                            setSelectedNoticia(noticia);
-                                                            setShowConfirmDialog(true);
-                                                        }}
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
                                                 </div>
                                             </div>
 
