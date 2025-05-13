@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-
 import SimpleMapComponent from './SimpleMapComponent';
 
 interface Location {
@@ -121,8 +120,16 @@ export default function PerfilEgresado() {
             <Head title="Perfil del Egresado" />
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-gray-100">
                 {/* Encabezado del perfil */}
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8 rounded-t-lg shadow-lg">
-                    <div className="flex items-center gap-6">
+                <div 
+                    className="text-white p-8 rounded-t-lg shadow-lg relative"
+                    style={{
+                        backgroundImage: 'url("/images/fondoDash.jpg")',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        position: 'relative'
+                    }}
+                >
+                    <div className="flex items-center gap-6 relative z-10">
                         <div className="w-32 h-32 rounded-full bg-white p-1 shadow-xl">
                             <img
                                 src={datosEgresado?.foto_url || '/img/default-avatar.png'}
@@ -143,33 +150,69 @@ export default function PerfilEgresado() {
                     <nav className="flex justify-center space-x-8">
                         <button
                             onClick={() => setActiveTab('informacion')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'informacion' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 transition-all duration-300 ease-in-out flex items-center space-x-2 group ${
+                                activeTab === 'informacion' 
+                                ? 'border-blue-600 text-blue-600 bg-blue-50 transform scale-105' 
+                                : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50'
+                            }`}
                         >
-                            Información Personal
+                            <svg className="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span>Información Personal</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('formacion')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'formacion' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 transition-all duration-300 ease-in-out flex items-center space-x-2 group ${
+                                activeTab === 'formacion' 
+                                ? 'border-blue-600 text-blue-600 bg-blue-50 transform scale-105' 
+                                : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50'
+                            }`}
                         >
-                            Formación Académica
+                            <svg className="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+                            </svg>
+                            <span>Formación Académica</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('experiencia')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'experiencia' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 transition-all duration-300 ease-in-out flex items-center space-x-2 group ${
+                                activeTab === 'experiencia' 
+                                ? 'border-blue-600 text-blue-600 bg-blue-50 transform scale-105' 
+                                : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50'
+                            }`}
                         >
-                            Experiencia Laboral
+                            <svg className="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span>Experiencia Laboral</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('habilidades')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'habilidades' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 transition-all duration-300 ease-in-out flex items-center space-x-2 group ${
+                                activeTab === 'habilidades' 
+                                ? 'border-blue-600 text-blue-600 bg-blue-50 transform scale-105' 
+                                : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50'
+                            }`}
                         >
-                            Habilidades
+                            <svg className="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            <span>Habilidades</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('ubicacion')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'ubicacion' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 transition-all duration-300 ease-in-out flex items-center space-x-2 group ${
+                                activeTab === 'ubicacion' 
+                                ? 'border-blue-600 text-blue-600 bg-blue-50 transform scale-105' 
+                                : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50'
+                            }`}
                         >
-                            Ubicación
+                            <svg className="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span>Ubicación</span>
                         </button>
                     </nav>
                 </div>
@@ -193,9 +236,22 @@ export default function PerfilEgresado() {
                         <p className="text-gray-600 mb-6">Para ver tu información, primero debes registrarte como egresado.</p>
                         <Link
                             href={route('regEgresados')}
-                            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-lg font-medium"
+                            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-md transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg hover:bg-gradient-to-r hover:from-indigo-600 hover:to-purple-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
                         >
-                            Registrarse como Egresado
+                            <svg 
+                                className="w-5 h-5 mr-2 transform transition-transform group-hover:rotate-12 group-hover:text-purple-200" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                viewBox="0 0 24 24"
+                            >
+                                <path 
+                                    strokeLinecap="round" 
+                                    strokeLinejoin="round" 
+                                    strokeWidth="2" 
+                                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                                />
+                            </svg>
+                            <span className="font-medium text-lg group-hover:text-purple-100">Registrarse como Egresado</span>
                         </Link>
                     </div>
                 ) : (
@@ -217,12 +273,17 @@ export default function PerfilEgresado() {
                                         <h3 className="text-xl font-semibold text-gray-900">Información Personal</h3>
                                         <Link
                                             href={route('regEgresados.edit')}
-                                            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-md transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg hover:bg-gradient-to-r hover:from-indigo-600 hover:to-purple-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
                                         >
-                                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg 
+                                                className="w-4 h-4 mr-2 transform transition-transform group-hover:rotate-12 group-hover:text-purple-200" 
+                                                fill="none" 
+                                                stroke="currentColor" 
+                                                viewBox="0 0 24 24"
+                                            >
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                             </svg>
-                                            Editar
+                                            <span className="font-medium group-hover:text-purple-100">Editar</span>
                                         </Link>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
