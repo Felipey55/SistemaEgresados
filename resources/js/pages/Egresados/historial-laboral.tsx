@@ -78,16 +78,16 @@ export default function HistorialLaboral() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Historial Laboral" />
             <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
+                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-700 dark:to-indigo-800">
                         <h1 className="text-2xl font-bold text-white mb-2">Historial Laboral</h1>
-                        <p className="text-blue-100">Registra tu experiencia profesional</p>
+                        <p className="text-blue-100 dark:text-blue-200">Registra tu experiencia profesional</p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
+                    <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6 dark:bg-gray-800">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <Label htmlFor="tipo_empleo" className="flex items-center gap-2 text-gray-700">
+                                <Label htmlFor="tipo_empleo" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                                     <Briefcase className="h-4 w-4 text-blue-500" />
                                     Tipo de Empleo
                                 </Label>
@@ -95,7 +95,7 @@ export default function HistorialLaboral() {
                                     id="tipo_empleo"
                                     value={data.tipo_empleo}
                                     onChange={(e) => setData('tipo_empleo', e.target.value)}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                     required
                                 >
                                     <option value="">Seleccione un tipo</option>
@@ -109,7 +109,7 @@ export default function HistorialLaboral() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="nombre_empresa" className="flex items-center gap-2 text-gray-700">
+                                <Label htmlFor="nombre_empresa" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                                     <Building2 className="h-4 w-4 text-blue-500" />
                                     Nombre de la Empresa
                                 </Label>
@@ -118,14 +118,14 @@ export default function HistorialLaboral() {
                                     type="text"
                                     value={data.nombre_empresa}
                                     onChange={(e) => setData('nombre_empresa', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     required
                                 />
                                 <InputError message={errors.nombre_empresa} />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="fecha_inicio" className="flex items-center gap-2 text-gray-700">
+                                <Label htmlFor="fecha_inicio" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                                     <Calendar className="h-4 w-4 text-blue-500" />
                                     Fecha de Inicio
                                 </Label>
@@ -134,14 +134,14 @@ export default function HistorialLaboral() {
                                     type="date"
                                     value={data.fecha_inicio}
                                     onChange={(e) => setData('fecha_inicio', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     required
                                 />
                                 <InputError message={errors.fecha_inicio} />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="fecha_fin" className="flex items-center gap-2 text-gray-700">
+                                <Label htmlFor="fecha_fin" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                                     <Calendar className="h-4 w-4 text-blue-500" />
                                     Fecha de Finalización
                                 </Label>
@@ -150,13 +150,13 @@ export default function HistorialLaboral() {
                                     type="date"
                                     value={data.fecha_fin}
                                     onChange={(e) => setData('fecha_fin', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                 />
                                 <InputError message={errors.fecha_fin} />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="modalidad_trabajo" className="flex items-center gap-2 text-gray-700">
+                                <Label htmlFor="modalidad_trabajo" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                                     <MapPin className="h-4 w-4 text-blue-500" />
                                     Modalidad de Trabajo
                                 </Label>
@@ -164,7 +164,7 @@ export default function HistorialLaboral() {
                                     id="modalidad_trabajo"
                                     value={data.modalidad_trabajo}
                                     onChange={(e) => setData('modalidad_trabajo', e.target.value)}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                     required
                                 >
                                     <option value="">Seleccione una modalidad</option>
@@ -176,7 +176,7 @@ export default function HistorialLaboral() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="correo_empresa" className="flex items-center gap-2 text-gray-700">
+                                <Label htmlFor="correo_empresa" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                                     <Mail className="h-4 w-4 text-blue-500" />
                                     Correo de la Empresa
                                 </Label>
@@ -185,14 +185,14 @@ export default function HistorialLaboral() {
                                     type="email"
                                     value={data.correo_empresa}
                                     onChange={(e) => setData('correo_empresa', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     placeholder="correo@empresa.com"
                                 />
                                 <InputError message={errors.correo_empresa} />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="url_empresa" className="flex items-center gap-2 text-gray-700">
+                                <Label htmlFor="url_empresa" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                                     <Globe className="h-4 w-4 text-blue-500" />
                                     Sitio Web de la Empresa
                                 </Label>
@@ -201,7 +201,7 @@ export default function HistorialLaboral() {
                                     type="url"
                                     value={data.url_empresa}
                                     onChange={(e) => setData('url_empresa', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     placeholder="https://"
                                 />
                                 <InputError message={errors.url_empresa} />
@@ -209,28 +209,28 @@ export default function HistorialLaboral() {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="servicios" className="flex items-center gap-2 text-gray-700">
+                            <Label htmlFor="servicios" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                                 Servicios/Productos de la Empresa
                             </Label>
                             <Textarea
                                 id="servicios"
                                 value={data.servicios}
                                 onChange={(e) => setData('servicios', e.target.value)}
-                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                 rows={3}
                             />
                             <InputError message={errors.servicios} />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="descripcion" className="flex items-center gap-2 text-gray-700">
+                            <Label htmlFor="descripcion" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                                 Descripción de Actividades
                             </Label>
                             <Textarea
                                 id="descripcion"
                                 value={data.descripcion}
                                 onChange={(e) => setData('descripcion', e.target.value)}
-                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                 rows={4}
                                 required
                             />
@@ -242,7 +242,7 @@ export default function HistorialLaboral() {
                                 type="button"
                                 variant="outline"
                                 onClick={() => reset()}
-                                className="px-6 py-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+                                className="px-6 py-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
                                 disabled={processing}
                             >
                                 Cancelar
@@ -261,17 +261,17 @@ export default function HistorialLaboral() {
                 {/* Lista de experiencias */}
                 <div className="mt-8 space-y-6">
                     {experiencias.map((exp, index) => (
-                        <Card key={index} className="p-6 hover:shadow-lg transition-shadow duration-300">
+                        <Card key={index} className="p-6 hover:shadow-lg transition-shadow duration-300 dark:bg-gray-800 dark:border-gray-700">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <h3 className="text-xl font-semibold text-gray-900">{exp.nombre_empresa}</h3>
-                                    <Badge className="mt-2 bg-blue-100 text-blue-800">{exp.tipo_empleo}</Badge>
+                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{exp.nombre_empresa}</h3>
+                                    <Badge className="mt-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100">{exp.tipo_empleo}</Badge>
                                 </div>
-                                <Badge className="bg-gray-100 text-gray-800">{exp.modalidad_trabajo}</Badge>
+                                <Badge className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">{exp.modalidad_trabajo}</Badge>
                             </div>
-                            <div className="mt-4 text-sm text-gray-600">
+                            <div className="mt-4 text-sm text-gray-600 dark:text-gray-300">
                                 <p className="flex items-center gap-2">
-                                    <Calendar className="h-4 w-4" />
+                                    <Calendar className="h-4 w-4 dark:text-gray-400" />
                                     {exp.fecha_inicio} - {exp.fecha_fin || 'Actual'}
                                 </p>
                                 <p className="mt-2">{exp.descripcion}</p>

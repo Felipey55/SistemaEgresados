@@ -78,7 +78,7 @@ export default function Create() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Crear Noticia" />
-            <form className="flex flex-col gap-4 max-w-5xl mx-60 min-h-[calc(100vh-12rem)] justify-center" onSubmit={submit}>
+            <form className="flex flex-col gap-4 max-w-5xl mx-auto px-4 md:px-8 lg:px-60 min-h-[calc(100vh-12rem)] justify-center" onSubmit={submit}>
                 <div className="space-y-4">
                     <div className="grid gap-2">
                         <Label htmlFor="titulo">Título</Label>
@@ -120,13 +120,13 @@ export default function Create() {
                             }}
                             disabled={processing}
                         />
-                        <p className="text-sm text-gray-400">Formatos permitidos: JPG, JPEG, PNG, GIF</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Formatos permitidos: JPG, JPEG, PNG, GIF</p>
                         {data.imagen && (
                             <div className="mt-2 flex justify-center">
                                 <img
                                     src={URL.createObjectURL(data.imagen)}
                                     alt="Vista previa"
-                                    className="max-w-xs h-48 object-contain rounded-lg shadow-md"
+                                    className="max-w-xs h-48 object-contain rounded-lg shadow-md dark:shadow-neutral-800"
                                 />
                             </div>
                         )}
@@ -142,7 +142,7 @@ export default function Create() {
                             value={data.fecha_publicacion}
                             onChange={(e) => setData('fecha_publicacion', e.target.value)}
                             disabled={processing}
-                            className="appearance-none bg-transparent text-white [&::-webkit-calendar-picker-indicator]:invert"
+                            className="appearance-none bg-transparent dark:text-white [&::-webkit-calendar-picker-indicator]:dark:invert"
                         />
                         <InputError message={errors.fecha_publicacion} />
                     </div>

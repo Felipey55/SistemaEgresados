@@ -1,13 +1,12 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { LoaderCircle, Search, UserPlus, Edit2, Trash2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { LoaderCircle, Search, Edit2, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { router } from '@inertiajs/react';
-import axios from 'axios';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Gestión de Usuarios', href: '/mod-users' },
@@ -74,34 +73,48 @@ export default function ModUsers({ users }: { users: User[] }) {
         return matchesSearch && matchesRole;
     });
 
+    const getRoleStyles = (roleId: number) => {
+        switch (roleId) {
+            case 1: return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
+            case 2: return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+            default: return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+        }
+    };
+
+    const getStatusStyles = (status: string) => {
+        return status === 'active' 
+            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
+            : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestión de Usuarios" />
-            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                 {/* Encabezado con gradiente */}
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg shadow-lg p-6 mb-8">
-                    <h1 className="text-2xl font-bold text-white">Gestión de Usuarios</h1>
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-800 dark:to-indigo-900 rounded-lg shadow-lg p-4 sm:p-6 mb-6">
+                    <h1 className="text-xl sm:text-2xl font-bold text-white">Gestión de Usuarios</h1>
                     <p className="text-blue-100 mt-2">Administra los usuarios del sistema</p>
                 </div>
 
                 {/* Barra de herramientas */}
-                <div className="bg-white rounded-lg shadow p-6 mb-8">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div className="flex-1 flex gap-4">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6 mb-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div className="flex-1 flex flex-col sm:flex-row gap-4">
                             <div className="relative flex-1">
                                 <Input
                                     type="text"
                                     placeholder="Buscar usuarios..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="pl-10"
+                                    className="pl-10 bg-white dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                 />
-                                <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-gray-300" />
                             </div>
                             <select
                                 value={selectedRole}
                                 onChange={(e) => setSelectedRole(e.target.value)}
-                                className="bg-white border border-gray-300 rounded-md py-2 pl-3 pr-10 text-gray-700"
+                                className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 pl-3 pr-10 text-gray-700 dark:text-gray-200"
                             >
                                 <option value="all">Todos los roles</option>
                                 <option value="admin">Administrador</option>
@@ -113,80 +126,74 @@ export default function ModUsers({ users }: { users: User[] }) {
                 </div>
 
                 {/* Tabla de usuarios */}
-                <div className="bg-white rounded-lg shadow overflow-hidden">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead className="bg-gray-50 dark:bg-gray-700">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Registro</th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Usuario</th>
+                                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Rol</th>
+{/*                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Estado</th> */}
+                                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">Fecha</th>
+                                    <th className="px-4 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 {loading ? (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-4 text-center">
-                                            <LoaderCircle className="h-8 w-8 animate-spin mx-auto text-blue-600" />
+                                        <td colSpan={5} className="px-4 sm:px-6 py-4 text-center">
+                                            <LoaderCircle className="h-8 w-8 animate-spin mx-auto text-blue-600 dark:text-blue-400" />
                                         </td>
                                     </tr>
                                 ) : filteredUsers.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+                                        <td colSpan={5} className="px-4 sm:px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                                             No se encontraron usuarios
                                         </td>
                                     </tr>
                                 ) : (
                                     filteredUsers.map((user) => (
-                                        <tr key={user.id} className="hover:bg-gray-50">
-                                            <td className="px-6 py-4 whitespace-nowrap">
+                                        <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                            <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
-                                                    <div className="flex-shrink-0 h-10 w-10">
-                                                        <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center">
-                                                            <span className="text-xl text-white">{user.name[0].toUpperCase()}</span>
+                                                    <div className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
+                                                        <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-600 dark:bg-blue-700 flex items-center justify-center">
+                                                            <span className="text-lg sm:text-xl text-white">{user.name[0].toUpperCase()}</span>
                                                         </div>
                                                     </div>
                                                     <div className="ml-4">
-                                                        <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                                                        <div className="text-sm text-gray-500">{user.email}</div>
+                                                        <div className="text-sm font-medium text-gray-900 dark:text-gray-200">{user.name}</div>
+                                                        <div className="text-sm text-gray-500 dark:text-gray-400">{user.email}</div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                                    user.role_id === 1 ? 'bg-purple-100 text-purple-800' : 
-                                                    user.role_id === 2 ? 'bg-blue-100 text-blue-800' : 
-                                                    'bg-green-100 text-green-800'
-                                                }`}>
+                                            <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getRoleStyles(user.role_id)}`}>
                                                     {user.role_id === 1 ? 'Administrador' :
                                                      user.role_id === 2 ? 'Coordinador' :
                                                      'Egresado'}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                                    user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                                }`}>
+{/*                                             <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusStyles(user.status)}`}>
                                                     {user.status === 'active' ? 'Activo' : 'Inactivo'}
                                                 </span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            </td> */}
+                                            <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">
                                                 {new Date(user.created_at).toLocaleDateString()}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <Button
                                                     onClick={() => handleViewClick(user)}
                                                     variant="ghost"
-                                                    className="text-blue-600 hover:text-blue-900 mr-2"
+                                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                                                 >
                                                     <Edit2 className="h-5 w-5" />
                                                 </Button>
                                                 <Button
                                                     onClick={() => handleUserDelete(user.id)}
                                                     variant="ghost"
-                                                    className="text-red-600 hover:text-red-900"
+                                                    className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
                                                 >
                                                     <Trash2 className="h-5 w-5" />
                                                 </Button>
@@ -200,36 +207,36 @@ export default function ModUsers({ users }: { users: User[] }) {
                 </div>
 
                 <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-                    <DialogContent aria-describedby="edit-user-description">
+                    <DialogContent className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200" aria-describedby="edit-user-description">
                         <DialogHeader>
-                            <DialogTitle>Edit User</DialogTitle>
+                            <DialogTitle className="text-gray-900 dark:text-gray-100">Edit User</DialogTitle>
                         </DialogHeader>
-                        <div id="edit-user-description" className="py-6 px-4 w-full max-w-2xl mx-auto">
-                            <div className="space-y-6">
+                        <div id="edit-user-description" className="py-4 px-2 w-full max-w-2xl mx-auto">
+                            <div className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                                    <input
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
+                                    <Input
                                         type="text"
                                         value={editedUser.name}
                                         onChange={(e) => setEditedUser({ ...editedUser, name: e.target.value })}
-                                        className="mt-1 block w-full rounded-md border border-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
+                                        className="w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-200"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                                    <input
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                                    <Input
                                         type="email"
                                         value={editedUser.email}
                                         onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
-                                        className="mt-1 block w-full rounded-md border border-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
+                                        className="w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-200"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Role ID</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role</label>
                                     <select
                                         value={editedUser.role_id}
                                         onChange={(e) => setEditedUser({ ...editedUser, role_id: parseInt(e.target.value) })}
-                                        className="mt-1 block w-full rounded-md border border-white shadow-sm bg-gray-800 text-white hover:bg-gray-700 focus:border-indigo-500 focus:ring-indigo-500 p-2"
+                                        className="w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
                                     >
                                         <option value={1}>Administrador</option>
                                         <option value={2}>Coordinador</option>
@@ -239,8 +246,19 @@ export default function ModUsers({ users }: { users: User[] }) {
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button variant="outline" onClick={() => setIsViewDialogOpen(false)}>Cancel</Button>
-                            <Button onClick={handleUserUpdate}>Save Changes</Button>
+                            <Button 
+                                variant="outline" 
+                                onClick={() => setIsViewDialogOpen(false)}
+                                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            >
+                                Cancel
+                            </Button>
+                            <Button 
+                                onClick={handleUserUpdate}
+                                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                            >
+                                Save Changes
+                            </Button>
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>

@@ -18,50 +18,19 @@ const SimpleMapComponent = () => {
     const [ubicacionExistente, setUbicacionExistente] = useState<boolean>(false);
     const [cargando, setCargando] = useState<boolean>(true);
 
-    const actualizarUbicacion = (position: GeolocationPosition) => {
-        const { latitude, longitude } = position.coords;
-        setLocation({ latitude, longitude });
-
+    const mostrarUbicacion = (latitud: number, longitud: number) => {
         if (mapRef.current) {
-            mapRef.current.setView([latitude, longitude], 15);
+            mapRef.current.setView([latitud, longitud], 15);
 
             if (markerRef.current) {
-                markerRef.current.setLatLng([latitude, longitude]);
+                markerRef.current.setLatLng([latitud, longitud]);
             } else {
-                markerRef.current = L.marker([latitude, longitude], { draggable: true })
+                markerRef.current = L.marker([latitud, longitud])
                     .addTo(mapRef.current)
-                    .bindPopup('Arrastra el marcador para ajustar la ubicación')
+                    .bindPopup('Ubicación registrada')
                     .openPopup();
-
-                markerRef.current.on('dragend', () => {
-                    const newPos = markerRef.current?.getLatLng();
-                    if (newPos) {
-                        setLocation({
-                            latitude: newPos.lat,
-                            longitude: newPos.lng
-                        });
-                    }
-                });
             }
         }
-    };
-
-    const manejarErrorUbicacion = (error: GeolocationPositionError) => {
-        let mensajeError = '';
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                mensajeError = 'Usuario denegó el acceso a la ubicación.';
-                break;
-            case error.POSITION_UNAVAILABLE:
-                mensajeError = 'Información de ubicación no disponible.';
-                break;
-            case error.TIMEOUT:
-                mensajeError = 'Tiempo de espera agotado para obtener la ubicación.';
-                break;
-            default:
-                mensajeError = 'Error desconocido al obtener la ubicación.';
-        }
-        setError(mensajeError);
     };
 
     const verificarUbicacionExistente = async () => {
@@ -88,51 +57,48 @@ const SimpleMapComponent = () => {
     };
 
     useEffect(() => {
-        verificarUbicacionExistente();
-        if (mapContainerRef.current && !mapRef.current) {
-            // Inicializar el mapa con una vista predeterminada
-            mapRef.current = L.map(mapContainerRef.current).setView([4.6097, -74.0817], 13);
+        const inicializarMapa = async () => {
+            if (mapContainerRef.current && !mapRef.current) {
+                // Inicializar el mapa con una vista predeterminada
+                mapRef.current = L.map(mapContainerRef.current).setView([4.6097, -74.0817], 13);
 
-            // Agregar el tile layer de OpenStreetMap
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(mapRef.current);
+                // Agregar el tile layer de OpenStreetMap
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(mapRef.current);
 
-            // Solicitar la ubicación del usuario
-            if ('geolocation' in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    actualizarUbicacion,
-                    manejarErrorUbicacion,
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 5000,
-                        maximumAge: 0
+                try {
+                    const response = await axios.get('/api/verificar-ubicacion');
+                    if (response.data.existe) {
+                        setUbicacionExistente(true);
+                        const latitud = parseFloat(response.data.ubicacion.latitud);
+                        const longitud = parseFloat(response.data.ubicacion.longitud);
+                        if (!isNaN(latitud) && !isNaN(longitud)) {
+                            setLocation({
+                                latitude: latitud,
+                                longitude: longitud
+                            });
+                            mostrarUbicacion(latitud, longitud);
+                        } else {
+                            setError('Datos de ubicación inválidos');
+                        }
                     }
-                );
-
-                // Configurar seguimiento en tiempo real
-                const watchId = navigator.geolocation.watchPosition(
-                    actualizarUbicacion,
-                    manejarErrorUbicacion,
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 5000,
-                        maximumAge: 0
-                    }
-                );
-
-                // Limpiar el seguimiento cuando el componente se desmonte
-                return () => {
-                    navigator.geolocation.clearWatch(watchId);
-                    if (mapRef.current) {
-                        mapRef.current.remove();
-                        mapRef.current = null;
-                    }
-                };
-            } else {
-                setError('Tu navegador no soporta geolocalización.');
+                } catch (error) {
+                    setError('Error al cargar la ubicación');
+                } finally {
+                    setCargando(false);
+                }
             }
-        }
+        };
+
+        inicializarMapa();
+
+        return () => {
+            if (mapRef.current) {
+                mapRef.current.remove();
+                mapRef.current = null;
+            }
+        };
     }, []);
 
     const guardarUbicacion = async () => {

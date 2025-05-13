@@ -54,33 +54,24 @@ export default function Index({ noticias }: Props) {
     const showNotification = (message: string, isSuccess: boolean) => {
         const notification = document.createElement('div');
         notification.textContent = message;
-        notification.style.position = 'fixed';
-        notification.style.top = '20px';
-        notification.style.right = '20px';
-        notification.style.padding = '10px 20px';
-        notification.style.borderRadius = '5px';
-        notification.style.backgroundColor = isSuccess ? 'green' : 'red';
-        notification.style.color = 'white';
-        notification.style.fontSize = '16px';
-        notification.style.zIndex = '1000';
-
+        notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-all duration-300 ${isSuccess ? 'bg-success' : 'bg-destructive'} text-white dark:text-white`;
         document.body.appendChild(notification);
-
         setTimeout(() => {
-            notification.remove();
-        }, 3000);
+            notification.classList.add('opacity-0');
+            setTimeout(() => notification.remove(), 300);
+        }, 2700);
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Noticias" />
-            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                <div className="bg-white shadow-lg overflow-hidden sm:rounded-xl border border-gray-200">
+            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div className="bg-card dark:bg-card shadow-lg overflow-hidden sm:rounded-xl border border-input dark:border-input">
                     <div className="px-6 py-8 sm:px-8">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900">Noticias y Eventos</h1>
-                                <p className="mt-2 text-gray-600">Mantente informado sobre las últimas novedades y acontecimientos</p>
+                                <h1 className="text-3xl font-bold text-foreground dark:text-foreground">Noticias y Eventos</h1>
+                                <p className="mt-2 text-muted-foreground dark:text-muted-foreground">Mantente informado sobre las últimas novedades y acontecimientos</p>
                             </div>
                             
                             <Link href={route('noticias.create')}>
@@ -103,14 +94,14 @@ export default function Index({ noticias }: Props) {
                                     placeholder="Buscar noticias..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="pl-10 bg-white text-gray-900 border-gray-200 w-full focus:ring-2 focus:ring-blue-500 transition-all"
+                                    className="pl-10 bg-background dark:bg-background text-foreground dark:text-foreground border-input dark:border-input w-full focus:ring-2 focus:ring-ring dark:focus:ring-ring transition-all"
                                 />
                             </div>
                             
                             <select
                                 value={categoriaFilter}
                                 onChange={(e) => setCategoriaFilter(e.target.value)}
-                                className="bg-white text-gray-900 border-gray-200 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 transition-all"
+                                className="bg-background dark:bg-background text-foreground dark:text-foreground border-input dark:border-input rounded-md px-4 py-2 focus:ring-2 focus:ring-ring dark:focus:ring-ring transition-all"
                             >
                                 <option value="todas">Todas las categorías</option>
                                 <option value="eventos">Eventos</option>
@@ -123,12 +114,12 @@ export default function Index({ noticias }: Props) {
                     <div className="border-t border-gray-200">
                         {filteredNoticias.length === 0 ? (
                             <div className="p-6 text-center">
-                                <p className="text-gray-600">No se encontraron noticias con los criterios de búsqueda.</p>
+                                <p className="text-muted-foreground dark:text-muted-foreground">No se encontraron noticias con los criterios de búsqueda.</p>
                             </div>
                         ) : (
                             <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {filteredNoticias.map((noticia) => (
-                                    <Card key={noticia.id} className="group overflow-hidden bg-white hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-blue-500">
+                                    <Card key={noticia.id} className="group overflow-hidden bg-card dark:bg-card hover:shadow-lg transition-all duration-300 border border-input dark:border-input hover:border-primary dark:hover:border-primary">
                                         {noticia.imagen_path && (
                                             <div className="aspect-video overflow-hidden">
                                                 <img
@@ -141,10 +132,10 @@ export default function Index({ noticias }: Props) {
                                         <div className="p-6 space-y-4">
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
-                                                    <Badge className="bg-blue-50 text-blue-700 border border-blue-200">
+                                                    <Badge variant="secondary" className="dark:bg-secondary">
                                                         {noticia.categoria || 'General'}
                                                     </Badge>
-                                                    <span className="text-sm text-gray-500 flex items-center gap-1">
+                                                    <span className="text-sm text-muted-foreground dark:text-muted-foreground flex items-center gap-1">
                                                         <Calendar className="h-4 w-4" />
                                                         {new Date(noticia.fecha_publicacion).toLocaleDateString()}
                                                     </span>
@@ -158,7 +149,7 @@ export default function Index({ noticias }: Props) {
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                                        className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
                                                         onClick={() => {
                                                             setSelectedNoticia(noticia);
                                                             setShowConfirmDialog(true);
@@ -169,19 +160,19 @@ export default function Index({ noticias }: Props) {
                                                 </div>
                                             </div>
 
-                                            <h2 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+                                            <h2 className="text-xl font-semibold text-foreground dark:text-foreground group-hover:text-primary dark:group-hover:text-primary transition-colors line-clamp-2">
                                                 {noticia.titulo}
                                             </h2>
 
-                                            <p className="text-gray-600 line-clamp-3">
+                                            <p className="text-muted-foreground dark:text-muted-foreground line-clamp-3">
                                                 {noticia.contenido}
                                             </p>
 
                                             <div className="pt-4 flex items-center justify-between">
-                                                <span className="text-sm text-gray-500">Por: {noticia.autor.name}</span>
+                                                <span className="text-sm text-muted-foreground dark:text-muted-foreground">Por: {noticia.autor.name}</span>
                                                 <Button
                                                     variant="outline"
-                                                    className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                                                    className="text-primary border-input hover:bg-primary/10"
                                                     onClick={() => router.visit(`/noticias/${noticia.id}`)}
                                                 >
                                                     Leer más
@@ -215,8 +206,8 @@ export default function Index({ noticias }: Props) {
             </div>
 
             {showConfirmDialog && selectedNoticia && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-card p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+                <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50">
+                    <div className="bg-card dark:bg-card p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
                         <h3 className="text-lg font-semibold mb-4">Confirmar eliminación</h3>
                         <p className="text-muted-foreground mb-6">¿Está seguro de que desea eliminar esta noticia?</p>
                         <div className="flex justify-end gap-4">

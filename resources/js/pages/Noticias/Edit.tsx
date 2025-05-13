@@ -8,11 +8,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Card } from '@/components/ui/card';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Noticias',
         href: '/noticias',
+    },
+    {
+        title: 'Editar Noticia',
+        href: '#',
     },
 ];
 
@@ -41,21 +46,14 @@ export default function Edit({ noticia }: Props) {
     const showNotification = (message: string, isSuccess: boolean) => {
         const notification = document.createElement('div');
         notification.textContent = message;
-        notification.style.position = 'fixed';
-        notification.style.top = '20px';
-        notification.style.right = '20px';
-        notification.style.padding = '10px 20px';
-        notification.style.borderRadius = '5px';
-        notification.style.backgroundColor = isSuccess ? 'green' : 'red';
-        notification.style.color = 'white';
-        notification.style.fontSize = '16px';
-        notification.style.zIndex = '1000';
-
+        notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-all duration-300 ${
+            isSuccess ? 'bg-success text-success-foreground' : 'bg-destructive text-destructive-foreground'
+        }`;
         document.body.appendChild(notification);
-
         setTimeout(() => {
-            notification.remove();
-        }, 3000);
+            notification.classList.add('opacity-0');
+            setTimeout(() => notification.remove(), 300);
+        }, 2700);
     };
 
     const submit: FormEventHandler = (e) => {
@@ -84,91 +82,118 @@ export default function Edit({ noticia }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Editar Noticia" />
-            <form className="flex flex-col gap-4 max-w-5xl mx-60 min-h-[calc(100vh-12rem)] justify-center" onSubmit={submit}>
-                <div className="space-y-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="titulo">Título</Label>
-                        <Input
-                            id="titulo"
-                            type="text"
-                            required
-                            value={data.titulo}
-                            onChange={(e) => setData('titulo', e.target.value)}
-                            disabled={processing}
-                            placeholder="Título de la noticia"
-                        />
-                        <InputError message={errors.titulo} />
+            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <Card className="bg-card dark:bg-card shadow-lg overflow-hidden sm:rounded-xl border border-input dark:border-input">
+                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700">
+                        <h1 className="text-2xl font-bold text-white mb-2">Editar Noticia</h1>
+                        <p className="text-blue-100">Actualiza los detalles de la noticia</p>
                     </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="contenido">Contenido</Label>
-                        <Textarea
-                            id="contenido"
-                            required
-                            value={data.contenido}
-                            onChange={(e) => setData('contenido', e.target.value)}
-                            disabled={processing}
-                            placeholder="Contenido de la noticia"
-                            rows={6}
-                        />
-                        <InputError message={errors.contenido} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="fecha_publicacion">Fecha de Publicación</Label>
-                        <Input
-                            id="fecha_publicacion"
-                            type="date"
-                            required
-                            value={data.fecha_publicacion}
-                            onChange={(e) => setData('fecha_publicacion', e.target.value)}
-                            disabled={processing}
-                            className="appearance-none bg-transparent text-white [&::-webkit-calendar-picker-indicator]:invert"
-                        />
-                        <InputError message={errors.fecha_publicacion} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="imagen">Imagen</Label>
-                        <Input
-                            id="imagen"
-                            type="file"
-                            accept=".jpg,.jpeg,.png,.gif"
-                            onChange={(e) => {
-                                const file = e.target.files?.[0] || null;
-                                setData('imagen', file);
-                            }}
-                            disabled={processing}
-                        />
-                        <p className="text-sm text-gray-400">Formatos permitidos: JPG, JPEG, PNG, GIF</p>
-                        {(data.imagen || noticia.imagen_path) && (
-                            <div className="mt-2 flex justify-center">
-                                <img
-                                    src={data.imagen ? URL.createObjectURL(data.imagen) : `/${noticia.imagen_path}`}
-                                    alt="Vista previa"
-                                    className="max-w-xs h-48 object-contain rounded-lg shadow-md"
+                    <form onSubmit={submit} className="p-6 sm:p-8 space-y-6">
+                        <div className="space-y-6">
+                            <div className="grid gap-2">
+                                <Label htmlFor="titulo" className="text-foreground dark:text-foreground">
+                                    Título
+                                </Label>
+                                <Input
+                                    id="titulo"
+                                    type="text"
+                                    required
+                                    value={data.titulo}
+                                    onChange={(e) => setData('titulo', e.target.value)}
+                                    disabled={processing}
+                                    placeholder="Título de la noticia"
+                                    className="bg-background dark:bg-background text-foreground dark:text-foreground"
                                 />
+                                <InputError message={errors.titulo} />
                             </div>
-                        )}
-                        <InputError message={errors.imagen} />
-                    </div>
-                </div>
 
-                <div className="flex justify-center gap-4 mt-6">
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => window.location.href = route('noticias.index')}
-                        disabled={processing}
-                    >
-                        Cancelar
-                    </Button>
-                    <Button type="submit" disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Actualizar Noticia
-                    </Button>
-                </div>
-            </form>
+                            <div className="grid gap-2">
+                                <Label htmlFor="contenido" className="text-foreground dark:text-foreground">
+                                    Contenido
+                                </Label>
+                                <Textarea
+                                    id="contenido"
+                                    required
+                                    value={data.contenido}
+                                    onChange={(e) => setData('contenido', e.target.value)}
+                                    disabled={processing}
+                                    placeholder="Contenido de la noticia"
+                                    rows={6}
+                                    className="bg-background dark:bg-background text-foreground dark:text-foreground resize-y min-h-[150px]"
+                                />
+                                <InputError message={errors.contenido} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="fecha_publicacion" className="text-foreground dark:text-foreground">
+                                    Fecha de Publicación
+                                </Label>
+                                <Input
+                                    id="fecha_publicacion"
+                                    type="date"
+                                    required
+                                    value={data.fecha_publicacion}
+                                    onChange={(e) => setData('fecha_publicacion', e.target.value)}
+                                    disabled={processing}
+                                    className="bg-background dark:bg-background text-foreground dark:text-foreground [&::-webkit-calendar-picker-indicator]:dark:invert"
+                                />
+                                <InputError message={errors.fecha_publicacion} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="imagen" className="text-foreground dark:text-foreground">
+                                    Imagen
+                                </Label>
+                                <Input
+                                    id="imagen"
+                                    type="file"
+                                    accept=".jpg,.jpeg,.png,.gif"
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0] || null;
+                                        setData('imagen', file);
+                                    }}
+                                    disabled={processing}
+                                    className="bg-background dark:bg-background text-foreground dark:text-foreground"
+                                />
+                                <p className="text-sm text-muted-foreground dark:text-muted-foreground">
+                                    Formatos permitidos: JPG, JPEG, PNG, GIF
+                                </p>
+                                {(data.imagen || noticia.imagen_path) && (
+                                    <div className="mt-4 p-4 bg-background dark:bg-background rounded-lg border border-input dark:border-input">
+                                        <img
+                                            src={data.imagen ? URL.createObjectURL(data.imagen) : `/${noticia.imagen_path}`}
+                                            alt="Vista previa"
+                                            className="max-w-full h-auto max-h-[300px] mx-auto rounded-lg object-contain"
+                                        />
+                                    </div>
+                                )}
+                                <InputError message={errors.imagen} />
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row justify-end gap-4 pt-6 border-t border-border dark:border-border">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => window.location.href = route('noticias.index')}
+                                disabled={processing}
+                                className="w-full sm:w-auto"
+                            >
+                                Cancelar
+                            </Button>
+                            <Button 
+                                type="submit" 
+                                disabled={processing}
+                                className="w-full sm:w-auto bg-primary hover:bg-primary/90"
+                            >
+                                {processing && <LoaderCircle className="h-4 w-4 mr-2 animate-spin" />}
+                                Actualizar Noticia
+                            </Button>
+                        </div>
+                    </form>
+                </Card>
+            </div>
         </AppLayout>
     );
 }
