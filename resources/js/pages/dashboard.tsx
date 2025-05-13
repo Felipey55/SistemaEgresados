@@ -4,6 +4,10 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { Bar, Pie } from 'react-chartjs-2';
 import { Document, Page, View, Text, StyleSheet, PDFViewer, pdf } from '@react-pdf/renderer';
+import { useEffect, useRef, useState } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import axios from 'axios';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -24,6 +28,13 @@ ChartJS.register(
     Legend,
     ArcElement
 );
+
+interface Location {
+    id?: number;
+    latitud: number;
+    longitud: number;
+    nombre?: string;
+}
 
 type DashboardProps = {
     totalEgresados: number;
@@ -185,7 +196,96 @@ export default function Dashboard({
         }
     };
 
+    const MapaEgresados = () => {
+    const mapRef = useRef<L.Map | null>(null);
+    const markersRef = useRef<L.Marker[]>([]);
+    const mapContainerRef = useRef<HTMLDivElement>(null);
+    const [error, setError] = useState<string>('');
+    const [locations, setLocations] = useState<Location[]>([]);
+    const [cargando, setCargando] = useState<boolean>(true);
+
+    const cargarUbicaciones = async () => {
+        try {
+            const response = await axios.get('/api/obtener-ubicaciones');
+            if (response.data && Array.isArray(response.data)) {
+                setLocations(response.data);
+                mostrarUbicaciones(response.data);
+            }
+        } catch (error) {
+            setError('Error al cargar las ubicaciones');
+        } finally {
+            setCargando(false);
+        }
+    };
+
+    const mostrarUbicaciones = (ubicaciones: Location[]) => {
+        if (!mapRef.current) return;
+
+        // Limpiar marcadores existentes
+        markersRef.current.forEach(marker => marker.remove());
+        markersRef.current = [];
+
+        // Crear nuevos marcadores
+        const bounds = L.latLngBounds([]);
+        ubicaciones.forEach((ubicacion, index) => {
+            const marker = L.marker([ubicacion.latitud, ubicacion.longitud])
+                .addTo(mapRef.current!)
+                .bindPopup(`Ubicación ${ubicacion.nombre || (index + 1)}`);
+            
+            markersRef.current.push(marker);
+            bounds.extend([ubicacion.latitud, ubicacion.longitud]);
+        });
+
+        // Ajustar la vista para mostrar todos los marcadores
+        if (ubicaciones.length > 0) {
+            mapRef.current.fitBounds(bounds, { padding: [50, 50] });
+        }
+    };
+
+    useEffect(() => {
+        if (mapContainerRef.current && !mapRef.current) {
+            // Inicializar el mapa con una vista predeterminada de Colombia
+            mapRef.current = L.map(mapContainerRef.current).setView([4.6097, -74.0817], 6);
+
+            // Agregar el tile layer de OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(mapRef.current);
+
+            // Cargar las ubicaciones
+            cargarUbicaciones();
+        }
+
+        return () => {
+            if (mapRef.current) {
+                mapRef.current.remove();
+                mapRef.current = null;
+            }
+        };
+    }, []);
+
     return (
+        <div className="space-y-4">
+            <div 
+                ref={mapContainerRef} 
+                style={{ height: '400px', width: '100%', borderRadius: '0.5rem' }}
+                className="shadow-md"
+            />
+            {error && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+                    {error}
+                </div>
+            )}
+            {cargando && (
+                <div className="text-center text-gray-600">
+                    Cargando ubicaciones...
+                </div>
+            )}
+        </div>
+    );
+};
+
+return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-6 p-6" id="dashboard-content">
@@ -197,6 +297,12 @@ export default function Dashboard({
                         Descargar PDF
                     </button>
                 </div>
+                <Card className="col-span-full mb-6">
+                    <div className="p-6">
+                        <h2 className="text-2xl font-semibold mb-4">Distribución Geográfica de Egresados</h2>
+                        <MapaEgresados />
+                    </div>
+                </Card>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                     <Card className="p-6">
                         <h3 className="text-xl font-semibold mb-2">Total de Egresados</h3>

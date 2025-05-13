@@ -119,9 +119,9 @@ export default function PerfilEgresado() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Perfil del Egresado" />
-            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-gray-100">
+            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
                 {/* Encabezado del perfil */}
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8 rounded-t-lg shadow-lg">
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-800 dark:to-indigo-900 text-white p-8 rounded-t-lg shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl dark:shadow-blue-500/20">
                     <div className="flex items-center gap-6">
                         <div className="w-32 h-32 rounded-full bg-white p-1 shadow-xl">
                             <img
@@ -139,11 +139,11 @@ export default function PerfilEgresado() {
                 </div>
 
                 {/* Navegación por pestañas */}
-                <div className="bg-white border-b border-gray-200 shadow-sm">
+                <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
                     <nav className="flex justify-center space-x-8">
                         <button
                             onClick={() => setActiveTab('informacion')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'informacion' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'informacion' ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'} transition-colors duration-200`}
                         >
                             Información Personal
                         </button>
@@ -176,11 +176,11 @@ export default function PerfilEgresado() {
 
                 <div className="mt-6">
                     {!isRegistered && (
-                        <div className="bg-white shadow overflow-hidden sm:rounded-lg p-6 text-center">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">No estás registrado como egresado</h3>
-                            <p className="text-gray-600 mb-4">Para ver tu información, primero debes registrarte como egresado.</p>
+                        <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg p-6 text-center transition-colors duration-300">
+                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4 transition-colors duration-300">No estás registrado como egresado</h3>
+                            <p className="text-gray-600 dark:text-gray-300 mb-4 transition-colors duration-300">Para ver tu información, primero debes registrarte como egresado.</p>
                             <div className="flex justify-center space-x-4">
-                                <Link href={route('regEgresados')} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                                <Link href={route('regEgresados')} className="px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition-all duration-300 shadow-lg hover:shadow-blue-500/50 dark:hover:shadow-blue-700/50">
                                     Registrarse como Egresado
                                 </Link>
                             </div>
@@ -188,12 +188,12 @@ export default function PerfilEgresado() {
                     )}
                 </div>
                 {!isRegistered ? (
-                    <div className="bg-white shadow-lg rounded-lg p-8 text-center">
-                        <h3 className="text-xl font-semibold text-gray-900 mb-4">No estás registrado como egresado</h3>
-                        <p className="text-gray-600 mb-6">Para ver tu información, primero debes registrarte como egresado.</p>
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 text-center transition-all duration-300 hover:shadow-xl dark:shadow-blue-500/20">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">No estás registrado como egresado</h3>
+                        <p className="text-gray-600 dark:text-gray-300 mb-6 transition-colors duration-300">Para ver tu información, primero debes registrarte como egresado.</p>
                         <Link
                             href={route('regEgresados')}
-                            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-lg font-medium"
+                            className="inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-700 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition-all duration-300 shadow-lg hover:shadow-blue-500/50 dark:hover:shadow-blue-700/50 text-lg font-medium"
                         >
                             Registrarse como Egresado
                         </Link>
@@ -201,23 +201,23 @@ export default function PerfilEgresado() {
                 ) : (
                     <div className="space-y-6">
                         {activeTab === 'ubicacion' && (
-                            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl dark:shadow-blue-500/20">
                                 <div className="p-6">
                                     <div className="flex justify-between items-center mb-6">
-                                        <h3 className="text-xl font-semibold text-gray-900">Mi Ubicación</h3>
+                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Mi Ubicación</h3>
                                     </div>
                                     <SimpleMapComponent />
                                 </div>
                             </div>
                         )}
                         {activeTab === 'informacion' && (
-                            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl dark:shadow-blue-500/20">
                                 <div className="p-6">
                                     <div className="flex justify-between items-center mb-6">
-                                        <h3 className="text-xl font-semibold text-gray-900">Información Personal</h3>
+                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Información Personal</h3>
                                         <Link
                                             href={route('regEgresados.edit')}
-                                            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                            className="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition-all duration-300 shadow-lg hover:shadow-blue-500/50 dark:hover:shadow-blue-700/50"
                                         >
                                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -226,34 +226,34 @@ export default function PerfilEgresado() {
                                         </Link>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="space-y-4">
+                                        <div className="space-y-4 transition-all duration-300">
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700">Nombre completo</label>
-                                                <p className="mt-1 text-lg text-gray-900">{datosEgresado?.user.name}</p>
+                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Nombre completo</label>
+                                                <p className="mt-1 text-lg text-gray-900 dark:text-white transition-colors duration-300">{datosEgresado?.user.name}</p>
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700">Identificación</label>
-                                                <p className="mt-1 text-lg text-gray-900">
+                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Identificación</label>
+                                                <p className="mt-1 text-lg text-gray-900 dark:text-white transition-colors duration-300">
                                                     {datosEgresado?.identificacion_tipo} - {datosEgresado?.identificacion_numero}
                                                 </p>
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700">Correo electrónico</label>
-                                                <p className="mt-1 text-lg text-gray-900">{datosEgresado?.user.email}</p>
+                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Correo electrónico</label>
+                                                <p className="mt-1 text-lg text-gray-900 dark:text-white transition-colors duration-300">{datosEgresado?.user.email}</p>
                                             </div>
                                         </div>
                                         <div className="space-y-4">
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700">Celular</label>
-                                                <p className="mt-1 text-lg text-gray-900">{datosEgresado?.celular}</p>
+                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Celular</label>
+                                                <p className="mt-1 text-lg text-gray-900 dark:text-white transition-colors duration-300">{datosEgresado?.celular}</p>
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700">Dirección</label>
-                                                <p className="mt-1 text-lg text-gray-900">{datosEgresado?.direccion}</p>
+                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Dirección</label>
+                                                <p className="mt-1 text-lg text-gray-900 dark:text-white transition-colors duration-300">{datosEgresado?.direccion}</p>
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700">Fecha de nacimiento</label>
-                                                <p className="mt-1 text-lg text-gray-900">
+                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Fecha de nacimiento</label>
+                                                <p className="mt-1 text-lg text-gray-900 dark:text-white transition-colors duration-300">
                                                     {datosEgresado?.fecha_nacimiento ? new Date(datosEgresado.fecha_nacimiento).toLocaleDateString() : 'No especificada'}
                                                 </p>
                                             </div>
@@ -265,10 +265,10 @@ export default function PerfilEgresado() {
 
                         {activeTab === 'formacion' && (
 
-                            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl dark:shadow-blue-500/20">
                                 <div className="p-6">
                                     <div className="flex justify-between items-center mb-6">
-                                        <h3 className="text-xl font-semibold text-gray-900">Formación Académica</h3>
+                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Formación Académica</h3>
                                         <Link
                                             href={route('formacion-academica')}
                                             className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
@@ -326,10 +326,10 @@ export default function PerfilEgresado() {
                         )}
 
                         {activeTab === 'experiencia' && (
-                            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl dark:shadow-blue-500/20">
                                 <div className="p-6">
                                     <div className="flex justify-between items-center mb-6">
-                                        <h3 className="text-xl font-semibold text-gray-900">Experiencia Laboral</h3>
+                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Experiencia Laboral</h3>
                                         <Link
                                             href={route('historial-laboral')}
                                             className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
@@ -406,10 +406,10 @@ export default function PerfilEgresado() {
                         )}
 
                         {activeTab === 'habilidades' && (
-                            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl dark:shadow-blue-500/20">
                                 <div className="p-6">
                                     <div className="flex justify-between items-center mb-6">
-                                        <h3 className="text-xl font-semibold text-gray-900">Habilidades</h3>
+                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Habilidades</h3>
                                         {habilidades.length > 0 && (
                                             <Link
                                                 href={route('habilidades.editar')}

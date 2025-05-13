@@ -66,24 +66,24 @@ export default function FormacionAcademica() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Formación Académica" />
             <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
+                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-700 dark:to-indigo-800">
                         <h1 className="text-2xl font-bold text-white mb-2">Formación Académica</h1>
-                        <p className="text-blue-100">Registra tu formación académica</p>
+                        <p className="text-blue-100 dark:text-blue-200">Registra tu formación académica</p>
                     </div>
 
                     <form onSubmit={submit} className="p-6 sm:p-8 space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <Label htmlFor="tipo_formacion" className="flex items-center gap-2 text-gray-700">
-                                    <GraduationCap className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="tipo_formacion" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <GraduationCap className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Tipo de Formación
                                 </Label>
                                 <select
                                     id="tipo_formacion"
                                     value={data.tipo_formacion}
                                     onChange={(e) => setData('tipo_formacion', e.target.value as FormacionForm['tipo_formacion'])}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                     required
                                 >
                                     <option value="">Seleccione un tipo</option>
@@ -96,8 +96,8 @@ export default function FormacionAcademica() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="titulo" className="flex items-center gap-2 text-gray-700">
-                                    <Award className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="titulo" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <Award className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Título Obtenido
                                 </Label>
                                 <Input
@@ -105,7 +105,7 @@ export default function FormacionAcademica() {
                                     type="text"
                                     value={data.titulo}
                                     onChange={(e) => setData('titulo', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     placeholder="Ej: Ingeniero en Sistemas"
                                     required
                                 />
@@ -113,8 +113,8 @@ export default function FormacionAcademica() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="institucion" className="flex items-center gap-2 text-gray-700">
-                                    <School className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="institucion" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <School className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Institución Educativa
                                 </Label>
                                 <Input
@@ -122,7 +122,7 @@ export default function FormacionAcademica() {
                                     type="text"
                                     value={data.institucion}
                                     onChange={(e) => setData('institucion', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     placeholder="Nombre de la institución"
                                     required
                                 />
@@ -130,8 +130,8 @@ export default function FormacionAcademica() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="fecha_realizacion" className="flex items-center gap-2 text-gray-700">
-                                    <Calendar className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="fecha_realizacion" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <Calendar className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Fecha de Realización
                                 </Label>
                                 <Input
@@ -139,7 +139,7 @@ export default function FormacionAcademica() {
                                     type="date"
                                     value={data.fecha_realizacion}
                                     onChange={(e) => setData('fecha_realizacion', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     required
                                 />
                                 <InputError message={errors.fecha_realizacion} />
@@ -151,14 +151,14 @@ export default function FormacionAcademica() {
                                 type="button"
                                 variant="outline"
                                 onClick={() => reset()}
-                                className="px-6 py-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+                                className="px-6 py-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                                 disabled={processing}
                             >
                                 Cancelar
                             </Button>
                             <Button
                                 type="submit"
-                                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 text-white hover:from-blue-700 hover:to-indigo-700 dark:hover:from-blue-800 dark:hover:to-indigo-800 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-200"
                                 disabled={processing}
                             >
                                 {processing ? 'Guardando...' : 'Guardar Formación'}
@@ -170,13 +170,13 @@ export default function FormacionAcademica() {
                 {/* Lista de formaciones */}
                 <div className="mt-8 space-y-6">
                     {formaciones.map((form, index) => (
-                        <Card key={index} className="p-6 hover:shadow-lg transition-shadow duration-300">
+                        <Card key={index} className="p-6 hover:shadow-lg dark:hover:shadow-gray-700/30 transition-all duration-300 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <h3 className="text-xl font-semibold text-gray-900">{form.titulo}</h3>
-                                    <Badge className="mt-2 bg-blue-100 text-blue-800">{form.tipo_formacion}</Badge>
+                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{form.titulo}</h3>
+                                    <Badge className="mt-2 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">{form.tipo_formacion}</Badge>
                                 </div>
-                                <div className="text-sm text-gray-600">
+                                <div className="text-sm text-gray-600 dark:text-gray-400">
                                     <p className="flex items-center gap-2">
                                         <School className="h-4 w-4" />
                                         {form.institucion}

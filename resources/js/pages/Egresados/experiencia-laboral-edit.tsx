@@ -95,24 +95,24 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Editar Experiencia Laboral" />
             <div className="max-w-[90rem] mx-auto py-8 px-4 sm:px-6 lg:px-8">
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
+                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-700 dark:to-indigo-800">
                         <h1 className="text-2xl font-bold text-white mb-2">Editar Experiencia Laboral</h1>
-                        <p className="text-blue-100">Actualiza los detalles de tu experiencia profesional</p>
+                        <p className="text-blue-100 dark:text-blue-200">Actualiza los detalles de tu experiencia profesional</p>
                     </div>
 
-                    <form onSubmit={submit} className="p-6 sm:p-8 space-y-6">
+                    <form onSubmit={submit} className="p-6 sm:p-8 space-y-6 dark:bg-gray-800">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <Label htmlFor="tipo_empleo" className="flex items-center gap-2 text-gray-700">
-                                    <Briefcase className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="tipo_empleo" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <Briefcase className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Tipo de Empleo
                                 </Label>
                                 <select
                                     id="tipo_empleo"
                                     value={data.tipo_empleo}
                                     onChange={(e) => setData('tipo_empleo', e.target.value as ExperienciaForm['tipo_empleo'])}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                     disabled={processing}
                                     required
                                 >
@@ -125,8 +125,8 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="nombre_empresa" className="flex items-center gap-2 text-gray-700">
-                                    <Building2 className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="nombre_empresa" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <Building2 className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Nombre de la Empresa
                                 </Label>
                                 <Input
@@ -134,7 +134,7 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                                     type="text"
                                     value={data.nombre_empresa}
                                     onChange={(e) => setData('nombre_empresa', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     disabled={processing}
                                     required
                                 />
@@ -142,8 +142,8 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="fecha_inicio" className="flex items-center gap-2 text-gray-700">
-                                    <Calendar className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="fecha_inicio" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <Calendar className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Fecha de Inicio
                                 </Label>
                                 <Input
@@ -151,7 +151,7 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                                     type="date"
                                     value={data.fecha_inicio}
                                     onChange={(e) => setData('fecha_inicio', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     disabled={processing}
                                     required
                                 />
@@ -159,8 +159,8 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="fecha_fin" className="flex items-center gap-2 text-gray-700">
-                                    <Calendar className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="fecha_fin" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <Calendar className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Fecha de Finalización
                                 </Label>
                                 <Input
@@ -168,22 +168,22 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                                     type="date"
                                     value={data.fecha_fin}
                                     onChange={(e) => setData('fecha_fin', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     disabled={processing}
                                 />
                                 <InputError message={errors.fecha_fin} />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="modalidad_trabajo" className="flex items-center gap-2 text-gray-700">
-                                    <MapPin className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="modalidad_trabajo" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <MapPin className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Modalidad de Trabajo
                                 </Label>
                                 <select
                                     id="modalidad_trabajo"
                                     value={data.modalidad_trabajo}
                                     onChange={(e) => setData('modalidad_trabajo', e.target.value as ExperienciaForm['modalidad_trabajo'])}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                     disabled={processing}
                                     required
                                 >
@@ -195,8 +195,8 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="correo_empresa" className="flex items-center gap-2 text-gray-700">
-                                    <Mail className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="correo_empresa" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <Mail className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Correo de la Empresa
                                 </Label>
                                 <Input
@@ -204,7 +204,7 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                                     type="email"
                                     value={data.correo_empresa}
                                     onChange={(e) => setData('correo_empresa', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     disabled={processing}
                                     placeholder="correo@empresa.com"
                                 />
@@ -212,8 +212,8 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="url_empresa" className="flex items-center gap-2 text-gray-700">
-                                    <Globe className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="url_empresa" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <Globe className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Sitio Web de la Empresa
                                 </Label>
                                 <Input
@@ -221,7 +221,7 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                                     type="url"
                                     value={data.url_empresa}
                                     onChange={(e) => setData('url_empresa', e.target.value)}
-                                    className="rounded-lg"
+                                    className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     disabled={processing}
                                     placeholder="https://"
                                 />
@@ -230,14 +230,14 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="servicios" className="flex items-center gap-2 text-gray-700">
+                            <Label htmlFor="servicios" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                                 Servicios/Productos de la Empresa
                             </Label>
                             <Textarea
                                 id="servicios"
                                 value={data.servicios}
                                 onChange={(e) => setData('servicios', e.target.value)}
-                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                 disabled={processing}
                                 rows={3}
                             />
@@ -245,14 +245,14 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="descripcion" className="flex items-center gap-2 text-gray-700">
+                            <Label htmlFor="descripcion" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                                 Descripción de Actividades
                             </Label>
                             <Textarea
                                 id="descripcion"
                                 value={data.descripcion}
                                 onChange={(e) => setData('descripcion', e.target.value)}
-                                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                 disabled={processing}
                                 rows={4}
                                 required
@@ -265,14 +265,14 @@ export default function ExperienciaLaboralEdit({ experiencia }: Props) {
                                 type="button"
                                 variant="outline"
                                 onClick={() => window.history.back()}
-                                className="px-6 py-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+                                className="px-6 py-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
                                 disabled={processing}
                             >
                                 Cancelar
                             </Button>
                             <Button
                                 type="submit"
-                                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 dark:from-blue-700 dark:to-indigo-800 dark:hover:from-blue-800 dark:hover:to-indigo-900 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                                 disabled={processing}
                             >
                                 {processing && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
