@@ -93,13 +93,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 
-    Route::prefix('api/egresado')->group(function () {
-        Route::get('/verificar-registro', [\App\Http\Controllers\EgresadoController::class, 'verificarRegistroCompleto'])->name('api.egresado.verificar-registro');
-        Route::get('/perfil', [\App\Http\Controllers\EgresadoController::class, 'obtenerPerfil'])->name('api.egresado.perfil');
-        Route::get('/datos', [\App\Http\Controllers\EgresadoController::class, 'obtenerDatos'])->name('api.egresado.datos');
-        Route::get('/detalle/{id}', [\App\Http\Controllers\EgresadoController::class, 'detalle'])->name('api.egresado.detalle');
-    });
+    Route::prefix('api')->group(function () {
+        Route::get('/obtener-ubicaciones', [UbicacionController::class, 'obtenerUbicaciones'])->name('api.ubicaciones.obtener');
 
+        Route::prefix('egresado')->group(function () {
+            Route::get('/verificar-registro', [\App\Http\Controllers\EgresadoController::class, 'verificarRegistroCompleto'])->name('api.egresado.verificar-registro');
+            Route::get('/perfil', [\App\Http\Controllers\EgresadoController::class, 'obtenerPerfil'])->name('api.egresado.perfil');
+            Route::get('/datos', [\App\Http\Controllers\EgresadoController::class, 'obtenerDatos'])->name('api.egresado.datos');
+            Route::get('/detalle/{id}', [\App\Http\Controllers\EgresadoController::class, 'detalle'])->name('api.egresado.detalle');
+        });
+    });
     // Ruta para ver noticias
     Route::get('/VerNoticias', [NoticiaController::class, 'verNoticias'])->name('noticias.ver');
 

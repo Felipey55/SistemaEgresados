@@ -109,7 +109,7 @@ export default function DetalleEgresado({ egresado }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Perfil de ${egresado?.nombre || 'Egresado'}`} />
-            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-gray-100">
+            <div className="max-w-7xl mx-auto py-6 sm:px-4 md:px-6 lg:px-8 bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-300">
                 <div className="mb-6">
                     <Button
                         variant="outline"
@@ -122,11 +122,11 @@ export default function DetalleEgresado({ egresado }: Props) {
                 </div>
 
                 {/* Navegación por pestañas */}
-                <div className="bg-white border-b border-gray-200 shadow-sm mb-6 rounded-lg overflow-hidden">
+                <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm mb-6 rounded-lg overflow-hidden transition-all duration-300">
                     <nav className="flex justify-center space-x-8">
                         <button
                             onClick={() => setActiveTab('informacion')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'informacion' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'informacion' ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'} transition-colors duration-200`}
                         >
                             Información Personal
                         </button>
@@ -159,9 +159,9 @@ export default function DetalleEgresado({ egresado }: Props) {
 
                 {/* Contenido según la pestaña activa */}
                 {activeTab === 'informacion' && (
-                    <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
-                        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8">
-                            <div className="flex items-center gap-6">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-300">
+                        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-800 dark:to-indigo-900 text-white p-6 sm:p-8 transition-all duration-300">
+                            <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
                                 <div className="w-32 h-32 rounded-full bg-white p-1 shadow-xl">
                                     <img
                                         src="/img/default-avatar.png"
@@ -178,52 +178,52 @@ export default function DetalleEgresado({ egresado }: Props) {
                         </div>
 
                         <div className="p-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
                                     <User className="h-5 w-5 text-blue-500" />
                                     <div>
-                                        <p className="text-sm text-gray-500">Nombre completo</p>
-                                        <p className="text-base font-medium text-gray-900">{egresado?.nombre}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Nombre completo</p>
+                                        <p className="text-base font-medium text-gray-900 dark:text-white">{egresado?.nombre}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
                                     <Badge className="h-5 w-5 text-blue-500" />
                                     <div>
-                                        <p className="text-sm text-gray-500">Identificación</p>
-                                        <p className="text-base font-medium text-gray-900">{egresado?.identificacion}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Identificación</p>
+                                        <p className="text-base font-medium text-gray-900 dark:text-white">{egresado?.identificacion}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
                                     <Mail className="h-5 w-5 text-blue-500" />
                                     <div>
-                                        <p className="text-sm text-gray-500">Correo electrónico</p>
-                                        <p className="text-base font-medium text-gray-900">{egresado?.email}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Correo electrónico</p>
+                                        <p className="text-base font-medium text-gray-900 dark:text-white">{egresado?.email}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
                                     <Phone className="h-5 w-5 text-blue-500" />
                                     <div>
-                                        <p className="text-sm text-gray-500">Celular</p>
-                                        <p className="text-base font-medium text-gray-900">{egresado?.celular}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Celular</p>
+                                        <p className="text-base font-medium text-gray-900 dark:text-white">{egresado?.celular}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
                                     <Home className="h-5 w-5 text-blue-500" />
                                     <div>
-                                        <p className="text-sm text-gray-500">Dirección</p>
-                                        <p className="text-base font-medium text-gray-900">{egresado?.direccion}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Dirección</p>
+                                        <p className="text-base font-medium text-gray-900 dark:text-white">{egresado?.direccion}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
                                     <CalendarIcon className="h-5 w-5 text-blue-500" />
                                     <div>
-                                        <p className="text-sm text-gray-500">Fecha de nacimiento</p>
-                                        <p className="text-base font-medium text-gray-900">{egresado?.fecha_nacimiento || 'No especificada'}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de nacimiento</p>
+                                        <p className="text-base font-medium text-gray-900 dark:text-white">{egresado?.fecha_nacimiento || 'No especificada'}</p>
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +232,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                 )}
 
                 {activeTab === 'habilidades' && (
-                    <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-300">
                         <div className="p-6">
                             <h3 className="text-xl font-semibold text-gray-900 mb-4">Habilidades</h3>
                         </div>
@@ -281,7 +281,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                 )}
 
                 {activeTab === 'formacion' && (
-                    <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-300">
                         <div className="p-6 border-b border-gray-100">
                             <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                                 <Building2 className="h-5 w-5 text-blue-600" />
@@ -322,7 +322,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                 )}
 
                 {activeTab === 'experiencia' && (
-                    <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-300">
                         <div className="p-6 border-b border-gray-100">
                             <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                                 <Briefcase className="h-5 w-5 text-blue-600" />
@@ -394,7 +394,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                 )}
 
                 {activeTab === 'ubicacion' && (
-                    <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-300">
                         <div className="p-6 border-b border-gray-100">
                             <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                                 <Map className="h-5 w-5 text-blue-600" />

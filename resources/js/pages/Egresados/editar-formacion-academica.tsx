@@ -57,21 +57,13 @@ export default function EditarFormacion({ id }: Props) {
     const showNotification = (message: string, isSuccess: boolean) => {
         const notification = document.createElement('div');
         notification.textContent = message;
-        notification.style.position = 'fixed';
-        notification.style.top = '20px';
-        notification.style.right = '20px';
-        notification.style.padding = '10px 20px';
-        notification.style.borderRadius = '5px';
-        notification.style.backgroundColor = isSuccess ? 'green' : 'red';
-        notification.style.color = 'white';
-        notification.style.fontSize = '16px';
-        notification.style.zIndex = '1000';
-
+        notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-all duration-300 ${isSuccess ? 'bg-green-600 dark:bg-green-500' : 'bg-red-600 dark:bg-red-500'} text-white`;
         document.body.appendChild(notification);
-
+        
         setTimeout(() => {
-            notification.remove();
-        }, 3000);
+            notification.classList.add('opacity-0');
+            setTimeout(() => notification.remove(), 300);
+        }, 2700);
     };
 
     const submit: FormEventHandler = (e) => {
@@ -102,17 +94,17 @@ export default function EditarFormacion({ id }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Editar Formación Académica" />
             <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
+                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-700 dark:to-indigo-800">
                         <h1 className="text-2xl font-bold text-white mb-2">Editar Formación Académica</h1>
-                        <p className="text-blue-100">Actualiza tu información académica</p>
+                        <p className="text-blue-100 dark:text-blue-200">Actualiza tu información académica</p>
                     </div>
 
                     <form onSubmit={submit} className="p-6 sm:p-8 space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <Label htmlFor="tipo_formacion" className="flex items-center gap-2 text-gray-700">
-                                    <GraduationCap className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="tipo_formacion" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <GraduationCap className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Tipo de Formación
                                 </Label>
                                 <select
@@ -121,7 +113,7 @@ export default function EditarFormacion({ id }: Props) {
                                     value={data.tipo_formacion}
                                     onChange={(e) => setData('tipo_formacion', e.target.value as FormacionForm['tipo_formacion'])}
                                     disabled={processing}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                 >
                                     <option value="Pregrado">Pregrado</option>
                                     <option value="Especialización">Especialización</option>
@@ -132,8 +124,8 @@ export default function EditarFormacion({ id }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="titulo" className="flex items-center gap-2 text-gray-700">
-                                    <Award className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="titulo" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <Award className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Título Obtenido
                                 </Label>
                                 <Input
@@ -143,15 +135,15 @@ export default function EditarFormacion({ id }: Props) {
                                     value={data.titulo}
                                     onChange={(e) => setData('titulo', e.target.value)}
                                     disabled={processing}
-                                    className="rounded-lg"
+                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     placeholder="Ej: Ingeniero en Sistemas"
                                 />
                                 <InputError message={errors.titulo} />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="institucion" className="flex items-center gap-2 text-gray-700">
-                                    <School className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="institucion" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <School className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Institución Educativa
                                 </Label>
                                 <Input
@@ -161,15 +153,15 @@ export default function EditarFormacion({ id }: Props) {
                                     value={data.institucion}
                                     onChange={(e) => setData('institucion', e.target.value)}
                                     disabled={processing}
-                                    className="rounded-lg"
+                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     placeholder="Nombre de la institución"
                                 />
                                 <InputError message={errors.institucion} />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="fecha_realizacion" className="flex items-center gap-2 text-gray-700">
-                                    <Calendar className="h-4 w-4 text-blue-500" />
+                                <Label htmlFor="fecha_realizacion" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                                    <Calendar className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                                     Fecha de Realización
                                 </Label>
                                 <Input
@@ -179,7 +171,7 @@ export default function EditarFormacion({ id }: Props) {
                                     value={data.fecha_realizacion}
                                     onChange={(e) => setData('fecha_realizacion', e.target.value)}
                                     disabled={processing}
-                                    className="rounded-lg"
+                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400 [&::-webkit-calendar-picker-indicator]:dark:invert"
                                 />
                                 <InputError message={errors.fecha_realizacion} />
                             </div>
@@ -189,14 +181,14 @@ export default function EditarFormacion({ id }: Props) {
                                 type="button"
                                 variant="outline"
                                 onClick={() => window.history.back()}
-                                className="px-6 py-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+                                className="px-6 py-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                                 disabled={processing}
                             >
                                 Cancelar
                             </Button>
                             <Button
                                 type="submit"
-                                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 text-white hover:from-blue-700 hover:to-indigo-700 dark:hover:from-blue-800 dark:hover:to-indigo-800 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-200"
                                 disabled={processing}
                             >
                                 {processing && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}

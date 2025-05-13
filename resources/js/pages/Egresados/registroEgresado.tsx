@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle, Camera, MapPin, Phone, Calendar, User } from 'lucide-react';
+import { LoaderCircle, Camera, MapPin, Phone, Calendar, User, Mail, GraduationCap } from 'lucide-react';
 import { FormEventHandler } from 'react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -70,116 +70,78 @@ export default function Dashboard() {
             },
         });
     };
+    
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Registro Egresado" />
             <div className="max-w-6xl mx-auto px-4 py-8">
-                <Card className="p-8 shadow-xl rounded-xl bg-white dark:bg-gray-800/50 backdrop-blur-lg border border-gray-200 dark:border-gray-700">
+                <Card className="p-8 shadow-xl rounded-xl bg-gray-900/95 border border-gray-800 transition-all duration-300 hover:shadow-2xl backdrop-blur-sm">
                     <form className="flex flex-col gap-8" onSubmit={submit}>
-                        <div className="text-center space-y-3">
-                            <h1 className="text-4xl font-bold text-blue-600 dark:text-blue-500">Registro como Egresado</h1>
-                            <p className="text-gray-600 dark:text-gray-400">Complete el formulario para registrarse en nuestra plataforma</p>
+                        <div className="text-center space-y-4">
+                            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Registro como Egresado</h1>
+                            <p className="text-gray-400 text-lg">Complete el formulario para registrarse en nuestra plataforma</p>
                         </div>
+                        
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        </div>
-                        <div className="space-y-4">
-                            <div className="grid gap-2">
-                                <Label htmlFor="identificacion_tipo" className="flex items-center gap-2">
-                                    <User className="h-4 w-4" />
-                                    <span>Tipo de Identificación</span>
-                                </Label>
-                                <select
-                                    id="identificacion_tipo"
-                                    required
-                                    value={data.identificacion_tipo}
-                                    onChange={(e) => setData('identificacion_tipo', e.target.value as 'C.C.' | 'C.E.')}
-                                    disabled={processing}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm hover:border-blue-400 dark:hover:border-blue-500"
-                                >
-                                    <option value="C.C.">Cédula de Ciudadanía</option>
-                                    <option value="C.E.">Cédula de Extranjería</option>
-                                </select>
-                                <InputError message={errors.identificacion_tipo} />
-                            </div>
-
-                            <div className="grid gap-2">
-                                <Label htmlFor="identificacion_numero">Número de Identificación</Label>
-                                <Input
-                                    id="identificacion_numero"
-                                    type="text"
-                                    required
-                                    value={data.identificacion_numero}
-                                    onChange={(e) => setData('identificacion_numero', e.target.value)}
-                                    disabled={processing}
-                                    placeholder="Número de identificación"
-                                    className="px-4 py-3 rounded-xl border-gray-200 dark:border-gray-700 focus:ring-blue-500 shadow-sm hover:border-blue-400 dark:hover:border-blue-500"
-                                />
-                                <InputError message={errors.identificacion_numero} />
-                            </div>
-
-                            <div className="grid gap-4">
-                                <Label htmlFor="fotografia" className="flex items-center gap-2 text-lg font-medium">
-                                    <Camera className="h-5 w-5 text-blue-500" />
-                                    <span>Fotografía</span>
-                                </Label>
-                                <div className="relative space-y-4">
-                                    <div className="relative group cursor-pointer">
-                                        <Input
-                                            id="fotografia"
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={(e) => {
-                                                const file = e.target.files ? e.target.files[0] : null;
-                                                setData('fotografia', file);
-                                            }}
-                                            disabled={processing}
-                                            className="hidden"
-                                        />
-                                        <div className="flex items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-2xl hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
-                                            {!data.fotografia ? (
-                                                <div className="text-center space-y-2">
-                                                    <Camera className="h-10 w-10 mx-auto text-gray-400" />
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400">Haga clic para seleccionar una foto</p>
-                                                </div>
-                                            ) : (
-                                                <div className="relative w-full h-full">
-                                                    <img
-                                                        src={URL.createObjectURL(data.fotografia)}
-                                                        alt="Vista previa"
-                                                        className="w-full h-full object-cover rounded-2xl"
-                                                    />
-                                                    <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex items-center justify-center">
-                                                        <Camera className="h-10 w-10 text-white" />
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <InputError message={errors.fotografia} />
+                            {/* Columna izquierda */}
+                            <div className="space-y-6">
+                                <div className="grid gap-4">
+                                    <Label htmlFor="identificacion_tipo" className="flex items-center gap-2 text-lg font-medium text-gray-300">
+                                        <User className="h-5 w-5 text-blue-400" />
+                                        <span>Tipo de Identificación</span>
+                                    </Label>
+                                    <select
+                                        id="identificacion_tipo"
+                                        required
+                                        value={data.identificacion_tipo}
+                                        onChange={(e) => setData('identificacion_tipo', e.target.value as 'C.C.' | 'C.E.')}
+                                        disabled={processing}
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-gray-800 text-white shadow-sm hover:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        <option value="C.C.">Cédula de Ciudadanía</option>
+                                        <option value="C.E.">Cédula de Extranjería</option>
+                                    </select>
+                                    <InputError message={errors.identificacion_tipo} />
                                 </div>
-                            </div>
 
-                            <div className="space-y-4">
-                                <div className="grid gap-3">
-                                    <Label htmlFor="celular" className="flex items-center gap-2 text-lg font-medium">
-                                        <Phone className="h-5 w-5 text-blue-500" />
+                                <div className="grid gap-4">
+                                    <Label htmlFor="identificacion_numero" className="flex items-center gap-2 text-lg font-medium text-gray-300">
+                                        <GraduationCap className="h-5 w-5 text-blue-400" />
+                                        <span>Número de Identificación</span>
+                                    </Label>
+                                    <Input
+                                        id="identificacion_numero"
+                                        type="text"
+                                        required
+                                        value={data.identificacion_numero}
+                                        onChange={(e) => setData('identificacion_numero', e.target.value)}
+                                        disabled={processing}
+                                        placeholder="Número de identificación"
+                                        className="px-4 py-3 rounded-xl border-gray-700 bg-gray-800 text-white focus:ring-blue-500 shadow-sm hover:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    />
+                                    <InputError message={errors.identificacion_numero} />
+                                </div>
+                                
+                                <div className="grid gap-4">
+                                    <Label htmlFor="celular" className="flex items-center gap-2 text-lg font-medium text-gray-300">
+                                        <Phone className="h-5 w-5 text-blue-400" />
                                         <span>Celular</span>
                                     </Label>
                                     <Input
                                         id="celular"
-                                        type="text"
+                                        type="tel"
                                         value={data.celular}
                                         onChange={(e) => setData('celular', e.target.value)}
                                         disabled={processing}
                                         placeholder="Número de celular"
-                                        className="px-4 py-3 rounded-xl border-gray-200 dark:border-gray-700 focus:ring-blue-500 shadow-sm hover:border-blue-400 dark:hover:border-blue-500"
+                                        className="px-4 py-3 rounded-xl border-gray-700 bg-gray-800 text-white focus:ring-blue-500 shadow-sm hover:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                                     />
                                     <InputError message={errors.celular} />
                                 </div>
-
-                                <div className="grid gap-3">
-                                    <Label htmlFor="direccion" className="flex items-center gap-2 text-lg font-medium">
-                                        <MapPin className="h-5 w-5 text-blue-500" />
+                                
+                                <div className="grid gap-4">
+                                    <Label htmlFor="direccion" className="flex items-center gap-2 text-lg font-medium text-gray-300">
+                                        <MapPin className="h-5 w-5 text-blue-400" />
                                         <span>Dirección</span>
                                     </Label>
                                     <Input
@@ -188,15 +150,61 @@ export default function Dashboard() {
                                         value={data.direccion}
                                         onChange={(e) => setData('direccion', e.target.value)}
                                         disabled={processing}
-                                        placeholder="Dirección"
-                                        className="px-4 py-3 rounded-xl border-gray-200 dark:border-gray-700 focus:ring-blue-500 shadow-sm hover:border-blue-400 dark:hover:border-blue-500"
+                                        placeholder="Dirección completa"
+                                        className="px-4 py-3 rounded-xl border-gray-700 bg-gray-800 text-white focus:ring-blue-500 shadow-sm hover:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                                     />
                                     <InputError message={errors.direccion} />
                                 </div>
+                            </div>
+                            
+                            {/* Columna derecha */}
+                            <div className="space-y-6">
+                                <div className="grid gap-4">
+                                    <Label htmlFor="fotografia" className="flex items-center gap-2 text-lg font-medium text-gray-300">
+                                        <Camera className="h-5 w-5 text-blue-400" />
+                                        <span>Fotografía</span>
+                                    </Label>
+                                    <div className="relative">
+                                        <label htmlFor="fotografia" className="relative group cursor-pointer block">
+                                            <Input
+                                                id="fotografia"
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                    const file = e.target.files ? e.target.files[0] : null;
+                                                    setData('fotografia', file);
+                                                }}
+                                                disabled={processing}
+                                                className="hidden"
+                                            />
+                                            <div className="flex items-center justify-center w-full h-48 border-2 border-dashed border-gray-600 rounded-2xl hover:border-blue-400 transition-all duration-300 bg-gray-800/50">
+                                                {!data.fotografia ? (
+                                                    <div className="text-center space-y-3">
+                                                        <Camera className="h-16 w-16 mx-auto text-blue-400 animate-pulse" />
+                                                        <p className="text-gray-400">Haga clic para seleccionar una foto</p>
+                                                        <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG</p>
+                                                    </div>
+                                                ) : (
+                                                    <div className="relative w-full h-full">
+                                                        <img
+                                                            src={URL.createObjectURL(data.fotografia)}
+                                                            alt="Vista previa"
+                                                            className="w-full h-full object-cover rounded-2xl"
+                                                        />
+                                                        <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex items-center justify-center">
+                                                            <Camera className="h-16 w-16 text-white" />
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </label>
+                                        <InputError message={errors.fotografia} />
+                                    </div>
+                                </div>
 
-                                <div className="grid gap-3">
-                                    <Label htmlFor="fecha_nacimiento" className="flex items-center gap-2 text-lg font-medium">
-                                        <Calendar className="h-5 w-5 text-blue-500" />
+                                <div className="grid gap-4">
+                                    <Label htmlFor="fecha_nacimiento" className="flex items-center gap-2 text-lg font-medium text-gray-300">
+                                        <Calendar className="h-5 w-5 text-blue-400" />
                                         <span>Fecha de Nacimiento</span>
                                     </Label>
                                     <Input
@@ -206,14 +214,14 @@ export default function Dashboard() {
                                         value={data.fecha_nacimiento}
                                         onChange={(e) => setData('fecha_nacimiento', e.target.value)}
                                         disabled={processing}
-                                        className="px-4 py-3 rounded-xl border-gray-200 dark:border-gray-700 focus:ring-blue-500 shadow-sm hover:border-blue-400 dark:hover:border-blue-500 [&::-webkit-calendar-picker-indicator]:dark:invert"
+                                        className="px-4 py-3 rounded-xl border-gray-700 bg-gray-800 text-white focus:ring-blue-500 shadow-sm hover:border-blue-500 [&::-webkit-calendar-picker-indicator]:invert disabled:opacity-50 disabled:cursor-not-allowed"
                                     />
                                     <InputError message={errors.fecha_nacimiento} />
                                 </div>
 
-                                <div className="grid gap-3">
-                                    <Label htmlFor="genero" className="flex items-center gap-2 text-lg font-medium">
-                                        <User className="h-5 w-5 text-blue-500" />
+                                <div className="grid gap-4">
+                                    <Label htmlFor="genero" className="flex items-center gap-2 text-lg font-medium text-gray-300">
+                                        <User className="h-5 w-5 text-blue-400" />
                                         <span>Género</span>
                                     </Label>
                                     <select
@@ -222,7 +230,7 @@ export default function Dashboard() {
                                         value={data.genero}
                                         onChange={(e) => setData('genero', e.target.value)}
                                         disabled={processing}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm hover:border-blue-400 dark:hover:border-blue-500"
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-gray-800 text-white shadow-sm hover:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         <option value="">Seleccione un género</option>
                                         <option value="Masculino">Masculino</option>
@@ -234,10 +242,11 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className="mt-10">
+                        
+                        <div className="mt-8">
                             <Button
                                 type="submit"
-                                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl transition-all transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold px-8 py-5 rounded-xl transition-all transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={processing}
                             >
                                 {processing ? (
@@ -253,7 +262,6 @@ export default function Dashboard() {
                     </form>
                 </Card>
             </div>
-
         </AppLayout>
     );
 }
