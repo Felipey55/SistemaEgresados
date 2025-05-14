@@ -33,7 +33,16 @@ interface Location {
     id?: number;
     latitud: number;
     longitud: number;
-    nombre?: string;
+    nombre: string;
+    carrera?: string;
+    año_egreso?: string;
+    egresado?: {
+        nombre: string;
+        formacionAcademica?: Array<{
+            titulo: string;
+            fecha_realizacion: string;
+        }>;
+    };
 }
 
 type DashboardProps = {
@@ -159,7 +168,7 @@ export default function Dashboard({
                     <Text style={styles.subtitle}>Formación Académica</Text>
                     <View style={styles.table}>
                         {distribucionFormacionAcademica.map((item, index) => (
-                            <View key={index} style={[styles.tableRow, index === 0 ? styles.tableHeader : null]}>
+                            <View key={index} style={[styles.tableRow, index === 0 ? styles.tableHeader : {}]}>
                                 <Text style={styles.tableCell}>{item.titulo}</Text>
                                 <Text style={styles.tableCell}>{item.institucion}</Text>
                                 <Text style={styles.tableCell}>{item.total}</Text>
@@ -220,27 +229,115 @@ export default function Dashboard({
 
     const mostrarUbicaciones = (ubicaciones: Location[]) => {
         if (!mapRef.current) return;
-
+    
         // Limpiar marcadores existentes
         markersRef.current.forEach(marker => marker.remove());
         markersRef.current = [];
-
+    
         // Crear nuevos marcadores
         const bounds = L.latLngBounds([]);
         ubicaciones.forEach((ubicacion, index) => {
+            // Convertir coordenadas a números y validar
+            const lat = typeof ubicacion.latitud === 'string' ? parseFloat(ubicacion.latitud) : ubicacion.latitud;
+            const lng = typeof ubicacion.longitud === 'string' ? parseFloat(ubicacion.longitud) : ubicacion.longitud;
+            
+            if (isNaN(lat) || isNaN(lng)) {
+                console.error('Coordenadas inválidas para:', ubicacion);
+                return;
+            }
+            
+            ubicacion.latitud = lat;
+            ubicacion.longitud = lng;
+
+            // Validar el rango de las coordenadas
+            if (ubicacion.latitud < -90 || ubicacion.latitud > 90 || 
+                ubicacion.longitud < -180 || ubicacion.longitud > 180) {
+                console.error('Coordenadas fuera de rango:', ubicacion);
+                return;
+            }
+
+            const nombre = ubicacion.egresado?.nombre || ubicacion.nombre || 'Egresado sin nombre registrado';
+            const formacionAcademica = ubicacion.egresado?.formacionAcademica || [];
+            const ultimaFormacion = formacionAcademica.length > 0 ? formacionAcademica[0] : null;
+            const titulo = ultimaFormacion?.titulo || ubicacion.carrera || 'No especificado';
+            const fechaRealizacion = ultimaFormacion?.fecha_realizacion ? new Date(ultimaFormacion.fecha_realizacion).toLocaleDateString() : ubicacion.año_egreso || 'No especificada';
+
             const marker = L.marker([ubicacion.latitud, ubicacion.longitud])
                 .addTo(mapRef.current!)
-                .bindPopup(`Ubicación ${ubicacion.nombre || (index + 1)}`);
+                .bindPopup(`
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 max-w-xs">
+                        <h3 class="text-lg font-bold text-blue-600 dark:text-blue-400">${nombre}</h3>
+                    </div>
+                `, {
+                    className: 'custom-popup',
+                    maxWidth: 300,
+                    closeButton: false
+                })
+                .on('mouseover', function (e) {
+                    (e.target as L.Marker).openPopup();
+                })
+                .on('mouseout', function (e) {
+                    (e.target as L.Marker).closePopup();
+                });
+                
+            // Añadir clase personalizada al popup
+            const popup = marker.getPopup();
+            const popupElement = popup?.getElement();
+            if (popupElement) {
+                popupElement.className += ' custom-popup-transition';
+            }
             
             markersRef.current.push(marker);
             bounds.extend([ubicacion.latitud, ubicacion.longitud]);
         });
-
+    
         // Ajustar la vista para mostrar todos los marcadores
-        if (ubicaciones.length > 0) {
+        if (markersRef.current.length > 0) {
             mapRef.current.fitBounds(bounds, { padding: [50, 50] });
+        } else {
+            // Si no hay marcadores válidos, centrar en Colombia
+            mapRef.current.setView([4.6097, -74.0817], 6);
         }
     };
+
+    // Estilos personalizados para el popup del mapa
+    useEffect(() => {
+        // Agregar estilos CSS personalizados para el popup
+        const style = document.createElement('style');
+        style.textContent = `
+            .custom-popup .leaflet-popup-content-wrapper {
+                border-radius: 0.75rem;
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }
+            .custom-popup .leaflet-popup-content {
+                margin: 0;
+                line-height: 1.4;
+            }
+            .custom-popup .leaflet-popup-tip {
+                background-color: white;
+            }
+            .custom-popup-transition {
+                opacity: 0;
+                transform: translateY(10px);
+                animation: fadeInUp 0.3s ease forwards;
+            }
+            @keyframes fadeInUp {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .dark .custom-popup .leaflet-popup-tip {
+                background-color: rgb(31, 41, 55);
+            }
+        `;
+        document.head.appendChild(style);
+
+        return () => {
+            document.head.removeChild(style);
+        };
+    }, []);
 
     useEffect(() => {
         if (mapContainerRef.current && !mapRef.current) {
