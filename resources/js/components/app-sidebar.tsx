@@ -3,7 +3,7 @@ import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -53,7 +53,26 @@ const footerNavItems: NavItem[] = [
     },
 ];
 
+const getFilteredMenuItems = (roleId: number): NavItem[] => {
+    switch (roleId) {
+        case 1: // Admin
+            return mainNavItems;
+        case 2: // Coordinador
+            return mainNavItems.filter(item => item.href !== '/modUsers');
+        case 3: // Egresado
+            return mainNavItems.filter(item => 
+                ['/Egresados/perfil', '/VerNoticias'].includes(item.href)
+            );
+        default:
+            return [];
+    }
+};
+
 export function AppSidebar() {
+    const { auth } = usePage().props;
+    const { user } = auth as { user: { role_id: number } };
+    const filteredItems = getFilteredMenuItems(user.role_id);
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -69,7 +88,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={filteredItems} />
             </SidebarContent>
 
             <SidebarFooter>
