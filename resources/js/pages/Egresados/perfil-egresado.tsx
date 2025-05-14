@@ -217,7 +217,7 @@ export default function PerfilEgresado() {
                     </nav>
                 </div>
 
-                <div className="mt-6">
+{/*                 <div className="mt-6">
                     {!isRegistered && (
                         <div className="bg-white shadow overflow-hidden sm:rounded-lg p-6 text-center">
                             <h3 className="text-lg font-medium text-gray-900 mb-4">No estás registrado como egresado</h3>
@@ -229,7 +229,7 @@ export default function PerfilEgresado() {
                             </div>
                         </div>
                     )}
-                </div>
+                </div> */}
                 {!isRegistered ? (
                     <div className="bg-white shadow-lg rounded-lg p-8 text-center">
                         <h3 className="text-xl font-semibold text-gray-900 mb-4">No estás registrado como egresado</h3>
