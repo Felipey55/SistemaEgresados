@@ -197,6 +197,14 @@ export default function DetalleEgresado({ egresado }: Props) {
                                     </div>
                                 </div>
 
+                                <div className="col-span-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-all duration-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:shadow-md">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <Map className="h-5 w-5 text-blue-500" />
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Ubicación en el Mapa</p>
+                                    </div>
+                                    <SimpleMapComponent />
+                                </div>
+
                                 <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:bg-blue-50 dark:hover:bg-gray-700 hover:shadow-md">
                                     <Mail className="h-5 w-5 text-blue-500" />
                                     <div>
