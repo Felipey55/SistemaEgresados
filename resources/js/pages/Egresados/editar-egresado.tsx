@@ -2,7 +2,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle, Users, CreditCard, Phone, MapPin, Calendar, UserCircle2 } from 'lucide-react';
-import { FormEventHandler, useEffect } from 'react';
+import { FormEventHandler, useEffect, useState } from 'react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,6 +28,20 @@ type EditForm = {
 };
 
 export default function EditarEgresado() {
+    const [activeIcon, setActiveIcon] = useState<string | null>(null);
+
+    // Función para activar la animación del icono
+    const animateIcon = (iconId: string) => {
+        setActiveIcon(iconId);
+        setTimeout(() => setActiveIcon(null), 2000);
+    };
+
+    // Función para obtener la clase de animación según el icono
+    const getAnimationClass = (iconId: string) => {
+        if (activeIcon !== iconId) return '';
+        return 'animate-bounce duration-1000';
+    };
+
     const { data, setData, put, processing, errors } = useForm<EditForm>({
         identificacion_tipo: 'C.C.',
         identificacion_numero: '',
@@ -93,16 +107,28 @@ export default function EditarEgresado() {
             <Head title="Editar Información Personal" />
             <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
                 <Card className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
-                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-700 dark:to-indigo-800">
-                        <h1 className="text-2xl font-bold text-white mb-2">Editar Información Personal</h1>
-                        <p className="text-blue-100 dark:text-blue-200">Actualiza tus datos personales</p>
+                    <div 
+                        className="p-6 sm:p-8 relative overflow-hidden"
+                        style={{
+                            backgroundImage: 'url(/images/fondoDash.jpg)',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                        }}
+                    >
+                        <div className="relative z-10">
+                            <h1 className="text-2xl font-bold text-white mb-2 text-shadow hover:scale-105 transition-transform duration-300">Editar Información Personal</h1>
+                            <p className="text-white text-shadow hover:scale-105 transition-transform duration-300">Actualiza tus datos personales</p>
+                        </div>
                     </div>
 
                     <form onSubmit={submit} className="p-6 sm:p-8 space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
                                 <Label htmlFor="identificacion_tipo" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <CreditCard className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                                    <CreditCard 
+                                            id="credit-card-icon"
+                                            className={`h-4 w-4 text-blue-500 dark:text-blue-400 transform transition-transform duration-300 hover:scale-125 hover:rotate-12 ${getAnimationClass('credit-card-icon')}`} 
+                                        />
                                     Tipo de Identificación
                                 </Label>
                                 <select
@@ -110,8 +136,9 @@ export default function EditarEgresado() {
                                     required
                                     value={data.identificacion_tipo}
                                     onChange={(e) => setData('identificacion_tipo', e.target.value as 'C.C.' | 'C.E.')}
+                                    onFocus={() => animateIcon('credit-card-icon')}
                                     disabled={processing}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-2 rounded-lg border-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-300 focus:ring-blue-500 dark:focus:ring-blue-400"
                                 >
                                     <option value="C.C.">C.C.</option>
                                     <option value="C.E.">C.E.</option>
@@ -121,7 +148,10 @@ export default function EditarEgresado() {
 
                             <div className="space-y-2">
                                 <Label htmlFor="identificacion_numero" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <UserCircle2 className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                                    <UserCircle2 
+                                            id="user-icon"
+                                            className={`h-4 w-4 text-blue-500 dark:text-blue-400 transform transition-transform duration-300 hover:scale-125 hover:rotate-12 ${getAnimationClass('user-icon')}`} 
+                                        />
                                     Número de Identificación
                                 </Label>
                                 <Input
@@ -130,16 +160,20 @@ export default function EditarEgresado() {
                                     required
                                     value={data.identificacion_numero}
                                     onChange={(e) => setData('identificacion_numero', e.target.value)}
+                                    onFocus={() => animateIcon('user-icon')}
                                     disabled={processing}
                                     placeholder="Número de identificación"
-                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
+                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-2 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-300 focus:ring-blue-500 dark:focus:ring-blue-400"
                                 />
                                 <InputError message={errors.identificacion_numero} />
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="fotografia" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <Users className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                                    <Users 
+                                            id="photo-icon"
+                                            className={`h-4 w-4 text-blue-500 dark:text-blue-400 transform transition-transform duration-300 hover:scale-125 hover:rotate-12 ${getAnimationClass('photo-icon')}`} 
+                                        />
                                     Fotografía
                                 </Label>
                                 <Input
@@ -150,8 +184,9 @@ export default function EditarEgresado() {
                                         const file = e.target.files ? e.target.files[0] : null;
                                         setData('fotografia', file);
                                     }}
+                                    onFocus={() => animateIcon('photo-icon')}
                                     disabled={processing}
-                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900/20 dark:file:text-blue-400"
+                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-2 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-300 focus:ring-blue-500 dark:focus:ring-blue-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900/20 dark:file:text-blue-400"
                                 />
                                 {data.fotografia && (
                                     <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
@@ -169,7 +204,10 @@ export default function EditarEgresado() {
 
                             <div className="space-y-2">
                                 <Label htmlFor="celular" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <Phone className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                                    <Phone 
+                                            id="phone-icon"
+                                            className={`h-4 w-4 text-blue-500 dark:text-blue-400 transform transition-transform duration-300 hover:scale-125 hover:rotate-12 ${getAnimationClass('phone-icon')}`} 
+                                        />
                                     Celular
                                 </Label>
                                 <Input
@@ -177,16 +215,20 @@ export default function EditarEgresado() {
                                     type="text"
                                     value={data.celular}
                                     onChange={(e) => setData('celular', e.target.value)}
+                                    onFocus={() => animateIcon('phone-icon')}
                                     disabled={processing}
                                     placeholder="Número de celular"
-                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
+                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-2 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-300 focus:ring-blue-500 dark:focus:ring-blue-400"
                                 />
                                 <InputError message={errors.celular} />
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="direccion" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <MapPin className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                                    <MapPin 
+                                            id="map-icon"
+                                            className={`h-4 w-4 text-blue-500 dark:text-blue-400 transform transition-transform duration-300 hover:scale-125 hover:rotate-12 ${getAnimationClass('map-icon')}`} 
+                                        />
                                     Dirección
                                 </Label>
                                 <Input
@@ -194,16 +236,20 @@ export default function EditarEgresado() {
                                     type="text"
                                     value={data.direccion}
                                     onChange={(e) => setData('direccion', e.target.value)}
+                                    onFocus={() => animateIcon('map-icon')}
                                     disabled={processing}
                                     placeholder="Dirección"
-                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
+                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-2 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-300 focus:ring-blue-500 dark:focus:ring-blue-400"
                                 />
                                 <InputError message={errors.direccion} />
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="fecha_nacimiento" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <Calendar className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                                    <Calendar 
+                                            id="calendar-icon"
+                                            className={`h-4 w-4 text-blue-500 dark:text-blue-400 transform transition-transform duration-300 hover:scale-125 hover:rotate-12 ${getAnimationClass('calendar-icon')}`} 
+                                        />
                                     Fecha de Nacimiento
                                 </Label>
                                 <Input
@@ -212,23 +258,28 @@ export default function EditarEgresado() {
                                     required
                                     value={data.fecha_nacimiento}
                                     onChange={(e) => setData('fecha_nacimiento', e.target.value)}
+                                    onFocus={() => animateIcon('calendar-icon')}
                                     disabled={processing}
-                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400 [&::-webkit-calendar-picker-indicator]:dark:invert"
+                                    className="rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-2 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-300 focus:ring-blue-500 dark:focus:ring-blue-400 [&::-webkit-calendar-picker-indicator]:dark:invert"
                                 />
                                 <InputError message={errors.fecha_nacimiento} />
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="genero" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <Users className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                                    <Users 
+                                            id="gender-icon"
+                                            className={`h-4 w-4 text-blue-500 dark:text-blue-400 transform transition-transform duration-300 hover:scale-125 hover:rotate-12 ${getAnimationClass('gender-icon')}`} 
+                                        />
                                     Género
                                 </Label>
                                 <select
                                     id="genero"
                                     value={data.genero}
                                     onChange={(e) => setData('genero', e.target.value)}
+                                    onFocus={() => animateIcon('gender-icon')}
                                     disabled={processing}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-2 rounded-lg border-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-300 focus:ring-blue-500 dark:focus:ring-blue-400"
                                 >
                                     <option value="">Seleccione un género</option>
                                     <option value="Masculino">Masculino</option>
@@ -245,14 +296,14 @@ export default function EditarEgresado() {
                                 type="button"
                                 variant="outline"
                                 onClick={() => window.history.back()}
-                                className="px-6 py-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                                className="px-6 py-2 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-red-500 dark:hover:border-red-400 hover:text-red-600 dark:hover:text-red-400 transform hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={processing}
                             >
                                 Cancelar
                             </Button>
                             <Button
                                 type="submit"
-                                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 text-white hover:from-blue-700 hover:to-indigo-700 dark:hover:from-blue-800 dark:hover:to-indigo-800 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-200"
+                                className="px-6 py-2 bg-gradient-to-r from-blue-800 to-purple-900 dark:from-blue-900 dark:to-purple-950 text-white hover:from-blue-400 hover:to-purple-400 dark:hover:from-blue-500 dark:hover:to-purple-500 transform hover:scale-105 active:scale-95 hover:shadow-lg focus:ring-2 focus:ring-offset-2 focus:ring-blue-800 dark:focus:ring-blue-700 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                                 disabled={processing}
                             >
                                 {processing && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}

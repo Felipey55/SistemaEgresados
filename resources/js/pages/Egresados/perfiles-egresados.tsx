@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Search, Briefcase, GraduationCap, Code2, Heart } from 'lucide-react';
-import { Select } from '@/components/ui/select';
+import { Search, Briefcase, GraduationCap, Code2, Heart, ArrowRight, Calendar, Tag } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -44,6 +43,16 @@ export default function PerfilesEgresados({ egresados }: Props) {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState('todos');
     const [skillFilter, setSkillFilter] = useState('');
+    const [activeIcon, setActiveIcon] = useState<string | null>(null);
+
+    const animateIcon = (iconId: string) => {
+        setActiveIcon(iconId);
+        setTimeout(() => setActiveIcon(null), 1000);
+    };
+
+    const getAnimationClass = (iconId: string) => {
+        return activeIcon === iconId ? 'transform transition-all duration-300 -translate-y-1 scale-125' : '';
+    };
     
     // Filtrar egresados por múltiples criterios
     const filteredEgresados = egresados.filter(egresado => {
@@ -64,151 +73,215 @@ export default function PerfilesEgresados({ egresados }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Perfiles de Egresados" />
-            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                <div className="bg-white dark:bg-gray-800 shadow-xl overflow-hidden sm:rounded-xl border border-gray-200 dark:border-gray-700 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl dark:hover:shadow-blue-500/10">
-                    <div className="px-6 py-8 sm:px-8 bg-gradient-to-r from-blue-600/10 to-indigo-600/10 dark:from-blue-900/50 dark:to-indigo-900/50">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                            <div>
-                                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">Perfiles de Egresados</h1>
-                                <p className="mt-2 text-gray-600 dark:text-gray-300 text-lg">Descubre el talento profesional de nuestros egresados</p>
+            <div className="max-w-[100rem] mx-auto py-12 px-6 lg:px-10">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden transition-colors duration-200">
+                    <div 
+                        className="p-8 sm:p-10 relative overflow-hidden"
+                        style={{
+                            backgroundImage: 'url("/images/fondoDash.jpg")',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                        }}
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/85 to-purple-900/85"></div>
+                        <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div className="transform transition-all duration-500 hover:translate-x-2">
+                                <h1 className="text-4xl font-bold text-white mb-3 animate-fade-in">Perfiles de Egresados</h1>
+                                <p className="text-lg text-white/90 dark:text-gray-200 animate-slide-up">
+                                    Descubre el talento profesional de nuestros egresados
+                                </p>
                             </div>
                         </div>
-                        
-                        {/* Filtros avanzados */}
-                        <div className="mt-8 space-y-4 md:space-y-0 md:flex md:gap-4 items-start backdrop-blur-sm p-4 rounded-xl bg-white/50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50">
-                            <div className="flex-1 relative">
-                                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                                    <Search className="h-5 w-5 text-gray-400" />
+                    </div>
+
+                    <div className="p-8 sm:p-10 space-y-8 dark:bg-gray-800">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="space-y-3">
+                                <label htmlFor="search" className="flex items-center gap-3 text-gray-700 dark:text-gray-200 text-lg">
+                                    <Search 
+                                        className={`h-5 w-5 text-blue-500 dark:text-blue-400 ${getAnimationClass('search-icon')}`} 
+                                    />
+                                    Buscar Egresados
+                                </label>
+                                <div className="relative flex-1">
+                                    <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                                        <Search className="h-6 w-6 text-gray-400 animate-pulse" />
+                                    </div>
+                                    <Input
+                                        type="text"
+                                        placeholder="Buscar por nombre o identificación..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        onFocus={() => animateIcon('search-icon')}
+                                        className="pl-12 w-full focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-300 border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-300 h-12 text-base"
+                                    />
                                 </div>
-                                <Input
-                                    type="text"
-                                    placeholder="Buscar por nombre o identificación..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="pl-10 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700 w-full focus:ring-2 focus:ring-blue-500 transition-all"
-                                />
                             </div>
                             
-                            <div className="flex gap-4">
+                            <div className="space-y-3">
+                                <label htmlFor="filterType" className="flex items-center gap-3 text-gray-700 dark:text-gray-200 text-lg">
+                                    <Tag 
+                                        className={`h-5 w-5 text-blue-500 dark:text-blue-400 ${getAnimationClass('filter-icon')}`} 
+                                    />
+                                    Filtrar por Tipo
+                                </label>
                                 <select
                                     value={filterType}
                                     onChange={(e) => setFilterType(e.target.value)}
-                                    className="bg-white/75 dark:bg-gray-800/75 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 transition-all hover:bg-white dark:hover:bg-gray-800"
+                                    onFocus={() => animateIcon('filter-icon')}
+                                    className="bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-2 border-gray-300 dark:border-gray-600 rounded-xl px-5 py-3 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-300 hover:border-blue-400 dark:hover:border-blue-300 transform hover:scale-105 w-full text-base"
                                 >
                                     <option value="todos">Todos los perfiles</option>
                                     <option value="experiencia">Con experiencia</option>
                                     <option value="formacion">Con formación</option>
                                 </select>
-                                
+                            </div>
+                            
+                            <div className="space-y-3">
+                                <label htmlFor="skillFilter" className="flex items-center gap-3 text-gray-700 dark:text-gray-200 text-lg">
+                                    <Code2 
+                                        className={`h-5 w-5 text-blue-500 dark:text-blue-400 ${getAnimationClass('skill-icon')}`} 
+                                    />
+                                    Filtrar por Habilidad
+                                </label>
                                 <Input
                                     type="text"
                                     placeholder="Filtrar por habilidad..."
                                     value={skillFilter}
                                     onChange={(e) => setSkillFilter(e.target.value)}
-                                    className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 transition-all"
+                                    onFocus={() => animateIcon('skill-icon')}
+                                    className="w-full focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-300 border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-300 h-12 text-base"
                                 />
-                                
-                                {(searchTerm || filterType !== 'todos' || skillFilter) && (
-                                    <Button 
-                                        variant="outline" 
-                                        onClick={() => {
-                                            setSearchTerm('');
-                                            setFilterType('todos');
-                                            setSkillFilter('');
-                                        }}
-                                        className="px-4 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
-                                    >
-                                        Limpiar filtros
-                                    </Button>
-                                )}
                             </div>
+                            
+                            {(searchTerm || filterType !== 'todos' || skillFilter) && (
+                                <Button 
+                                    variant="outline" 
+                                    onClick={() => {
+                                        setSearchTerm('');
+                                        setFilterType('todos');
+                                        setSkillFilter('');
+                                    }}
+                                    className="bg-gradient-to-r from-blue-700 to-purple-900 hover:from-blue-400 hover:to-purple-400 text-white shadow-lg hover:shadow-blue-500/50 transform transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+                                >
+                                    Limpiar filtros
+                                </Button>
+                            )}
+                        </div>
+
+                        <div className="border-t border-border dark:border-border pt-6">
+                            {filteredEgresados.length === 0 ? (
+                                <div className="p-6 text-center">
+                                    <p className="text-muted-foreground">No se encontraron egresados con los criterios de búsqueda.</p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+                                    {filteredEgresados.map((egresado) => (
+                                        <Card key={egresado.id} className="group overflow-hidden bg-white dark:bg-gray-800
+                                            transform transition-all duration-300 ease-in-out hover:scale-[1.02]
+                                            hover:shadow-2xl border-2 border-gray-200 dark:border-gray-600 
+                                            hover:border-blue-500 dark:hover:border-blue-400 rounded-xl">
+                                            <div className="p-8 space-y-6">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-3">
+                                                        <Badge variant="secondary" className="px-4 py-2 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800 transition-all duration-200 hover:scale-110 text-sm font-medium">
+                                                            <Tag className="h-4 w-4 mr-2" />
+                                                            {egresado.experiencia ? 'Con Experiencia' : 'Sin Experiencia'}
+                                                        </Badge>
+                                                    </div>
+                                                </div>
+
+                                                <h2 className="text-2xl font-bold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 leading-tight mb-2">
+                                                    {egresado.nombre}
+                                                </h2>
+                                                
+                                                <div className="space-y-1">
+                                                    <p className="text-gray-600 dark:text-gray-300 text-lg">
+                                                        <span className="font-medium">Identificación:</span> {egresado.identificacion}
+                                                    </p>
+                                                    <p className="text-gray-600 dark:text-gray-300 text-lg">
+                                                        <span className="font-medium">Email:</span> {egresado.email}
+                                                    </p>
+                                                    <p className="text-gray-600 dark:text-gray-300 text-lg">
+                                                        <span className="font-medium">Celular:</span> {egresado.celular}
+                                                    </p>
+                                                </div>
+
+                                                <div className="space-y-3">
+                                                    <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                                                        <Code2 className="h-5 w-5 text-blue-500" />
+                                                        <h3 className="text-lg font-medium">Habilidades Técnicas</h3>
+                                                    </div>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {egresado.habilidades.tecnicas.map((habilidad, index) => (
+                                                            <Badge key={index} className="px-3 py-1.5 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 hover:bg-green-200 dark:hover:bg-green-800 transition-all duration-200 hover:scale-110 text-sm font-medium">
+                                                                {habilidad}
+                                                            </Badge>
+                                                        ))}
+                                                    </div>
+                                                    
+                                                    <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                                                        <Heart className="h-5 w-5 text-red-500" />
+                                                        <h3 className="text-lg font-medium">Habilidades Blandas</h3>
+                                                    </div>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {egresado.habilidades.blandas.map((habilidad, index) => (
+                                                            <Badge key={index} className="px-3 py-1.5 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800 transition-all duration-200 hover:scale-110 text-sm font-medium">
+                                                                {habilidad}
+                                                            </Badge>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                
+                                                {egresado.formacion && (
+                                                    <div className="space-y-2">
+                                                        <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                                                            <GraduationCap className="h-5 w-5 text-indigo-500" />
+                                                            <h3 className="text-lg font-medium">Formación</h3>
+                                                        </div>
+                                                        <p className="text-gray-600 dark:text-gray-300 text-lg">
+                                                            <span className="font-medium">Título:</span> {egresado.formacion.titulo}
+                                                        </p>
+                                                        <p className="text-gray-600 dark:text-gray-300 text-lg">
+                                                            <span className="font-medium">Institución:</span> {egresado.formacion.institucion}
+                                                        </p>
+                                                    </div>
+                                                )}
+                                                
+                                                {egresado.experiencia && (
+                                                    <div className="space-y-2">
+                                                        <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                                                            <Briefcase className="h-5 w-5 text-amber-500" />
+                                                            <h3 className="text-lg font-medium">Experiencia</h3>
+                                                        </div>
+                                                        <p className="text-gray-600 dark:text-gray-300 text-lg">
+                                                            <span className="font-medium">Empresa:</span> {egresado.experiencia.empresa}
+                                                        </p>
+                                                        <p className="text-gray-600 dark:text-gray-300 text-lg">
+                                                            <span className="font-medium">Modalidad:</span> {egresado.experiencia.modalidad}
+                                                        </p>
+                                                    </div>
+                                                )}
+
+                                                <div className="pt-6 mt-auto border-t border-gray-200 dark:border-gray-600">
+                                                    <div className="flex items-center justify-end">
+                                                        <Button
+                                                            variant="outline"
+                                                            onClick={() => window.location.href = route('egresado.detalle', { id: egresado.id })}
+                                                            className="px-6 py-2 text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-800 hover:border-blue-400 dark:hover:border-blue-600 transform transition-all duration-300 hover:scale-105 hover:translate-x-1 hover:shadow-lg font-medium text-base flex items-center gap-2"
+                                                        >
+                                                            Ver Perfil Completo
+                                                            <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Card>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
-
-                    {filteredEgresados.length === 0 ? (
-                        <div className="p-6 text-center">
-                            <p className="text-gray-600 dark:text-gray-300">No se encontraron egresados con los criterios de búsqueda.</p>
-                        </div>
-                    ) : (
-                        <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {filteredEgresados.map((egresado) => (
-                                <Card key={egresado.id} className="group overflow-hidden bg-white/90 dark:bg-gray-800/90 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300 rounded-xl backdrop-blur-sm transform hover:-translate-y-1">
-                                    <div className="p-6 space-y-4">
-                                        <div className="flex items-start justify-between">
-                                            <div>
-                                                <h2 className="text-xl font-bold group-hover:text-blue-400 dark:group-hover:text-blue-300 transition-colors">{egresado.nombre}</h2>
-                                                <p className="text-gray-500 dark:text-gray-400 text-sm">{egresado.identificacion}</p>
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="space-y-1">
-                                            <p className="text-gray-600 dark:text-gray-300 text-sm">{egresado.email}</p>
-                                            <p className="text-gray-600 dark:text-gray-300 text-sm">{egresado.celular}</p>
-                                        </div>
-                                        
-                                        <div className="space-y-2">
-                                            <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                                <Code2 className="h-4 w-4" />
-                                                <h3 className="text-sm font-medium">Habilidades Técnicas</h3>
-                                            </div>
-                                            <div className="flex flex-wrap gap-1.5">
-                                                {egresado.habilidades.tecnicas.map((habilidad, index) => (
-                                                    <Badge key={index} className="bg-gradient-to-r from-green-600 to-emerald-600 text-white border-0 shadow-sm">
-                                                        {habilidad}
-                                                    </Badge>
-                                                ))}
-                                            </div>
-                                            
-                                            <div className="flex items-center gap-2 text-gray-700 mt-3">
-                                                <Heart className="h-4 w-4" />
-                                                <h3 className="text-sm font-medium">Habilidades Blandas</h3>
-                                            </div>
-                                            <div className="flex flex-wrap gap-1.5">
-                                                {egresado.habilidades.blandas.map((habilidad, index) => (
-                                                    <Badge key={index} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-0 shadow-sm">
-                                                        {habilidad}
-                                                    </Badge>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        
-                                        {egresado.formacion && (
-                                            <div className="space-y-1">
-                                                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                                    <GraduationCap className="h-4 w-4" />
-                                                    <h3 className="text-sm font-medium">Formación</h3>
-                                                </div>
-                                                <p className="text-gray-900 dark:text-white text-sm">{egresado.formacion.titulo}</p>
-                                                <p className="text-gray-600 dark:text-gray-300 text-sm">{egresado.formacion.institucion}</p>
-                                            </div>
-                                        )}
-                                        
-                                        {egresado.experiencia && (
-                                            <div className="space-y-1">
-                                                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                                    <Briefcase className="h-4 w-4" />
-                                                    <h3 className="text-sm font-medium">Experiencia</h3>
-                                                </div>
-                                                <p className="text-gray-900 dark:text-white text-sm">{egresado.experiencia.empresa}</p>
-                                                <p className="text-gray-600 dark:text-gray-300 text-sm">{egresado.experiencia.modalidad}</p>
-                                            </div>
-                                        )}
-                                        
-                                        <div className="pt-4">
-                                            <Link href={route('egresado.detalle', { id: egresado.id })}>
-                                                <Button 
-                                                    variant="outline" 
-                                                    className="w-full text-white bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 transition-all duration-300 border-0 rounded-xl shadow-lg hover:shadow-blue-500/20 transform hover:scale-[1.02]"
-                                                >
-                                                    Ver Perfil Completo
-                                                </Button>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </Card>
-                            ))}
-                        </div>
-                    )}
                 </div>
             </div>
         </AppLayout>

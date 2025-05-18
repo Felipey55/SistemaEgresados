@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card } from '@/components/ui/card';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -46,14 +45,21 @@ export default function Edit({ noticia }: Props) {
     const showNotification = (message: string, isSuccess: boolean) => {
         const notification = document.createElement('div');
         notification.textContent = message;
-        notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-all duration-300 ${
-            isSuccess ? 'bg-success text-success-foreground' : 'bg-destructive text-destructive-foreground'
-        }`;
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.padding = '10px 20px';
+        notification.style.borderRadius = '5px';
+        notification.style.backgroundColor = isSuccess ? 'green' : 'red';
+        notification.style.color = 'white';
+        notification.style.fontSize = '16px';
+        notification.style.zIndex = '1000';
+
         document.body.appendChild(notification);
+
         setTimeout(() => {
-            notification.classList.add('opacity-0');
-            setTimeout(() => notification.remove(), 300);
-        }, 2700);
+            notification.remove();
+        }, 3000);
     };
 
     const submit: FormEventHandler = (e) => {
@@ -83,18 +89,26 @@ export default function Edit({ noticia }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Editar Noticia" />
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <Card className="bg-card dark:bg-card shadow-lg overflow-hidden sm:rounded-xl border border-input dark:border-input">
-                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700">
-                        <h1 className="text-2xl font-bold text-white mb-2">Editar Noticia</h1>
-                        <p className="text-blue-100">Actualiza los detalles de la noticia</p>
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
+                    <div 
+                        className="p-6 sm:p-8 relative overflow-hidden"
+                        style={{
+                            backgroundImage: 'url("/images/fondoDash.jpg")',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                        }}
+                    >
+                        <div className="relative z-10">
+                            <h1 className="text-2xl font-bold text-white mb-2 text-shadow transform transition-all duration-300 ease-in-out hover:scale-110 hover:translate-x-2 cursor-default">Editar Noticia</h1>
+                            <p className="text-white/90 text-shadow transform transition-all duration-300 ease-in-out hover:scale-105 hover:translate-x-1 cursor-default">Actualiza los detalles de la noticia</p>
+                        </div>
                     </div>
 
                     <form onSubmit={submit} className="p-6 sm:p-8 space-y-6">
+
                         <div className="space-y-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="titulo" className="text-foreground dark:text-foreground">
-                                    Título
-                                </Label>
+                                <Label htmlFor="titulo" className="text-foreground dark:text-foreground">Título</Label>
                                 <Input
                                     id="titulo"
                                     type="text"
@@ -103,15 +117,19 @@ export default function Edit({ noticia }: Props) {
                                     onChange={(e) => setData('titulo', e.target.value)}
                                     disabled={processing}
                                     placeholder="Título de la noticia"
-                                    className="bg-background dark:bg-background text-foreground dark:text-foreground"
+                                    className="bg-background dark:bg-background text-foreground dark:text-foreground
+                                        transform transition-all duration-300 ease-in-out
+                                        hover:ring-2 hover:ring-blue-400 dark:hover:ring-blue-500
+                                        hover:scale-[1.01] hover:shadow-md
+                                        focus:scale-[1.02] focus:ring-2 focus:ring-blue-500 focus:shadow-lg
+                                        active:scale-[0.99]
+                                        placeholder:text-gray-400 dark:placeholder:text-gray-500"
                                 />
                                 <InputError message={errors.titulo} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="contenido" className="text-foreground dark:text-foreground">
-                                    Contenido
-                                </Label>
+                                <Label htmlFor="contenido" className="text-foreground dark:text-foreground">Contenido</Label>
                                 <Textarea
                                     id="contenido"
                                     required
@@ -120,15 +138,19 @@ export default function Edit({ noticia }: Props) {
                                     disabled={processing}
                                     placeholder="Contenido de la noticia"
                                     rows={6}
-                                    className="bg-background dark:bg-background text-foreground dark:text-foreground resize-y min-h-[150px]"
+                                    className="bg-background dark:bg-background text-foreground dark:text-foreground resize-y min-h-[150px]
+                                        transform transition-all duration-300 ease-in-out
+                                        hover:ring-2 hover:ring-blue-400 dark:hover:ring-blue-500
+                                        hover:scale-[1.005] hover:shadow-md
+                                        focus:scale-[1.01] focus:ring-2 focus:ring-blue-500 focus:shadow-lg
+                                        active:scale-[0.995]
+                                        placeholder:text-gray-400 dark:placeholder:text-gray-500"
                                 />
                                 <InputError message={errors.contenido} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="fecha_publicacion" className="text-foreground dark:text-foreground">
-                                    Fecha de Publicación
-                                </Label>
+                                <Label htmlFor="fecha_publicacion" className="text-foreground dark:text-foreground">Fecha de Publicación</Label>
                                 <Input
                                     id="fecha_publicacion"
                                     type="date"
@@ -136,15 +158,19 @@ export default function Edit({ noticia }: Props) {
                                     value={data.fecha_publicacion}
                                     onChange={(e) => setData('fecha_publicacion', e.target.value)}
                                     disabled={processing}
-                                    className="bg-background dark:bg-background text-foreground dark:text-foreground [&::-webkit-calendar-picker-indicator]:dark:invert"
+                                    className="bg-background dark:bg-background text-foreground dark:text-foreground [&::-webkit-calendar-picker-indicator]:dark:invert
+                                        transform transition-all duration-300 ease-in-out
+                                        hover:ring-2 hover:ring-blue-400 dark:hover:ring-blue-500
+                                        hover:scale-[1.01] hover:shadow-md
+                                        focus:scale-[1.02] focus:ring-2 focus:ring-blue-500 focus:shadow-lg
+                                        active:scale-[0.99]
+                                        cursor-pointer"
                                 />
                                 <InputError message={errors.fecha_publicacion} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="imagen" className="text-foreground dark:text-foreground">
-                                    Imagen
-                                </Label>
+                                <Label htmlFor="imagen" className="text-foreground dark:text-foreground">Imagen</Label>
                                 <Input
                                     id="imagen"
                                     type="file"
@@ -154,7 +180,18 @@ export default function Edit({ noticia }: Props) {
                                         setData('imagen', file);
                                     }}
                                     disabled={processing}
-                                    className="bg-background dark:bg-background text-foreground dark:text-foreground"
+                                    className="bg-background dark:bg-background text-foreground dark:text-foreground
+                                        transform transition-all duration-300 ease-in-out
+                                        hover:ring-2 hover:ring-blue-400 dark:hover:ring-blue-500
+                                        hover:scale-[1.01] hover:shadow-md
+                                        focus:ring-2 focus:ring-blue-500 focus:shadow-lg
+                                        active:scale-[0.99]
+                                        file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
+                                        file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700
+                                        file:transition-colors file:duration-200
+                                        hover:file:bg-blue-100
+                                        dark:file:bg-blue-900 dark:file:text-blue-200
+                                        dark:hover:file:bg-blue-800"
                                 />
                                 <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                                     Formatos permitidos: JPG, JPEG, PNG, GIF
@@ -178,21 +215,21 @@ export default function Edit({ noticia }: Props) {
                                 variant="outline"
                                 onClick={() => window.location.href = route('noticias.index')}
                                 disabled={processing}
-                                className="w-full sm:w-auto"
+                                className="w-full sm:w-auto transform transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 hover:shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
                                 Cancelar
                             </Button>
                             <Button 
                                 type="submit" 
                                 disabled={processing}
-                                className="w-full sm:w-auto bg-primary hover:bg-primary/90"
+                                className="w-full sm:w-auto bg-gradient-to-r from-blue-700 to-purple-900 hover:from-blue-400 hover:to-purple-400 text-white shadow-lg hover:shadow-blue-500/50 transform transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
                             >
                                 {processing && <LoaderCircle className="h-4 w-4 mr-2 animate-spin" />}
                                 Actualizar Noticia
                             </Button>
                         </div>
                     </form>
-                </Card>
+                </div>
             </div>
         </AppLayout>
     );

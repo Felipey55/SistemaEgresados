@@ -109,85 +109,96 @@ export default function DetalleEgresado({ egresado }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Perfil de ${egresado?.nombre || 'Egresado'}`} />
-            <div className="max-w-7xl mx-auto py-6 sm:px-4 md:px-6 lg:px-8 bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-300">
-                <div className="mb-6">
-                    <Button
-                        variant="outline"
-                        onClick={() => window.history.back()}
-                        className="flex items-center gap-2 bg-white text-gray-700 hover:bg-gray-50 border-gray-300"
-                    >
-                        <ArrowLeft size={16} />
-                        Volver a la lista
-                    </Button>
+            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-gray-100">
+                {/* Encabezado del perfil */}
+                <div 
+                    className="text-white p-8 rounded-t-lg shadow-lg relative transform transition-all duration-500 hover:scale-[1.02] overflow-hidden"
+                    style={{
+                        backgroundImage: 'url("/images/fondoDash.jpg")',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        position: 'relative'
+                    }}
+                >
+                    <div className="flex items-center gap-6 relative z-10 transform transition-all duration-500 hover:translate-x-2">
+                        <div className="w-32 h-32 rounded-full bg-white p-1 shadow-xl transform transition-all duration-500 hover:scale-110 hover:rotate-3">
+                            <img
+                                src={egresado?.foto_url || '/img/default-avatar.png'}
+                                alt="Foto de perfil"
+                                className="w-full h-full rounded-full object-cover"
+                            />
+                        </div>
+                        <div>
+                            <h1 className="text-3xl font-bold mb-2">{egresado?.nombre}</h1>
+                            <p className="text-lg opacity-90">{egresado?.identificacion}</p>
+                            <p className="text-sm opacity-75">{egresado?.email}</p>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Navegación por pestañas */}
-                <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm mb-6 rounded-lg overflow-hidden transition-all duration-300">
+                <div className="bg-white border-b border-gray-200 shadow-sm">
                     <nav className="flex justify-center space-x-8">
                         <button
                             onClick={() => setActiveTab('informacion')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'informacion' ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'} transition-colors duration-200`}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 transition-all duration-300 ease-in-out flex items-center space-x-2 group ${
+                                activeTab === 'informacion' 
+                                ? 'border-blue-600 text-blue-600 bg-blue-50 transform scale-105' 
+                                : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50'
+                            }`}
                         >
-                            Información Personal
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('habilidades')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'habilidades' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
-                        >
-                            Habilidades
+                            <User className="w-5 h-5 transition-transform group-hover:scale-110" />
+                            <span>Información Personal</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('formacion')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'formacion' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 transition-all duration-300 ease-in-out flex items-center space-x-2 group ${
+                                activeTab === 'formacion' 
+                                ? 'border-blue-600 text-blue-600 bg-blue-50 transform scale-105' 
+                                : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50'
+                            }`}
                         >
-                            Formación Académica
+                            <Building2 className="w-5 h-5 transition-transform group-hover:scale-110" />
+                            <span>Formación Académica</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('experiencia')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'experiencia' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 transition-all duration-300 ease-in-out flex items-center space-x-2 group ${
+                                activeTab === 'experiencia' 
+                                ? 'border-blue-600 text-blue-600 bg-blue-50 transform scale-105' 
+                                : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50'
+                            }`}
                         >
-                            Experiencia Laboral
+                            <Briefcase className="w-5 h-5 transition-transform group-hover:scale-110" />
+                            <span>Experiencia Laboral</span>
                         </button>
                         <button
-                            onClick={() => setActiveTab('ubicacion')}
-                            className={`px-4 py-4 font-medium text-sm border-b-2 ${activeTab === 'ubicacion' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                            onClick={() => setActiveTab('habilidades')}
+                            className={`px-4 py-4 font-medium text-sm border-b-2 transition-all duration-300 ease-in-out flex items-center space-x-2 group ${
+                                activeTab === 'habilidades' 
+                                ? 'border-blue-600 text-blue-600 bg-blue-50 transform scale-105' 
+                                : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50'
+                            }`}
                         >
-                            Ubicación
+                            <Code2 className="w-5 h-5 transition-transform group-hover:scale-110" />
+                            <span>Habilidades</span>
                         </button>
                     </nav>
                 </div>
 
-                {/* Contenido según la pestaña activa */}
                 {activeTab === 'informacion' && (
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-300">
-                        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-800 dark:to-indigo-900 text-white p-6 sm:p-8 transition-all duration-300">
-                            <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-                                <div className="w-32 h-32 rounded-full bg-white p-1 shadow-xl">
-                                    <img
-                                        src="/img/default-avatar.png"
-                                        alt="Foto de perfil"
-                                        className="w-full h-full rounded-full object-cover"
-                                    />
-                                </div>
-                                <div>
-                                    <h1 className="text-3xl font-bold mb-2">{egresado?.nombre}</h1>
-                                    <p className="text-lg opacity-90">{egresado?.identificacion}</p>
-                                    <p className="text-sm opacity-75">{egresado?.email}</p>
-                                </div>
-                            </div>
-                        </div>
-
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-500 transform hover:scale-[1.01] hover:shadow-xl">
                         <div className="p-6">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:bg-blue-50 dark:hover:bg-gray-700 hover:shadow-md">
                                     <User className="h-5 w-5 text-blue-500" />
                                     <div>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">Nombre completo</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Nombre</p>
                                         <p className="text-base font-medium text-gray-900 dark:text-white">{egresado?.nombre}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:bg-blue-50 dark:hover:bg-gray-700 hover:shadow-md">
                                     <Badge className="h-5 w-5 text-blue-500" />
                                     <div>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Identificación</p>
@@ -195,7 +206,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:bg-blue-50 dark:hover:bg-gray-700 hover:shadow-md">
                                     <Mail className="h-5 w-5 text-blue-500" />
                                     <div>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Correo electrónico</p>
@@ -203,7 +214,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:bg-blue-50 dark:hover:bg-gray-700 hover:shadow-md">
                                     <Phone className="h-5 w-5 text-blue-500" />
                                     <div>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Celular</p>
@@ -211,7 +222,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:bg-blue-50 dark:hover:bg-gray-700 hover:shadow-md">
                                     <Home className="h-5 w-5 text-blue-500" />
                                     <div>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Dirección</p>
@@ -219,7 +230,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-300">
+                                <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:bg-blue-50 dark:hover:bg-gray-700 hover:shadow-md">
                                     <CalendarIcon className="h-5 w-5 text-blue-500" />
                                     <div>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de nacimiento</p>
@@ -232,7 +243,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                 )}
 
                 {activeTab === 'habilidades' && (
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-300">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-500 transform hover:scale-[1.01] hover:shadow-xl">
                         <div className="p-6">
                             <h3 className="text-xl font-semibold text-gray-900 mb-4">Habilidades</h3>
                         </div>
@@ -251,7 +262,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                                             </h4>
                                             <div className="flex flex-wrap gap-2">
                                                 {egresado?.habilidades?.tecnicas?.map((habilidad, index) => (
-                                                    <Badge key={index} className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
+                                                    <Badge key={index} className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-all duration-300 transform hover:scale-110 hover:shadow-lg cursor-pointer">
                                                         {habilidad}
                                                     </Badge>
                                                 ))}
@@ -267,7 +278,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                                             </h4>
                                             <div className="flex flex-wrap gap-2">
                                                 {egresado?.habilidades?.blandas?.map((habilidad, index) => (
-                                                    <Badge key={index} className="px-3 py-1 bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-colors">
+                                                    <Badge key={index} className="px-3 py-1 bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-all duration-300 transform hover:scale-110 hover:shadow-lg cursor-pointer">
                                                         {habilidad}
                                                     </Badge>
                                                 ))}
@@ -281,7 +292,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                 )}
 
                 {activeTab === 'formacion' && (
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-300">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-500 transform hover:scale-[1.01] hover:shadow-xl">
                         <div className="p-6 border-b border-gray-100">
                             <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                                 <Building2 className="h-5 w-5 text-blue-600" />
@@ -296,7 +307,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                             ) : (
                                 <div className="grid gap-6">
                                     {egresado?.formacionAcademica?.map((formacion) => (
-                                        <div key={formacion.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                                        <div key={formacion.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg">
                                             <div className="flex flex-col gap-3">
                                                 <h4 className="text-lg font-semibold text-gray-900">{formacion.titulo}</h4>
                                                 <p className="text-gray-600 flex items-center gap-2">
@@ -322,7 +333,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                 )}
 
                 {activeTab === 'experiencia' && (
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-300">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-500 transform hover:scale-[1.01] hover:shadow-xl">
                         <div className="p-6 border-b border-gray-100">
                             <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                                 <Briefcase className="h-5 w-5 text-blue-600" />
@@ -337,7 +348,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                             ) : (
                                 <div className="grid gap-6">
                                     {egresado?.experienciaLaboral?.map((experiencia) => (
-                                        <div key={experiencia.id} className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors">
+                                        <div key={experiencia.id} className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg">
                                             <div className="flex flex-col gap-4">
                                                 <div className="flex items-start justify-between">
                                                     <div>
@@ -394,7 +405,7 @@ export default function DetalleEgresado({ egresado }: Props) {
                 )}
 
                 {activeTab === 'ubicacion' && (
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-300">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6 transition-all duration-500 transform hover:scale-[1.01] hover:shadow-xl">
                         <div className="p-6 border-b border-gray-100">
                             <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                                 <Map className="h-5 w-5 text-blue-600" />
