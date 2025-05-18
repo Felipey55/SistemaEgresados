@@ -26,7 +26,7 @@ class GraduateRegistrationController extends Controller
         $request->validate([
             'identificacion_tipo' => 'required|in:C.C.,C.E.',
             'identificacion_numero' => 'required|string|max:20|unique:egresados,identificacion_numero',
-            'fotografia' => 'nullable|image|max:2048',
+            'fotografia' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'celular' => 'nullable|string|max:15',
             'direccion' => 'nullable|string|max:255',
             'fecha_nacimiento' => 'required|date',
@@ -34,8 +34,10 @@ class GraduateRegistrationController extends Controller
 
         $data = $request->except('fotografia');
         if ($request->hasFile('fotografia')) {
-            $image = $request->file('fotografia');
-            $data['fotografia'] = base64_encode(file_get_contents($image->path()));
+            $imagen = $request->file('fotografia');
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('images/perfil'), $nombreImagen);
+            $data['fotografia'] = 'images/perfil/' . $nombreImagen;
         }
 
         $data['user_id'] = Auth::id();

@@ -59,9 +59,9 @@ export default function Welcome() {
                                     {auth.user ? (
                                         <Button
                                             className="bg-white/10 backdrop-blur-xl text-white hover:bg-white/20 active:bg-white/30 transform active:scale-95 transition-all rounded-3xl border border-white/20 shadow-xl"
-                                            onClick={() => window.location.href = route('dashboard')}
+                                            onClick={() => window.location.href = '/VerNoticias'}
                                         >
-                                            Ir al Dashboard
+                                            Entrar
                                         </Button>
                                     ) : (
                                         <>

@@ -9,8 +9,8 @@ import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Inicio',
-        href: '/dashboard',
+        title: 'Ver Noticias',
+        href: '/VerNoticias',
         icon: LayoutGrid,
     },
     {
@@ -33,9 +33,10 @@ const mainNavItems: NavItem[] = [
         href: '/PerfilesEgresados',
         icon: LayoutGrid,
     },
+
     {
-        title: 'Ver Noticias',
-        href: '/VerNoticias',
+        title: 'Inicio',
+        href: '/dashboard',
         icon: LayoutGrid,
     },
 ];
@@ -79,7 +80,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
+                            <Link href="/VerNoticias" prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

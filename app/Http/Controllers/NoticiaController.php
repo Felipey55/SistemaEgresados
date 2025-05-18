@@ -132,4 +132,11 @@ class NoticiaController extends Controller
             'noticias' => $noticias
         ]);
     }
+
+    public function show(Noticia $noticia)
+    {
+        return Inertia::render('Noticias/Show', [
+            'noticia' => $noticia->load('autor')
+        ]);
+    }
 }

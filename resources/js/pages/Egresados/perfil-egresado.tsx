@@ -25,6 +25,7 @@ type DatosEgresado = {
     celular: string;
     direccion: string;
     fecha_nacimiento: string;
+    fotografia: string | null;
     user: {
         name: string;
         email: string;
@@ -40,6 +41,7 @@ type FormacionAcademica = {
 };
 
 type ExperienciaLaboral = {
+    id: number;
     tipo_empleo: string;
     nombre_empresa: string;
     fecha_inicio: string;
@@ -130,11 +132,15 @@ export default function PerfilEgresado() {
                     }}
                 >
                     <div className="flex items-center gap-6 relative z-10">
-                        <div className="w-32 h-32 rounded-full bg-white p-1 shadow-xl">
+                        <div className="w-32 h-32 rounded-full bg-white p-1 shadow-xl transform transition-all duration-500 hover:scale-110 hover:rotate-3">
                             <img
-                                src={datosEgresado?.foto_url || '/img/default-avatar.png'}
+                                src={datosEgresado?.fotografia ? `/${datosEgresado.fotografia}` : '/images/perfil/default-avatar.svg'}
                                 alt="Foto de perfil"
                                 className="w-full h-full rounded-full object-cover"
+                                onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.src = '/images/perfil/default-avatar.svg';
+                                }}
                             />
                         </div>
                         <div>

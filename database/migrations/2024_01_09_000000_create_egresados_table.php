@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('identificacion_tipo', ['C.C.', 'C.E.'])->nullable(false);
             $table->string('identificacion_numero', 20)->nullable(false);
-            $table->mediumText('fotografia')->nullable();
+            $table->string('fotografia')->nullable();
             $table->string('celular', 15)->nullable();
             $table->string('direccion', 255)->nullable();
             $table->date('fecha_nacimiento')->nullable(false);

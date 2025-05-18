@@ -35,7 +35,11 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
         if (!data.email.trim() || !data.password.trim()) return;
 
-        post(route('login'));
+        post(route('login'), {
+            onSuccess: () => {
+                window.location.href = '/VerNoticias';
+            }
+        });
     };
 
     const getInputClass = (field: keyof LoginForm) =>

@@ -2,18 +2,17 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle, BookOpen, Calendar, GraduationCap, School, Award } from 'lucide-react';
-import { FormEventHandler, useEffect, useState } from 'react';
+import { FormEventHandler, useState } from 'react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
-import axios from 'axios';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Editar Formación Académica',
-        href: '/Egresados/editar-formacion',
+        title: 'Agregar Formación Académica',
+        href: '/Egresados/formacion-academica',
     },
 ];
 
@@ -24,11 +23,7 @@ type FormacionForm = {
     fecha_realizacion: string;
 };
 
-type Props = {
-    id: number;
-};
-
-export default function EditarFormacion({ id }: Props) {
+export default function AgregarFormacion() {
     const [activeIcon, setActiveIcon] = useState<string | null>(null);
 
     // Función para activar la animación del icono
@@ -43,31 +38,12 @@ export default function EditarFormacion({ id }: Props) {
         return 'animate-bounce duration-1000';
     };
 
-    const { data, setData, put, processing, errors } = useForm<FormacionForm>({
+    const { data, setData, post, processing, errors } = useForm<FormacionForm>({
         titulo: '',
         institucion: '',
         tipo_formacion: 'Pregrado',
         fecha_realizacion: '',
     });
-
-    useEffect(() => {
-        const cargarDatos = async () => {
-            try {
-                const response = await axios.get(route('api.formacion.show', { id }));
-                const datos = response.data;
-                setData({
-                    titulo: datos.titulo,
-                    institucion: datos.institucion,
-                    tipo_formacion: datos.tipo_formacion,
-                    fecha_realizacion: datos.fecha_realizacion,
-                });
-            } catch (error) {
-                console.error('Error al cargar datos:', error);
-            }
-        };
-
-        cargarDatos();
-    }, [setData]);
 
     const showNotification = (message: string, isSuccess: boolean) => {
         const notification = document.createElement('div');
@@ -83,9 +59,9 @@ export default function EditarFormacion({ id }: Props) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        put(route('formacion.update', { id }), {
+        post(route('formacion.store'), {
             onSuccess: () => {
-                showNotification('Información académica actualizada exitosamente', true);
+                showNotification('Información académica agregada exitosamente', true);
                 setTimeout(() => {
                     window.location.href = route('egresado.perfil');
                 }, 2000);
@@ -99,7 +75,7 @@ export default function EditarFormacion({ id }: Props) {
                         }
                     });
                 } else {
-                    showNotification('Error al actualizar la formación académica. Verifique los datos.', false);
+                    showNotification('Error al agregar la formación académica. Verifique los datos.', false);
                 }
             },
         });
@@ -107,7 +83,7 @@ export default function EditarFormacion({ id }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Editar Formación Académica" />
+            <Head title="Agregar Formación Académica" />
             <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
                 <Card className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
                     <div 
@@ -119,8 +95,8 @@ export default function EditarFormacion({ id }: Props) {
                         }}
                     >
                         <div className="relative z-10">
-                            <h1 className="text-2xl font-bold text-white mb-2 text-shadow hover:scale-105 transition-transform duration-300">Editar Formación Académica</h1>
-                            <p className="text-white text-shadow hover:scale-105 transition-transform duration-300">Actualiza tu información académica</p>
+                            <h1 className="text-2xl font-bold text-white mb-2 text-shadow hover:scale-105 transition-transform duration-300">Agregar Formación Académica</h1>
+                            <p className="text-white text-shadow hover:scale-105 transition-transform duration-300">Registra tu información académica</p>
                         </div>
                     </div>
 
@@ -230,7 +206,7 @@ export default function EditarFormacion({ id }: Props) {
                                 disabled={processing}
                             >
                                 {processing && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
-                                Guardar Cambios
+                                Guardar Formación
                             </Button>
                         </div>
                     </form>

@@ -182,6 +182,15 @@ export default function Index({ noticias }: Props) {
                                                     </span>
                                                 </div>
                                                 <div className="flex gap-3">
+                                                    <Link href={route('noticias.show', noticia.id)}>
+                                                        <Button 
+                                                            variant="ghost" 
+                                                            size="sm" 
+                                                            className="h-10 w-10 p-0 text-green-600 hover:bg-green-50 dark:text-green-400 dark:hover:bg-gray-700 transform transition-all duration-300 hover:scale-110 hover:rotate-6 hover:shadow-lg active:scale-95 active:translate-y-1 hover:animate-bounce focus:ring-2 focus:ring-green-400 dark:focus:ring-green-300"
+                                                        >
+                                                            <FileText className="h-5 w-5 transition-transform duration-700 group-hover:animate-pulse hover:animate-bounce" />
+                                                        </Button>
+                                                    </Link>
                                                     <Link href={route('noticias.edit', noticia.id)}>
                                                         <Button 
                                                             variant="ghost" 

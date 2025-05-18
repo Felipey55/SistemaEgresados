@@ -21,6 +21,7 @@ type Egresado = {
     identificacion: string;
     email: string;
     celular: string;
+    foto_url: string | null;
     formacion: {
         titulo: string;
         institucion: string;
@@ -183,7 +184,18 @@ export default function PerfilesEgresados({ egresados }: Props) {
                                             hover:border-blue-500 dark:hover:border-blue-400 rounded-xl">
                                             <div className="p-8 space-y-6">
                                                 <div className="flex items-center justify-between">
-                                                    <div className="flex items-center gap-3">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="w-16 h-16 rounded-full bg-white p-1 shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-110">
+                                                            <img
+                                                                src={`/images/perfil/${egresado.foto_url || 'default-avatar.svg'}`}
+                                                                alt={`Foto de ${egresado.nombre}`}
+                                                                className="w-full h-full rounded-full object-cover"
+                                                                onError={(e) => {
+                                                                    const target = e.target as HTMLImageElement;
+                                                                    target.src = '/images/perfil/default-avatar.svg';
+                                                                }}
+                                                            />
+                                                        </div>
                                                         <Badge variant="secondary" className="px-4 py-2 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800 transition-all duration-200 hover:scale-110 text-sm font-medium">
                                                             <Tag className="h-4 w-4 mr-2" />
                                                             {egresado.experiencia ? 'Con Experiencia' : 'Sin Experiencia'}
