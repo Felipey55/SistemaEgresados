@@ -14,7 +14,6 @@ const SimpleMapComponent = () => {
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const [error, setError] = useState<string>('');
     const [location, setLocation] = useState<Location | null>(null);
-    const [isSaving, setIsSaving] = useState(false);
     const [ubicacionExistente, setUbicacionExistente] = useState<boolean>(false);
     const [cargando, setCargando] = useState<boolean>(true);
 
@@ -33,28 +32,7 @@ const SimpleMapComponent = () => {
         }
     };
 
-    const verificarUbicacionExistente = async () => {
-        try {
-            const response = await axios.get('/api/verificar-ubicacion');
-            if (response.data.existe) {
-                setUbicacionExistente(true);
-                const latitud = parseFloat(response.data.ubicacion.latitud);
-                const longitud = parseFloat(response.data.ubicacion.longitud);
-                if (!isNaN(latitud) && !isNaN(longitud)) {
-                    setLocation({
-                        latitude: latitud,
-                        longitude: longitud
-                    });
-                } else {
-                    setError('Datos de ubicación inválidos');
-                }
-            }
-        } catch (error) {
-            setError('Error al verificar la ubicación existente');
-        } finally {
-            setCargando(false);
-        }
-    };
+
 
     useEffect(() => {
         const inicializarMapa = async () => {
@@ -101,27 +79,7 @@ const SimpleMapComponent = () => {
         };
     }, []);
 
-    const guardarUbicacion = async () => {
-        if (!location) return;
-        
-        setIsSaving(true);
-        try {
-            if (ubicacionExistente) {
-                await axios.put('/api/actualizar-ubicacion', {
-                    latitud: location.latitude,
-                    longitud: location.longitude
-                });
-            } else {
-                await axios.post('/api/guardar-ubicacion', location);
-                setUbicacionExistente(true);
-            }
-            setError('');
-        } catch (err) {
-            setError('Error al guardar la ubicación. Por favor, intente nuevamente.');
-        } finally {
-            setIsSaving(false);
-        }
-    };
+
 
     return (
         <div className="space-y-4">

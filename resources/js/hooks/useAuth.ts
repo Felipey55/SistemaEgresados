@@ -7,11 +7,7 @@ interface AuthUser extends User {
     permissions: string[];
 }
 
-interface PageProps {
-    auth: {
-        user: AuthUser;
-    };
-}
+
 
 export function useAuth() {
     const { auth } = usePage<{ auth: { user: AuthUser } }>().props;

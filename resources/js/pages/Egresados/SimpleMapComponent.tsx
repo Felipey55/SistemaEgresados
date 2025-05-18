@@ -16,7 +16,6 @@ const SimpleMapComponent = () => {
     const [location, setLocation] = useState<Location | null>(null);
     const [isSaving, setIsSaving] = useState(false);
     const [ubicacionExistente, setUbicacionExistente] = useState<boolean>(false);
-    const [cargando, setCargando] = useState<boolean>(true);
 
     const actualizarUbicacion = (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -150,7 +149,7 @@ const SimpleMapComponent = () => {
                 setUbicacionExistente(true);
             }
             setError('');
-        } catch (err) {
+        } catch (error) {
             setError('Error al guardar la ubicación. Por favor, intente nuevamente.');
         } finally {
             setIsSaving(false);

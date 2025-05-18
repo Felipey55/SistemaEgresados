@@ -73,7 +73,7 @@ export default function EditarEgresado() {
         };
 
         cargarDatos();
-    }, []);
+    }, [setData]);
 
     const showNotification = (message: string, isSuccess: boolean) => {
         const notification = document.createElement('div');

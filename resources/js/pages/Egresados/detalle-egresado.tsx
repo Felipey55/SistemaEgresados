@@ -17,31 +17,17 @@ type Props = {
         celular: string;
         direccion: string;
         fecha_nacimiento: string;
-        formacionAcademica: any[];
+        formacionAcademica: FormacionAcademicaType[];
         fotografia: string | null;
-        experienciaLaboral: any[];
+        experienciaLaboral: ExperienciaLaboralType[];
         habilidades: {
-            tecnicas: any[];
-            blandas: any[];
+            tecnicas: HabilidadType[];
+            blandas: HabilidadType[];
         };
     };
 };
 
-type DatosEgresado = {
-    id: number;
-    identificacion_tipo: string;
-    identificacion_numero: string;
-    celular: string;
-    direccion: string;
-    fecha_nacimiento: string;
-    fotografia: string | null;
-    user: {
-        name: string;
-        email: string;
-    };
-};
-
-type FormacionAcademica = {
+type FormacionAcademicaType = {
     id: number;
     titulo: string;
     institucion: string;
@@ -49,7 +35,7 @@ type FormacionAcademica = {
     fecha_realizacion: string;
 };
 
-type ExperienciaLaboral = {
+type ExperienciaLaboralType = {
     id: number;
     tipo_empleo: string;
     nombre_empresa: string;
@@ -62,7 +48,7 @@ type ExperienciaLaboral = {
     descripcion: string | null;
 };
 
-type Habilidad = {
+type HabilidadType = {
     id: number;
     nombre: string;
     tipo: string;
