@@ -145,7 +145,7 @@ export default function EditarHabilidades({ habilidadesTecnicas, habilidadesBlan
             await axios.post(route('habilidades.eliminar'), { habilidad_id: id });
             setHabilidadesPersonalizadas(habilidadesPersonalizadas.filter(h => h.id !== id));
             showNotification('Habilidad eliminada correctamente', true);
-        } catch (error: any) {
+        } catch (error) {
             console.error('Error al eliminar habilidad:', error);
             showNotification('Error al eliminar la habilidad', false);
         }
@@ -169,7 +169,7 @@ export default function EditarHabilidades({ habilidadesTecnicas, habilidadesBlan
             setTimeout(() => {
                 window.location.href = route('egresado.perfil');
             }, 2000);
-        } catch (error: any) {
+        } catch (error) {
             console.error('Error al actualizar habilidades:', error);
             setMessage({ 
                 text: error.response?.data?.message || 'Error al actualizar habilidades', 

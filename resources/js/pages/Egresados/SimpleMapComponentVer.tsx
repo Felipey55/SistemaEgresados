@@ -13,9 +13,9 @@ const SimpleMapComponent = () => {
     const markerRef = useRef<L.Marker | null>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const [error, setError] = useState<string>('');
-    const [location, setLocation] = useState<Location | null>(null);
-    const [ubicacionExistente, setUbicacionExistente] = useState<boolean>(false);
-    const [cargando, setCargando] = useState<boolean>(true);
+    const [setLocation] = useState<Location | null>(null);
+    const [setUbicacionExistente] = useState<boolean>(false);
+    const [setCargando] = useState<boolean>(true);
 
     const mostrarUbicacion = (latitud: number, longitud: number) => {
         if (mapRef.current) {

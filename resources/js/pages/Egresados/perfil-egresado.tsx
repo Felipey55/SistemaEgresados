@@ -358,7 +358,7 @@ export default function PerfilEgresado() {
                                         </div>
                                     ) : (
                                         <div className="space-y-4">
-                                            {formacionAcademica.map((formacion, index) => (
+                                            {formacionAcademica.map((formacion) => (
                                                 <div key={formacion.id} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                                     <div className="flex justify-between items-start mb-4">
                                                         <div>

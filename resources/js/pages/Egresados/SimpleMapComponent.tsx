@@ -12,7 +12,7 @@ const SimpleMapComponent = () => {
     const mapRef = useRef<L.Map | null>(null);
     const markerRef = useRef<L.Marker | null>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
-    const [error, setError] = useState<string>('');
+    const [errorMsg, setError] = useState<string>('');
     const [location, setLocation] = useState<Location | null>(null);
     const [isSaving, setIsSaving] = useState(false);
     const [ubicacionExistente, setUbicacionExistente] = useState<boolean>(false);
@@ -177,9 +177,9 @@ const SimpleMapComponent = () => {
                     </div>
                 )}
             </div>
-            {error && (
+            {errorMsg && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-                    {error}
+                    {errorMsg}
                 </div>
             )}
         </div>
