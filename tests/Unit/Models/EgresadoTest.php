@@ -31,7 +31,8 @@ class EgresadoTest extends TestCase
             'fotografia',
             'celular',
             'direccion',
-            'fecha_nacimiento'
+            'fecha_nacimiento',
+            'genero'
         ];
 
         $egresado = new Egresado();
