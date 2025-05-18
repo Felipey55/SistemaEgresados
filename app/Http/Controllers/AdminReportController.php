@@ -79,7 +79,13 @@ class AdminReportController extends Controller
                 return [$item->nombre => $item->total];
             });
 
-        $egresadosPorAnio = Egresado::select(DB::raw('YEAR(created_at) as anio'), DB::raw('count(*) as total'))
+        $egresadosPorAnio = Egresado::select(
+            DB::raw(DB::connection()->getDriverName() === 'sqlite' 
+                ? "strftime('%Y', created_at) as anio"
+                : 'YEAR(created_at) as anio'
+            ),
+            DB::raw('count(*) as total')
+        )
             ->groupBy('anio')
             ->orderBy('anio', 'asc')
             ->get()
