@@ -332,12 +332,12 @@ export default function PerfilEgresado() {
                                         <h3 className="text-xl font-semibold text-gray-900">Formación Académica</h3>
                                         <Link
                                             href={route('formacion-academica')}
-                                            className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                                            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-md transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg hover:bg-gradient-to-r hover:from-indigo-600 hover:to-purple-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
                                         >
-                                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-4 h-4 mr-2 transform transition-transform group-hover:rotate-12 group-hover:text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                             </svg>
-                                            Agregar Nueva
+                                            <span className="font-medium group-hover:text-purple-100">Agregar Nueva</span>
                                         </Link>
                                     </div>
 
@@ -393,12 +393,17 @@ export default function PerfilEgresado() {
                                         <h3 className="text-xl font-semibold text-gray-900">Experiencia Laboral</h3>
                                         <Link
                                             href={route('historial-laboral')}
-                                            className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                                            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-md transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg hover:bg-gradient-to-r hover:from-indigo-600 hover:to-purple-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
                                         >
-                                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg 
+                                                className="w-4 h-4 mr-2 transform transition-transform group-hover:rotate-12 group-hover:text-purple-200" 
+                                                fill="none" 
+                                                stroke="currentColor" 
+                                                viewBox="0 0 24 24"
+                                            >
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                             </svg>
-                                            Agregar Nueva
+                                            <span className="font-medium group-hover:text-purple-100">Agregar Nueva</span>
                                         </Link>
                                     </div>
 
@@ -474,12 +479,17 @@ export default function PerfilEgresado() {
                                         {habilidades.length > 0 && (
                                             <Link
                                                 href={route('habilidades.editar')}
-                                                className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                                                className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-md transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg hover:bg-gradient-to-r hover:from-indigo-600 hover:to-purple-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
                                             >
-                                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg 
+                                                    className="w-4 h-4 mr-2 transform transition-transform group-hover:rotate-12 group-hover:text-purple-200" 
+                                                    fill="none" 
+                                                    stroke="currentColor" 
+                                                    viewBox="0 0 24 24"
+                                                >
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                                 </svg>
-                                                Editar Habilidades
+                                                <span className="font-medium group-hover:text-purple-100">Editar Habilidades</span>
                                             </Link>
                                         )}
                                     </div>
@@ -494,12 +504,17 @@ export default function PerfilEgresado() {
                                             <div className="mt-6">
                                                 <Link
                                                     href={route('habilidades.index')}
-                                                    className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                                                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-md transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg hover:bg-gradient-to-r hover:from-indigo-600 hover:to-purple-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
                                                 >
-                                                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <svg 
+                                                        className="w-4 h-4 mr-2 transform transition-transform group-hover:rotate-12 group-hover:text-purple-200" 
+                                                        fill="none" 
+                                                        stroke="currentColor" 
+                                                        viewBox="0 0 24 24"
+                                                    >
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                                     </svg>
-                                                    Agregar Habilidades
+                                                    <span className="font-medium group-hover:text-purple-100">Agregar Habilidades</span>
                                                 </Link>
                                             </div>
                                         </div>

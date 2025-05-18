@@ -74,27 +74,56 @@ export default function HistorialLaboral() {
         });
     };
 
+    // Nuevo estado para controlar la animación de los iconos
+    const [activeIcon, setActiveIcon] = useState<string | null>(null);
+
+    // Función para activar la animación del icono
+    const animateIcon = (iconId: string) => {
+        setActiveIcon(iconId);
+        setTimeout(() => setActiveIcon(null), 2000);
+    };
+
+    // Función para obtener la clase de animación
+    const getAnimationClass = (iconId: string) => {
+        if (activeIcon !== iconId) return '';
+        // Ahora todos los iconos tendrán la animación de salto
+        return 'animate-bounce transform duration-1000';
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Historial Laboral" />
             <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
-                    <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-700 dark:to-indigo-800">
-                        <h1 className="text-2xl font-bold text-white mb-2">Historial Laboral</h1>
-                        <p className="text-blue-100 dark:text-blue-200">Registra tu experiencia profesional</p>
+                    <div 
+                        className="p-6 sm:p-8 relative overflow-hidden"
+                        style={{
+                            backgroundImage: 'url(/images/fondoDash.jpg)',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                        }}
+                    >
+                        <div className="relative z-10">
+                            <h1 className="text-2xl font-bold text-white mb-2 text-shadow hover:scale-105 transition-transform duration-300">Historial Laboral</h1>
+                            <p className="text-white text-shadow hover:scale-105 transition-transform duration-300">Registra tu experiencia profesional</p>
+                        </div>
                     </div>
 
                     <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6 dark:bg-gray-800">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
                                 <Label htmlFor="tipo_empleo" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <Briefcase className="h-4 w-4 text-blue-500" />
+                                    <Briefcase 
+                                        id="briefcase-icon"
+                                        className={`h-4 w-4 text-blue-500 transform transition-transform duration-300 ${getAnimationClass('briefcase-icon')}`}
+                                    />
                                     Tipo de Empleo
                                 </Label>
                                 <select
                                     id="tipo_empleo"
                                     value={data.tipo_empleo}
                                     onChange={(e) => setData('tipo_empleo', e.target.value)}
+                                    onFocus={() => animateIcon('briefcase-icon')}
                                     className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                     required
                                 >
@@ -110,7 +139,10 @@ export default function HistorialLaboral() {
 
                             <div className="space-y-2">
                                 <Label htmlFor="nombre_empresa" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <Building2 className="h-4 w-4 text-blue-500" />
+                                    <Building2 
+                                        id="building-icon"
+                                        className={`h-4 w-4 text-blue-500 transform transition-transform duration-300 ${getAnimationClass('building-icon')}`}
+                                    />
                                     Nombre de la Empresa
                                 </Label>
                                 <Input
@@ -118,6 +150,7 @@ export default function HistorialLaboral() {
                                     type="text"
                                     value={data.nombre_empresa}
                                     onChange={(e) => setData('nombre_empresa', e.target.value)}
+                                    onFocus={() => animateIcon('building-icon')}
                                     className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     required
                                 />
@@ -126,7 +159,10 @@ export default function HistorialLaboral() {
 
                             <div className="space-y-2">
                                 <Label htmlFor="fecha_inicio" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <Calendar className="h-4 w-4 text-blue-500" />
+                                    <Calendar 
+                                        id="calendar-icon"
+                                        className={`h-4 w-4 text-blue-500 transform transition-transform duration-300 ${getAnimationClass('calendar-icon')}`}
+                                    />
                                     Fecha de Inicio
                                 </Label>
                                 <Input
@@ -134,6 +170,7 @@ export default function HistorialLaboral() {
                                     type="date"
                                     value={data.fecha_inicio}
                                     onChange={(e) => setData('fecha_inicio', e.target.value)}
+                                    onFocus={() => animateIcon('calendar-icon')}
                                     className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     required
                                 />
@@ -142,7 +179,10 @@ export default function HistorialLaboral() {
 
                             <div className="space-y-2">
                                 <Label htmlFor="fecha_fin" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <Calendar className="h-4 w-4 text-blue-500" />
+                                    <Calendar 
+                                        id="calendar-fin-icon"
+                                        className={`h-4 w-4 text-blue-500 transform transition-transform duration-300 ${getAnimationClass('calendar-fin-icon')}`}
+                                    />
                                     Fecha de Finalización
                                 </Label>
                                 <Input
@@ -150,6 +190,7 @@ export default function HistorialLaboral() {
                                     type="date"
                                     value={data.fecha_fin}
                                     onChange={(e) => setData('fecha_fin', e.target.value)}
+                                    onFocus={() => animateIcon('calendar-fin-icon')}
                                     className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                 />
                                 <InputError message={errors.fecha_fin} />
@@ -157,13 +198,17 @@ export default function HistorialLaboral() {
 
                             <div className="space-y-2">
                                 <Label htmlFor="modalidad_trabajo" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <MapPin className="h-4 w-4 text-blue-500" />
+                                    <MapPin 
+                                        id="map-icon"
+                                        className={`h-4 w-4 text-blue-500 transform transition-transform duration-300 ${getAnimationClass('map-icon')}`}
+                                    />
                                     Modalidad de Trabajo
                                 </Label>
                                 <select
                                     id="modalidad_trabajo"
                                     value={data.modalidad_trabajo}
                                     onChange={(e) => setData('modalidad_trabajo', e.target.value)}
+                                    onFocus={() => animateIcon('map-icon')}
                                     className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
                                     required
                                 >
@@ -177,7 +222,10 @@ export default function HistorialLaboral() {
 
                             <div className="space-y-2">
                                 <Label htmlFor="correo_empresa" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <Mail className="h-4 w-4 text-blue-500" />
+                                    <Mail 
+                                        id="mail-icon"
+                                        className={`h-4 w-4 text-blue-500 transform transition-transform duration-300 ${getAnimationClass('mail-icon')}`}
+                                    />
                                     Correo de la Empresa
                                 </Label>
                                 <Input
@@ -185,6 +233,7 @@ export default function HistorialLaboral() {
                                     type="email"
                                     value={data.correo_empresa}
                                     onChange={(e) => setData('correo_empresa', e.target.value)}
+                                    onFocus={() => animateIcon('mail-icon')}
                                     className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     placeholder="correo@empresa.com"
                                 />
@@ -193,7 +242,10 @@ export default function HistorialLaboral() {
 
                             <div className="space-y-2">
                                 <Label htmlFor="url_empresa" className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                                    <Globe className="h-4 w-4 text-blue-500" />
+                                    <Globe 
+                                        id="globe-icon"
+                                        className={`h-4 w-4 text-blue-500 transform transition-transform duration-300 ${getAnimationClass('globe-icon')}`}
+                                    />
                                     Sitio Web de la Empresa
                                 </Label>
                                 <Input
@@ -201,6 +253,7 @@ export default function HistorialLaboral() {
                                     type="url"
                                     value={data.url_empresa}
                                     onChange={(e) => setData('url_empresa', e.target.value)}
+                                    onFocus={() => animateIcon('globe-icon')}
                                     className="rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     placeholder="https://"
                                 />
@@ -241,18 +294,38 @@ export default function HistorialLaboral() {
                             <Button
                                 type="button"
                                 variant="outline"
-                                onClick={() => reset()}
-                                className="px-6 py-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                onClick={() => window.location.href = route('egresado.perfil')}
+                                className="px-6 py-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 hover:border-red-500 active:border-red-700 focus:border-red-500"
                                 disabled={processing}
                             >
                                 Cancelar
                             </Button>
                             <Button
                                 type="submit"
-                                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                className="px-6 py-2 bg-gradient-to-r from-blue-700 to-purple-700 text-white 
+                                    hover:from-blue-500 hover:to-purple-500 
+                                    focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                                    transform transition-all duration-200 ease-in-out
+                                    hover:scale-105 active:scale-95
+                                    shadow-lg hover:shadow-blue-500/50
+                                    flex items-center gap-2"
                                 disabled={processing}
                             >
-                                {processing ? 'Guardando...' : 'Guardar Experiencia'}
+                                {processing ? (
+                                    <>
+                                        <span className="animate-spin">
+                                            <LoaderCircle className="h-5 w-5" />
+                                        </span>
+                                        <span>Guardando...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span>Guardar Experiencia</span>
+                                        <span className="group-hover:translate-x-1 transition-transform duration-200">
+                                            →
+                                        </span>
+                                    </>
+                                )}
                             </Button>
                         </div>
                     </form>

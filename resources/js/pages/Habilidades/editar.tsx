@@ -438,23 +438,27 @@ export default function EditarHabilidades({ habilidadesTecnicas, habilidadesBlan
                             </div>
                         </div>
 
-                        <div className="flex justify-between pt-8 border-t border-gray-200">
+                        <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                             <Button
                                 type="button"
                                 variant="outline"
                                 onClick={() => window.history.back()}
-                                className="flex items-center gap-2"
-                                disabled={isSubmitting}
+                                className="flex items-center gap-2 px-4 py-2 border-2 border-red-500 hover:bg-red-50 dark:hover:bg-red-950 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-all duration-300 transform hover:scale-105 active:scale-95"
                             >
-                                <ArrowLeft className="h-4 w-4" />
+                                <ArrowLeft className="h-5 w-5" />
                                 Volver
                             </Button>
-                            <Button 
-                                type="submit" 
-                                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
+
+                            <Button
+                                type="submit"
                                 disabled={isSubmitting}
+                                className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-800 hover:from-blue-500 hover:to-purple-400 active:from-blue-400 active:to-purple-300 text-white font-semibold rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all duration-300 flex items-center justify-center gap-2 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                <Save className="h-4 w-4" />
+                                {isSubmitting ? (
+                                    <LoaderCircle className="h-5 w-5 animate-spin" />
+                                ) : (
+                                    <Save className="h-5 w-5" />
+                                )}
                                 {isSubmitting ? 'Guardando...' : 'Guardar Cambios'}
                             </Button>
                         </div>
