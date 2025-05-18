@@ -1,0 +1,143 @@
+CREATE DATABASE Egresados;
+USE Egresados;
+
+-- Tabla de países
+CREATE TABLE paises (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    INDEX (nombre)
+);
+
+-- Tabla de ciudades
+CREATE TABLE ciudades (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    pais_id INT NOT NULL,
+    INDEX (nombre),
+    FOREIGN KEY (pais_id) REFERENCES paises(id) ON DELETE CASCADE
+);
+
+-- Tabla de permisos (antes roles)
+CREATE TABLE permisos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre ENUM('Administrador', 'Coordinador', 'Egresado') NOT NULL,
+    INDEX (nombre)
+);
+
+-- Tabla de roles (antes permisos)
+CREATE TABLE roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre ENUM('Administrador', 'Coordinador') NOT NULL,
+    INDEX (nombre)
+);
+
+-- Tabla de permisos_roles (antes roles_permisos)
+CREATE TABLE permisos_roles (
+    permiso_id INT NOT NULL,
+    rol_id INT NOT NULL,
+    PRIMARY KEY (permiso_id, rol_id),
+    FOREIGN KEY (permiso_id) REFERENCES permisos(id) ON DELETE CASCADE,
+    FOREIGN KEY (rol_id) REFERENCES roles(id) ON DELETE CASCADE
+);
+
+-- Tabla de egresados
+CREATE TABLE egresados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    identificacion_tipo ENUM('C.C.', 'C.E.') NOT NULL,
+    identificacion_numero VARCHAR(20) NOT NULL,
+    fotografia BLOB,
+    nombre VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    celular VARCHAR(15),
+    direccion VARCHAR(255),
+    email VARCHAR(100) NOT NULL UNIQUE,
+    fecha_nacimiento DATE,
+    contrasena VARCHAR(255) NOT NULL,
+    ciudad_id INT,
+    INDEX (email),
+    FOREIGN KEY (ciudad_id) REFERENCES ciudades(id) ON DELETE SET NULL
+);
+
+-- Tabla intermedia egresado_rol (antes egresado_permiso)
+CREATE TABLE egresado_rol (
+    egresado_id INT NOT NULL,
+    rol_id INT NOT NULL,
+    PRIMARY KEY (egresado_id, rol_id),
+    FOREIGN KEY (egresado_id) REFERENCES egresados(id) ON DELETE CASCADE,
+    FOREIGN KEY (rol_id) REFERENCES roles(id) ON DELETE CASCADE
+);
+
+-- Tabla de habilidades
+CREATE TABLE habilidades (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    tipo enum('Blandas','Duras'),
+    INDEX (nombre)
+);
+
+-- Tabla intermedia egresado_habilidad
+CREATE TABLE egresado_habilidad (
+    egresado_id INT NOT NULL,
+    habilidad_id INT NOT NULL,
+    PRIMARY KEY (egresado_id, habilidad_id),
+    FOREIGN KEY (egresado_id) REFERENCES egresados(id) ON DELETE CASCADE,
+    FOREIGN KEY (habilidad_id) REFERENCES habilidades(id) ON DELETE CASCADE
+);
+
+-- Tabla de historial laboral
+CREATE TABLE historial_laboral (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    egresado_id INT NOT NULL,
+    tipo_empleo ENUM('Tiempo Completo', 'Medio Tiempo', 'Freelance', 'Otro') NOT NULL,
+    nombre_empresa VARCHAR(100) NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE,
+    servicios TEXT,
+    correo_empresa VARCHAR(100),
+    url_empresa VARCHAR(255),
+    ciudad_id INT,
+    modalidad_trabajo ENUM('Presencial', 'Remoto', 'Híbrido') NOT NULL,
+    descripcion TEXT,
+    INDEX (egresado_id),
+    FOREIGN KEY (egresado_id) REFERENCES egresados(id) ON DELETE CASCADE,
+    FOREIGN KEY (ciudad_id) REFERENCES ciudades(id) ON DELETE SET NULL
+);
+
+-- Tabla de formación académica
+CREATE TABLE formacion_academica (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    egresado_id INT NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
+    institucion VARCHAR(100) NOT NULL,
+    tipo ENUM('Pregrado', 'Especialización', 'Maestría', 'Doctorado') NOT NULL,
+    fecha_realizacion DATE NOT NULL,
+    ciudad_id INT,
+    INDEX (egresado_id),
+    FOREIGN KEY (egresado_id) REFERENCES egresados(id) ON DELETE CASCADE
+);
+
+-- Tabla de noticias
+CREATE TABLE noticias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    contenido TEXT NOT NULL,
+    fecha_publicacion DATETIME NOT NULL,
+    autor_id INT NOT NULL,
+    INDEX (titulo),
+    FOREIGN KEY (autor_id) REFERENCES egresados(id) ON DELETE CASCADE
+);
+
+-- Tabla de reportes
+CREATE TABLE reportes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    fecha_generacion DATETIME NOT NULL,
+    generado_por INT NOT NULL,
+    INDEX (nombre),
+    FOREIGN KEY (generado_por) REFERENCES egresados(id) ON DELETE CASCADE
+);
+
+
+
+

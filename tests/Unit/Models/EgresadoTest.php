@@ -31,7 +31,8 @@ class EgresadoTest extends TestCase
             'fotografia',
             'celular',
             'direccion',
-            'fecha_nacimiento'
+            'fecha_nacimiento',
+            'genero'
         ];
 
         $egresado = new Egresado();
@@ -44,7 +45,7 @@ class EgresadoTest extends TestCase
             'fecha_nacimiento' => '1990-01-01'
         ]);
 
-        $this->assertIsObject($egresado->fecha_nacimiento);
+        $this->assertInstanceOf(\Carbon\Carbon::class, $egresado->fecha_nacimiento);
         $this->assertEquals('1990-01-01', $egresado->fecha_nacimiento->toDateString());
     }
 }
