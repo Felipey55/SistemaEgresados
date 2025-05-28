@@ -1,31 +1,40 @@
-﻿# Sistema de Egresados UNIMAR 🎓
+
+# Sistema de Gestión de Biblioteca Maridiaz 📚
 
 ## Descripción General
-Sistema web para la gestión y seguimiento de egresados de la Universidad Mariana. Permite a los egresados crear perfiles profesionales, compartir su ubicación, experiencia laboral y mantener conexión con la comunidad universitaria.
+Sistema web para la gestión y administración de la biblioteca Maridiaz. Permite gestionar libros, lectores, préstamos y devoluciones de manera eficiente, facilitando el control y seguimiento del material bibliográfico.
 
 ## Funcionalidades Principales
 
-### 🔐 Autenticación y Registro
-- Registro de nuevos usuarios con validación de datos
-- Inicio de sesión seguro
-- Gestión de perfiles de usuario
+### 🔐 Autenticación y Gestión de Usuarios
+- Registro e inicio de sesión seguro
+- Gestión de roles y permisos
+- Panel de administración personalizado
 
-### 👤 Perfiles de Egresados
-- Creación y edición de perfiles profesionales
-- Gestión de información personal
-- Registro de formación académica
-- Registro de experiencia laboral
-- Gestión de habilidades técnicas y blandas
+### 📚 Gestión de Libros
+- Registro y actualización de libros
+- Catalogación por sistema Dewey
+- Control de ejemplares
+- Gestión de autores y editoriales
+- Organización por estanterías y secciones
 
-### 📍 Mapa de Egresados
-- Visualización geográfica de la ubicación de egresados
-- Marcadores interactivos con información del egresado
-- Vista personalizada del mapa con OpenStreetMap
+### 👥 Gestión de Lectores
+- Registro de lectores por grados
+- Historial de préstamos
+- Estado y seguimiento de préstamos activos
+- Gestión de sanciones y restricciones
+
+### 📋 Préstamos y Devoluciones
+- Sistema de préstamos y renovaciones
+- Control de fechas de vencimiento
+- Notificaciones de devolución
+- Registro histórico de movimientos
 
 ### 🔍 Búsqueda y Filtrado
-- Búsqueda por nombre o identificación
-- Filtros por experiencia y formación
-- Filtrado por habilidades específicas
+- Búsqueda avanzada de libros
+- Filtros por categorías Dewey
+- Búsqueda de lectores por grado
+- Reportes y estadísticas
 
 ## Tecnologías Utilizadas
 
@@ -33,16 +42,18 @@ Sistema web para la gestión y seguimiento de egresados de la Universidad Marian
 - React.js con TypeScript
 - Tailwind CSS para estilos
 - Lucide React para iconos
-- Leaflet para mapas interactivos
+- Shadcn UI para componentes
 
 ### Backend
 - Laravel (PHP)
 - MySQL para base de datos
 - API RESTful
 
-### Componentes UI
-- Shadcn UI
-- Componentes personalizados
+### Herramientas de Desarrollo
+- Vite.js
+- ESLint
+- Prettier
+- PHP CS Fixer
 
 ## Requisitos de Instalación
 
@@ -59,7 +70,6 @@ Sistema web para la gestión y seguimiento de egresados de la Universidad Marian
     "@inertiajs/react": "^1.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "leaflet": "^1.9.0",
     "lucide-react": "^0.x.x",
     "tailwindcss": "^3.x.x"
   }
@@ -70,8 +80,8 @@ Sistema web para la gestión y seguimiento de egresados de la Universidad Marian
 
 1. **Clonar el Repositorio**
    ```bash
-   git clone https://github.com/Felipey55/SistemaEgresados.git
-   cd SistemaEgresados
+   git clone https://github.com/yourusername/gestionBibliotecaMaridiaz.git
+   cd gestionBibliotecaMaridiaz
    ```
 
 2. **Instalar Dependencias de PHP**
@@ -110,7 +120,7 @@ Sistema web para la gestión y seguimiento de egresados de la Universidad Marian
 ## Estructura del Proyecto
 
 ```
-SistemaEgresados/
+gestionBibliotecaMaridiaz/
 ├── app/                 # Lógica de la aplicación
 ├── resources/
 │   ├── js/             # Componentes React
@@ -130,7 +140,7 @@ SistemaEgresados/
 5. Abrir un Pull Request
 
 ## Autoría
-Desarrollado por el equipo de desarrollo de la Universidad Mariana
+Desarrollado por el equipo de desarrollo de la Biblioteca Maridiaz
 
 ## Licencia
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para más detalles.
